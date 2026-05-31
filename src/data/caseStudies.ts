@@ -479,7 +479,7 @@ export const caseStudies: CaseStudy[] = [
       "Luniso launched as a credible, conversion-ready fashion brand — turning an affordable product and a cash-on-delivery model into a scalable nationwide ecommerce business.",
 
     websiteLabel: "Luniso Store",
-    websiteUrl: "https://luniso.lovable.app",
+    websiteUrl: "https://luniso.app",
     palette: LUNISO_PALETTE,
     theme: LUNISO_THEME,
 
