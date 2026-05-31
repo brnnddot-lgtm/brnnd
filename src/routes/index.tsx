@@ -549,22 +549,22 @@ function GalleryTile({ src, srcset, brand, ratio }: Tile) {
 
 
 const trustedBrands = [
-  { name: "Colgate Palmolive", slug: "colgate" },
-  { name: "Databricks", slug: "databricks" },
-  { name: "Dropbox", slug: "dropbox" },
-  { name: "DoorDash", slug: "doordash" },
-  { name: "Figma", slug: "figma" },
-  { name: "Grammarly", slug: "grammarly" },
-  { name: "Amazon", slug: "amazon" },
-  { name: "Booking.com", slug: "bookingdotcom" },
-  { name: "Reddit", slug: "reddit" },
-  { name: "Rakuten", slug: "rakuten" },
-  { name: "Robinhood", slug: "robinhood" },
-  { name: "Thomson Reuters", slug: "thomsonreuters" },
-  { name: "Vimeo", slug: "vimeo" },
-  { name: "Intuit", slug: "intuit" },
-  { name: "Lyft", slug: "lyft" },
-  { name: "Pernod Ricard", slug: "pernodricard" },
+  "Colgate Palmolive",
+  "Databricks",
+  "Dropbox",
+  "DoorDash",
+  "Figma",
+  "Grammarly",
+  "Amazon",
+  "Booking.com",
+  "Reddit",
+  "Rakuten",
+  "Robinhood",
+  "Thomson Reuters",
+  "Vimeo",
+  "Intuit",
+  "Lyft",
+  "Pernod Ricard",
 ];
 
 function LogoMarquee() {
@@ -572,14 +572,13 @@ function LogoMarquee() {
   return (
     <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
       <div className="flex items-center gap-10 sm:gap-14 md:gap-20 animate-[logo-marquee_40s_linear_infinite] whitespace-nowrap will-change-transform">
-        {row.map((b, i) => (
-          <img
-            key={`${b.slug}-${i}`}
-            src={`https://cdn.simpleicons.org/${b.slug}/0d0d0d`}
-            alt={b.name}
-            loading="lazy"
-            className="shrink-0 h-6 sm:h-7 md:h-8 lg:h-9 w-auto max-w-[120px] sm:max-w-[140px] md:max-w-[160px] object-contain opacity-70 hover:opacity-100 transition-opacity"
-          />
+        {row.map((brand, i) => (
+          <span
+            key={`${brand}-${i}`}
+            className="shrink-0 font-semibold text-lg sm:text-xl md:text-2xl tracking-tight text-foreground/50 hover:text-foreground transition-colors"
+          >
+            {brand}
+          </span>
         ))}
       </div>
       <style>{`
@@ -937,4 +936,3 @@ function CountUp({
     </span>
   );
 }
-
