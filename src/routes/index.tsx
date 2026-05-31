@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Route as BookRoute } from "./book";
+import { Route as WorkCaseRoute } from "./work.$slug";
 import { motion, useMotionValue, useSpring, useTransform, useInView, animate } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { SectionHeader } from "@/components/site/SectionHeader";
@@ -87,7 +89,7 @@ function Home() {
             <p className="mt-4 text-sm text-foreground/60 leading-relaxed max-w-md">
               BRNND is a brand operating partner for ambitious founders. Four layers of work, one senior team — designed so the brand you launch keeps compounding long after the day it goes live.
             </p>
-            <Link to="/book" className="btn-ink mt-10">Book Strategy Call</Link>
+            <BookRoute.Link className="btn-ink mt-10">Book Strategy Call</BookRoute.Link>
           </div>
           <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-bone">
             <img src={aboutSplit} srcSet={aboutSplitSet} sizes="(min-width: 768px) 50vw, 100vw" alt="Brand transformation in motion — BRNND identity sketches, Pantone swatches and brand book in studio" className="w-full h-full object-cover" loading="lazy" />
@@ -241,7 +243,7 @@ function Home() {
             { name: "Baggy Co", tags: "Fashion · DTC — Conversion-focused checkout", img: workBaggy, span: "col-span-6 md:col-span-3 aspect-[4/5]", slug: "baggy-co" },
             { name: "MintHost", tags: "Hosting · SaaS — Platform redesign", img: workMinthost, span: "col-span-6 md:col-span-3 aspect-[4/5]", slug: "minthost" },
           ].map((w) => (
-            <Link key={w.name} to={`/work/${w.slug}`} className={`group ${w.span}`}>
+            <WorkCaseRoute.Link key={w.name} params={{ slug: w.slug }} className={`group ${w.span}`}>
               <div className="relative w-full h-full overflow-hidden rounded-2xl bg-bone">
                 <img src={w.img} alt={w.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
               </div>
@@ -249,7 +251,7 @@ function Home() {
                 <h3 className="editorial text-xl md:text-2xl italic">{w.name}</h3>
                 <p className="text-xs text-foreground/55 mt-1">{w.tags}</p>
               </div>
-            </Link>
+            </WorkCaseRoute.Link>
           ))}
         </div>
       </section>
@@ -365,12 +367,11 @@ function HeroCinematic() {
             variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } } }}
             className="mt-10"
           >
-            <Link
-              to="/book"
+            <BookRoute.Link
               className="inline-flex items-center rounded-full bg-accent text-accent-foreground px-7 py-4 text-sm font-medium hover:opacity-90 transition-opacity"
             >
               Book Strategy Call
-            </Link>
+            </BookRoute.Link>
           </motion.div>
         </motion.div>
 
@@ -892,7 +893,7 @@ function TalentAndBurnout() {
               <p className="text-sm text-foreground/70 leading-relaxed mb-7 max-w-md">
                 BRNND ships the whole system as one — so every touchpoint earns the same trust.
               </p>
-              <Link to="/book" className="inline-flex items-center rounded-full bg-[oklch(0.88_0.16_125)] text-[oklch(0.2_0.04_160)] px-6 py-3 text-sm font-medium hover:opacity-90 transition-opacity">Book Strategy Call</Link>
+              <BookRoute.Link className="inline-flex items-center rounded-full bg-[oklch(0.88_0.16_125)] text-[oklch(0.2_0.04_160)] px-6 py-3 text-sm font-medium hover:opacity-90 transition-opacity">Book Strategy Call</BookRoute.Link>
             </div>
           </div>
         </div>
