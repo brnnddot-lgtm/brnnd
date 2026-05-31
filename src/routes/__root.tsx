@@ -9,7 +9,7 @@ import {
 } from "@tanstack/react-router";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
-import appCss from "../styles.css?url";
+import "../styles.css";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import logoBlack from "@/assets/brnnd-logo-black.png";
@@ -64,7 +64,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/aec5cab2-3302-4a6c-8c77-fe06a471399d" },
     ],
     links: [
-      { rel: "stylesheet", href: appCss },
       { rel: "preload", as: "image", href: logoWhite, fetchpriority: "high" },
       { rel: "preload", as: "image", href: logoBlack },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
