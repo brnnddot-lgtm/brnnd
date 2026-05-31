@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { imagetools } from "vite-imagetools";
 import { nitro } from "nitro/vite";
@@ -10,6 +11,7 @@ export default defineConfig({
     tanstackStart(),
     nitro({ preset: "vercel" }),
     react(),
+    tailwindcss(),
     tsconfigPaths(),
     imagetools(),
   ],

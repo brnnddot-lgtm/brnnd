@@ -64,7 +64,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/aec5cab2-3302-4a6c-8c77-fe06a471399d" },
     ],
     links: [
-      { rel: "preload", as: "image", href: logoWhite, fetchpriority: "high" },
+      { rel: "preload", as: "image", href: logoWhite, fetchPriority: "high" },
       { rel: "preload", as: "image", href: logoBlack },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
