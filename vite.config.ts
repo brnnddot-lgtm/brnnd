@@ -2,10 +2,11 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { imagetools } from "vite-imagetools";
-import cloudflare from "@cloudflare/vite-plugin";
+import { cloudflare } from "@cloudflare/vite-plugin";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 
 export default defineConfig({
-  plugins: [react(), tsconfigPaths(), imagetools(), cloudflare()],
+  plugins: [tanstackStart(), react(), tsconfigPaths(), imagetools(), cloudflare()],
   build: {
     target: "es2020",
   },
