@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS "Anyone can submit a demo lead" ON public.demo_leads;
