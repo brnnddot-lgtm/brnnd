@@ -338,7 +338,7 @@ export function Header() {
           <button
             type="button"
             onClick={openBookDemo}
-            className="rounded-full px-3.5 py-1.5 text-xs font-semibold tracking-tight transition-all bg-brand-lime text-stone-950 hover:bg-[#bef264]"
+            className="hidden sm:inline-flex rounded-full px-3.5 py-1.5 text-xs font-semibold tracking-tight transition-all bg-brand-lime text-stone-950 hover:bg-[#bef264]"
           >
             Book a demo
           </button>

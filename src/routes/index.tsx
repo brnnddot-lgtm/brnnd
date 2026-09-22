@@ -361,7 +361,7 @@ function HeroCinematic() {
         background: "radial-gradient(120% 80% at 80% 10%, #0f2a22 0%, #07140f 55%, #050b08 100%)",
         color: "#F2EEE3",
       }}
-      className="theme-dark relative min-h-screen overflow-hidden pt-20 sm:pt-24 md:pt-28 pb-16"
+      className="theme-dark relative overflow-hidden pt-20 sm:pt-24 lg:pt-28 pb-8 lg:pb-16"
     >
       {/* Soft vignette */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10" style={{
@@ -377,7 +377,7 @@ function HeroCinematic() {
       />
 
 
-      <div className="container-edge grid grid-cols-1 lg:grid-cols-[minmax(0,5.2fr)_minmax(0,6.8fr)] gap-10 lg:gap-14 items-center min-h-[calc(100vh-6rem)]">
+      <div className="container-edge grid grid-cols-1 lg:grid-cols-[minmax(0,5.2fr)_minmax(0,6.8fr)] gap-6 sm:gap-8 lg:gap-14 items-center">
         {/* LEFT */}
         <motion.div
           initial="hidden"
@@ -386,11 +386,11 @@ function HeroCinematic() {
             hidden: {},
             show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
           }}
-          className="relative py-8 lg:py-14"
+          className="relative pt-4 pb-2 lg:py-14 text-center lg:text-left"
         >
           <motion.h1
             variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } }}
-            className="text-4xl sm:text-5xl md:text-6xl xl:text-[4.75rem] font-sans font-medium tracking-tight text-white leading-[1.08]"
+            className="text-4xl sm:text-5xl md:text-6xl xl:text-[4.75rem] font-sans font-medium tracking-tight text-white leading-[1.08] max-w-xl mx-auto lg:mx-0"
           >
             The brand partner for<br />
             <span className="font-serif italic text-brand-lime">ambitious founders™</span>
@@ -398,25 +398,25 @@ function HeroCinematic() {
 
           <motion.p
             variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } }}
-            className="mt-6 text-white/75 text-base sm:text-lg max-w-lg leading-relaxed font-normal"
+            className="mt-4 sm:mt-6 text-white/75 text-base sm:text-lg max-w-lg leading-relaxed font-normal mx-auto lg:mx-0"
           >
             Scale your brand with senior strategists and designers. Complete brand systems — strategy, identity, websites and growth — delivered fast.
           </motion.p>
 
           <motion.div
             variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } }}
-            className="mt-8 flex flex-wrap items-center gap-4"
+            className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4"
           >
             <button
               type="button"
               onClick={openBookDemo}
-              className="rounded-full bg-brand-lime hover:bg-[#bef264] text-stone-950 px-8 py-3.5 text-[15px] font-semibold tracking-tight transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+              className="w-full sm:w-auto rounded-full bg-brand-lime hover:bg-[#bef264] text-stone-950 px-8 py-3.5 text-[15px] font-semibold tracking-tight transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] text-center"
             >
               Book a demo
             </button>
             <Link
               to="/work"
-              className="rounded-full border border-white/20 text-white/90 hover:text-white hover:bg-white/10 px-6 py-3.5 text-[14.5px] font-medium transition-all duration-200"
+              className="hidden sm:inline-flex rounded-full border border-white/20 text-white/90 hover:text-white hover:bg-white/10 px-6 py-3.5 text-[14.5px] font-medium transition-all duration-200"
             >
               Explore work
             </Link>
@@ -426,7 +426,7 @@ function HeroCinematic() {
         {/* RIGHT — Infinite scrolling masonry (desktop: columns, mobile: rows) */}
         <motion.div
           style={{ x: parX, y: parY }}
-          className="relative h-[60vh] sm:h-[70vh] lg:h-[88vh] overflow-hidden"
+          className="relative h-auto lg:h-[88vh] overflow-hidden -mx-4 sm:mx-0 mt-1 lg:mt-0"
         >
           {/* Desktop — vertical scrolling columns */}
           <motion.div style={{ x: parX2 }} className="hidden lg:grid grid-cols-3 gap-3 md:gap-4 h-full">
@@ -450,16 +450,16 @@ function HeroCinematic() {
             ]} />
           </motion.div>
 
-          {/* Mobile — horizontal scrolling rows */}
-          <div className="lg:hidden flex flex-col justify-center gap-3 h-full">
-            <LoopRow direction="left" duration={40} tiles={[
-              { src: heroTypeSystem, srcset: heroTypeSystemSet, brand: "Grubhub", ratio: "3/4" },
+          {/* Mobile — horizontal scrolling rows tight beneath the button */}
+          <div className="lg:hidden flex flex-col gap-3 py-1">
+            <LoopRow direction="left" duration={36} tiles={[
               { src: heroPackagingTote, srcset: heroPackagingToteSet, brand: "otto", ratio: "4/5" },
               { src: case03, srcset: "", brand: "Collabera", ratio: "1/1" },
               { src: workBaggy, srcset: "", brand: "Baggy", ratio: "4/5" },
+              { src: heroTypeSystem, srcset: heroTypeSystemSet, brand: "Grubhub", ratio: "3/4" },
               { src: case01, srcset: "", brand: "Antler", ratio: "3/4" },
             ]} />
-            <LoopRow direction="right" duration={48} tiles={[
+            <LoopRow direction="right" duration={42} tiles={[
               { src: heroLaptopVault, srcset: heroLaptopVaultSet, brand: "Nasdaq", ratio: "4/5" },
               { src: storySoothe, srcset: storySootheSet, brand: "Soothe", ratio: "3/4" },
               { src: heroEmboss, srcset: heroEmbossSet, brand: "Roland", ratio: "1/1" },
@@ -475,6 +475,111 @@ function HeroCinematic() {
 }
 
 type Tile = { src: string; srcset: string; brand: string; ratio: "3/4" | "4/5" | "1/1" };
+
+function BrandLogo({ brand }: { brand: string }) {
+  const b = brand.toLowerCase();
+  if (b === "grubhub") {
+    return (
+      <span className="font-sans font-black tracking-tight uppercase text-white text-[15px] sm:text-base drop-shadow-md">
+        GRUBHUB
+      </span>
+    );
+  }
+  if (b === "colgate" || b === "colgate palmolive") {
+    return (
+      <div className="flex items-center gap-1.5 drop-shadow-md">
+        <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white shrink-0" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z" />
+        </svg>
+        <div className="leading-[1.1] text-left">
+          <div className="font-bold text-[10px] sm:text-[11px] uppercase tracking-wider text-white">Colgate</div>
+          <div className="text-[8px] sm:text-[9px] text-white/85 uppercase tracking-widest font-semibold">Palmolive</div>
+        </div>
+      </div>
+    );
+  }
+  if (b === "roland") {
+    return (
+      <div className="flex items-center gap-1.5 drop-shadow-md">
+        <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+          <circle cx="12" cy="12" r="9" />
+          <circle cx="12" cy="12" r="5" />
+          <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+        </svg>
+        <span className="font-sans font-bold tracking-wider uppercase text-white text-[13px] sm:text-[14px]">
+          Roland
+        </span>
+      </div>
+    );
+  }
+  if (b === "bolt") {
+    return (
+      <div className="flex items-center gap-1 drop-shadow-md">
+        <svg className="w-3.5 h-3.5 text-brand-lime fill-current" viewBox="0 0 24 24">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+        </svg>
+        <span className="font-sans font-black italic tracking-tighter uppercase text-white text-[16px]">
+          BOLT
+        </span>
+      </div>
+    );
+  }
+  if (b === "nasdaq") {
+    return (
+      <span className="font-mono font-bold tracking-widest uppercase text-white text-[12px] sm:text-[13px] drop-shadow-md">
+        NASDAQ
+      </span>
+    );
+  }
+  if (b === "soothe") {
+    return (
+      <span className="font-serif italic font-medium text-white text-[16px] sm:text-[18px] drop-shadow-md">
+        Soothe
+      </span>
+    );
+  }
+  if (b === "otto") {
+    return (
+      <span className="font-sans font-black tracking-tight text-white text-[16px] sm:text-[17px] drop-shadow-md">
+        otto
+      </span>
+    );
+  }
+  if (b === "collabera") {
+    return (
+      <span className="font-sans font-bold tracking-tight text-white text-[14px] sm:text-[15px] drop-shadow-md">
+        Collabera
+      </span>
+    );
+  }
+  if (b === "baggy") {
+    return (
+      <span className="font-sans font-black uppercase tracking-tight text-white text-[14px] sm:text-[15px] drop-shadow-md">
+        BAGGY™
+      </span>
+    );
+  }
+  if (b === "microsoft") {
+    return (
+      <div className="flex items-center gap-1.5 drop-shadow-md">
+        <div className="grid grid-cols-2 gap-0.5 w-3 h-3">
+          <span className="bg-[#f25022]" />
+          <span className="bg-[#7fba00]" />
+          <span className="bg-[#00a4ef]" />
+          <span className="bg-[#ffb900]" />
+        </div>
+        <span className="font-sans font-semibold tracking-tight text-white text-[12px] sm:text-[13px]">
+          Microsoft
+        </span>
+      </div>
+    );
+  }
+  return (
+    <span className="font-sans font-bold tracking-tight text-white text-[14px] sm:text-[15px] drop-shadow-md">
+      {brand}
+    </span>
+  );
+}
 
 function LoopColumn({
   direction,
@@ -551,20 +656,18 @@ function LoopRow({
 function RowTile({ src, srcset, brand, ratio }: Tile) {
   const aspect = ratio === "3/4" ? "aspect-[3/4]" : ratio === "4/5" ? "aspect-[4/5]" : "aspect-square";
   return (
-    <div className={`group relative h-40 sm:h-48 ${aspect} shrink-0 overflow-hidden rounded-xl bg-white/5 ring-1 ring-white/10 shadow-none hover:ring-white/25 transition-all duration-300`}>
+    <div className={`group relative h-40 sm:h-48 ${aspect} shrink-0 overflow-hidden rounded-2xl bg-white/5 ring-1 ring-white/10 shadow-md hover:ring-white/25 transition-all duration-300`}>
       <img
         src={src}
         srcSet={srcset || undefined}
-        sizes="40vw"
+        sizes="50vw"
         alt={brand}
         loading="lazy"
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40 opacity-80" />
-      <div className="absolute inset-0 flex items-start p-4">
-        <span className="font-sans font-semibold tracking-tight text-white text-[15px]">
-          {brand}
-        </span>
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/30" />
+      <div className="absolute inset-x-0 top-0 flex items-start justify-start p-3.5 sm:p-4">
+        <BrandLogo brand={brand} />
       </div>
     </div>
   );
@@ -574,7 +677,7 @@ function RowTile({ src, srcset, brand, ratio }: Tile) {
 function GalleryTile({ src, srcset, brand, ratio }: Tile) {
   const aspect = ratio === "3/4" ? "aspect-[3/4]" : ratio === "4/5" ? "aspect-[4/5]" : "aspect-square";
   return (
-    <div className={`group relative ${aspect} overflow-hidden rounded-xl bg-white/5 ring-1 ring-white/10 hover:ring-white/30 transition-all duration-300 shadow-none`}>
+    <div className={`group relative ${aspect} overflow-hidden rounded-2xl bg-white/5 ring-1 ring-white/10 hover:ring-white/30 transition-all duration-300 shadow-none`}>
       <img
         src={src}
         srcSet={srcset || undefined}
@@ -584,12 +687,10 @@ function GalleryTile({ src, srcset, brand, ratio }: Tile) {
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
       />
       {/* Subtle dark wash for logo legibility */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/30 opacity-70 group-hover:opacity-60 transition-opacity" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-transparent to-black/30 opacity-70 group-hover:opacity-60 transition-opacity" />
       {/* Brand wordmark */}
-      <div className="absolute inset-0 flex items-start p-3.5 md:p-4">
-        <span className="font-sans font-bold tracking-tight text-white text-[14px] md:text-[16px]">
-          {brand}
-        </span>
+      <div className="absolute inset-x-0 top-0 flex items-start justify-start p-3.5 md:p-4">
+        <BrandLogo brand={brand} />
       </div>
     </div>
   );
