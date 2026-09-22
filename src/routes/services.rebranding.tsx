@@ -3,7 +3,7 @@ import { useState } from "react";
 import { openBookDemo } from "@/components/site/BookDemoModal";
 import { caseStudies } from "@/data/caseStudies";
 
-import webHeroBg from "@/assets/web-design-hero.jpg";
+import rebrandingHeroBg from "@/assets/rebranding-hero-real.jpg";
 import chipLogo from "@/assets/chip-logo.png";
 import chipBrandDev from "@/assets/chip-brand-dev.png";
 import chipRebranding from "@/assets/chip-rebranding.png";
@@ -11,278 +11,203 @@ import chipBrandDesign from "@/assets/chip-brand-design.png";
 import chipGuidelines from "@/assets/chip-guidelines.png";
 import chipMessaging from "@/assets/chip-messaging.png";
 
-export const Route = createFileRoute("/services/web-design")({
+export const Route = createFileRoute("/services/rebranding")({
   head: () => ({
     meta: [
-      { title: "Web Design & Development — Sites Built to Grow With Your Brand | BRNND" },
+      { title: "Rebranding Services — Modernize Without Losing Equity | BRNND" },
       {
         name: "description",
         content:
-          "BRNND designs and engineers custom marketing websites, high-converting landing pages, and headless e-commerce platforms with editorial aesthetics and sub-second performance.",
+          "BRNND helps mature companies and scaling innovators overhaul outdated identities, unify fragmented design systems, and execute high-impact market rollouts without losing brand equity.",
       },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "BRNND" },
-      { property: "og:title", content: "Web Design & Development — BRNND" },
+      { property: "og:title", content: "Rebranding Services — Modernize Without Losing Equity | BRNND" },
       {
         property: "og:description",
         content:
-          "High-performing web designs built to grow with your brand. Custom art-direction, sub-second Core Web Vitals, and intuitive CMS authoring.",
+          "Transform legacy brands into unmistakable category leaders with disciplined positioning, refined visual systems, and seamless migration.",
       },
-      { property: "og:url", content: "https://brnnd.com/services/web-design" },
+      { property: "og:url", content: "https://brnnd.com/services/rebranding" },
       { property: "og:image", content: "https://brnnd.com/og-image.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Web Design & Development — BRNND" },
+      { name: "twitter:title", content: "Rebranding Services — BRNND" },
       {
         name: "twitter:description",
-        content: "Custom marketing websites and digital experiences engineered to convert.",
+        content: "Modernize your brand without losing customer equity or operational momentum.",
       },
       { name: "twitter:image", content: "https://brnnd.com/og-image.jpg" },
     ],
-    links: [{ rel: "canonical", href: "https://brnnd.com/services/web-design" }],
+    links: [{ rel: "canonical", href: "https://brnnd.com/services/rebranding" }],
   }),
-  component: WebDesignServicesPage,
+  component: RebrandingServicesPage,
 });
 
 const tickerChips = [
-  { label: "Marketing websites", thumb: chipBrandDesign, to: "/services/web-design" },
-  { label: "Headless commerce", thumb: chipLogo, to: "/services/web-design" },
-  { label: "Landing pages & CRO", thumb: chipBrandDev, to: "/services/web-design" },
-  { label: "Design system code sync", thumb: chipGuidelines, to: "/services/brand-guidelines" },
-  { label: "Figma-to-React builds", thumb: chipRebranding, to: "/services/web-design" },
-  { label: "Interactive motion & 3D", thumb: chipMessaging, to: "/services/web-design" },
-  { label: "CMS architecture", thumb: chipGuidelines, to: "/services/web-design" },
-];
-
-const roiMetrics = [
-  { value: "98+", label: "Lighthouse Performance", sub: "Green Core Web Vitals on mobile and desktop." },
-  { value: "< 1.2s", label: "Largest Contentful Paint", sub: "Sub-second load times that keep bounce rates under 25%." },
-  { value: "+74%", label: "Average Conversion Lift", sub: "Art-directed layouts engineered for clear user journeys." },
-  { value: "6 Wks", label: "Kickoff to Production", sub: "Fast sprints with direct access to senior design engineers." },
+  { label: "Brand equity audit", thumb: chipRebranding },
+  { label: "Identity refresh", thumb: chipLogo },
+  { label: "Logo modernization", thumb: chipBrandDev },
+  { label: "Design system migration", thumb: chipBrandDesign },
+  { label: "Living brand guidelines", thumb: chipGuidelines },
+  { label: "Verbal identity reset", thumb: chipMessaging },
+  { label: "Multi-channel rollout", thumb: chipRebranding },
 ];
 
 const capabilities = [
   {
     num: "01",
-    title: "Art-Directed Marketing Websites",
-    desc: "We ditch cookie-cutter web templates. Every page is bespoke art-directed to reflect your elevated brand identity with high-converting storytelling and editorial typography.",
-    deliverables: ["Custom Desktop & Mobile Layouts", "Editorial Art Direction", "Interactive Component Systems", "Multi-Language Localization"],
+    title: "Brand Equity & Market Audit",
+    desc: "Diagnose what must stay and what must evolve. We dissect customer recall, competitive crowding, and visual legacy to preserve core customer trust while clearing out dead weight.",
+    deliverables: ["Visual Equity Mapping", "Customer Perception Teardowns", "Competitor Differentiation Matrix", "Risk & Migration Roadmap"],
   },
   {
     num: "02",
-    title: "High-Intent Landing Pages & CRO",
-    desc: "Pages engineered to convert cold ad traffic into pipeline. Designed with single-minded visual hierarchy, social proof placements, and friction-free lead capture forms.",
-    deliverables: ["A/B Testing Funnel Architecture", "High-Converting Hero Variations", "Lead Generation Flow Optimization", "Analytics & Heatmap Integration"],
+    title: "Identity Modernization & Logo Evolution",
+    desc: "Refining logos, monograms, and brandmarks so they retain heritage while operating flawlessly on 16px mobile viewports, outdoor billboards, and high-DPI displays.",
+    deliverables: ["Evolved Primary & Secondary Marks", "Modernized Typographic System", "Refreshed Color Harmonization", "Vector Asset Master Suite"],
   },
   {
     num: "03",
-    title: "Headless Commerce & DTC Stores",
-    desc: "Custom Shopify, Hydrogen, or headless commerce storefronts engineered for fast unboxing experiences, instantaneous page loads, and mobile checkout optimization.",
-    deliverables: ["Custom Shopify Theme Architecture", "Headless Cart & Checkout Flows", "Dynamic Product Filtering & Search", "Subscription & Upsell System"],
+    title: "Design System Migration & Tokens",
+    desc: "Translating your new brand language into scalable Figma token architecture and CSS design tokens so product and engineering teams can adopt the change in days, not months.",
+    deliverables: ["Multi-Brand Design Tokens", "Component Library Alignment", "Figma Auto-Layout Master Files", "Dark & Light Mode Specs"],
   },
   {
     num: "04",
-    title: "Modern CMS & Self-Serve Authoring",
-    desc: "Your marketing team shouldn't have to submit Jira tickets to change a headline. We construct structured, component-driven CMS workflows in Sanity, Webflow, or Contentful.",
-    deliverables: ["Visual Component Page Builders", "Structured Content Schemas", "Zero-Code Marketing Publishing", "Automated Image CDN Optimization"],
+    title: "Tone of Voice & Narrative Reset",
+    desc: "Recalibrate the words your brand speaks. We realign value propositions, elevator narratives, headline frameworks, and customer-facing messaging to match your company's new tier of maturity.",
+    deliverables: ["Repositioning Narrative", "Core Messaging Matrix", "Executive Pitch Framework", "Editorial & Voice Playbook"],
   },
   {
     num: "05",
-    title: "Creative Motion & Micro-Interactions",
-    desc: "Tactile micro-animations, scroll-driven interactive narratives, and subtle canvas physics using Framer Motion that elevate perceived quality without hurting performance.",
-    deliverables: ["Scroll-Triggered Sequences", "Interactive Hover States & Physics", "Smooth Page Transitions", "Reduced-Motion Accessibility Mode"],
+    title: "Collateral & Touchpoint Overhaul",
+    desc: "Systematic redesign of customer-facing touchpoints—from enterprise sales decks, email systems, and marketing landing pages to packaging, apparel, and environmental signage.",
+    deliverables: ["Enterprise Deck Templates", "Email & Social Rollout Kits", "Marketing Site Architecture", "Physical Collateral Specs"],
   },
   {
     num: "06",
-    title: "Technical SEO & Core Web Vitals",
-    desc: "Speed is a feature and an SEO ranking factor. We guarantee pristine semantics, zero layout shift (CLS), structured JSON-LD schemas, and 95+ mobile performance scores.",
-    deliverables: ["Zero-CLS Layout Architecture", "Automated Dynamic Open Graph Previews", "Rich Snippet & Schema JSON-LD", "Full WCAG AA Accessibility Audit"],
-  },
-];
-
-const techStackModules = [
-  {
-    id: "frontend",
-    label: "Frontend & Architecture",
-    tag: "Core Engineering",
-    title: "Modern Jamstack with Sub-Second Edge Delivery",
-    desc: "We build with modern frameworks like Next.js, React, Astro, and TanStack Start deployed on Vercel Edge networks with static pre-rendering and dynamic server capabilities.",
-    specPreview: {
-      type: "tech",
-      pills: ["Next.js / React", "TanStack Router", "Astro SSG", "Vercel Edge Network", "Sub-Second TTFB", "Zero Cold-Starts"],
-      codeSnippet: `// Example: Automated ISR & Edge Caching
-export const Route = createFileRoute('/services/web-design')({
-  loader: async () => fetchPageData({ cache: 'force-cache' }),
-  head: () => ({
-    meta: [{ title: 'Sub-Second Edge Rendering' }]
-  })
-});`,
-    },
-  },
-  {
-    id: "cms",
-    label: "CMS & Authoring",
-    tag: "Marketing Speed",
-    title: "Content Systems Marketers Actually Love",
-    desc: "We configure modular visual block architectures in Sanity, Webflow, or Contentful. Marketers compose new landing pages in minutes using pre-tested brand blocks.",
-    specPreview: {
-      type: "cms",
-      pills: ["Sanity Studio v3", "Webflow Enterprise", "Contentful Composable", "Instant Preview Mode", "Role-Based Permissions"],
-      codeSnippet: `// Composable Block Schema
-export default defineType({
-  name: 'page',
-  type: 'document',
-  fields: [
-    defineField({ name: 'hero', type: 'editorialHero' }),
-    defineField({ name: 'modules', type: 'array', of: [{ type: 'featureGrid' }, { type: 'roiBar' }] })
-  ]
-});`,
-    },
-  },
-  {
-    id: "motion",
-    label: "Motion & UI",
-    tag: "Sensory Polish",
-    title: "60 FPS Micro-Interactions Without Performance Penalties",
-    desc: "Utilizing hardware-accelerated CSS and Framer Motion, our digital experiences respond fluidly to customer gestures while respecting prefers-reduced-motion preferences.",
-    specPreview: {
-      type: "motion",
-      pills: ["Framer Motion", "Lenis Smooth Scroll", "CSS Hardware Transforms", "WCAG Reduced Motion", "Dynamic SVG Physics"],
-      codeSnippet: `// Hardware-Accelerated Micro-Interaction
-<motion.div
-  whileHover={{ scale: 1.02 }}
-  whileTap={{ scale: 0.98 }}
-  transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-  className="rounded-full bg-[#C7F284] text-black"
-/>`,
-    },
+    title: "Internal & External Launch Strategy",
+    desc: "A rebrand is won or lost in adoption. We build internal launch kits that energize employees first, followed by orchestrated press, digital, and social reveals that excite customers.",
+    deliverables: ["Employee Brand Town Hall Kits", "Public Announcement Playbook", "Social Reveal Asset Suite", "Transition FAQs for Customers"],
   },
 ];
 
 const processSteps = [
   {
     step: "01",
-    phase: "Information Architecture & Wireframes",
-    duration: "Week 1",
-    desc: "Customer journey mapping, content hierarchy teardown, and low-fidelity spatial wireframes to establish the conversion path before aesthetics.",
+    phase: "Equity Audit & Diagnostic",
+    duration: "Weeks 1–2",
+    desc: "Comprehensive review of legacy assets, customer perception, and competitive saturation to establish the precise boundary between heritage and innovation.",
   },
   {
     step: "02",
-    phase: "Creative Art Direction & UI Exploration",
-    duration: "Weeks 2–3",
-    desc: "Developing bespoke typography pairings, immersive dark/light palettes, and high-fidelity desktop and mobile viewports in Figma.",
+    phase: "Repositioning & Narrative Shift",
+    duration: "Weeks 3–4",
+    desc: "Clarifying your elevated market position and establishing the foundational verbal narrative before opening design exploration.",
   },
   {
     step: "03",
-    phase: "Component Engineering & Design System",
-    duration: "Weeks 3–4",
-    desc: "Codifying modular React components with Tailwind CSS tokens and crafting responsive micro-animations.",
+    phase: "Visual Territory Evolution",
+    duration: "Weeks 5–6",
+    desc: "Presenting 2–3 distinct evolution routes ranging from subtle, disciplined refinement to bold, category-defining reimagination.",
   },
   {
     step: "04",
-    phase: "CMS Integration & Content Ingestion",
-    duration: "Weeks 4–5",
-    desc: "Connecting Sanity or Webflow, building the modular editor workspace, and migrating all client content, images, and case studies.",
+    phase: "System Architecture & Tokens",
+    duration: "Weeks 7–8",
+    desc: "Constructing the complete visual language, responsive logo lockups, digital guidelines, and Figma design system libraries.",
   },
   {
     step: "05",
-    phase: "QA, Core Web Vitals & Launch",
-    duration: "Week 6",
-    desc: "Rigorous cross-browser testing across Safari, Chrome, and iOS devices, Lighthouse optimization, and zero-downtime DNS deployment.",
+    phase: "Migration & Rollout Toolkit",
+    duration: "Weeks 9–10",
+    desc: "Producing master production exports, employee brand toolkits, website asset packages, and coordinated customer launch collateral.",
   },
 ];
 
 const comparisonRows = [
-  { metric: "Design Art Direction", brnnd: "100% custom, bespoke editorial typography", agency: "Cookie-cutter templates & frameworks", inHouse: "Iterative tweaks to old code" },
-  { metric: "Core Web Vitals Guarantee", brnnd: "98+ mobile Lighthouse score guaranteed", agency: "Untested (frequently fails LCP/CLS)", inHouse: "Varies wildly by sprint" },
-  { metric: "CMS Autonomy for Marketing", brnnd: "Drag-and-drop modular blocks (zero dev reliance)", agency: "Clunky WordPress / complex code", inHouse: "Engineering backlog bottleneck" },
-  { metric: "Development Speed", brnnd: "6-week production sprint to live launch", agency: "4–8 months of committee approvals", inHouse: "Deprioritized for product features" },
-  { metric: "Design System Alignment", brnnd: "Figma tokens mapped 1-to-1 with React CSS", agency: "Static PDF mockups handed over", inHouse: "Design debt accumulates" },
-  { metric: "IP & Repository Ownership", brnnd: "100% client code & asset ownership", agency: "Proprietary CMS lock-in", inHouse: "Internal" },
+  { metric: "Time to complete rebrand", brnnd: "6–10 focused weeks", agency: "6–12 months", inHouse: "12–18+ months" },
+  { metric: "Brand equity preservation", brnnd: "Data-backed equity audit", agency: "Often discarded for 'art'", inHouse: "Hard to reach consensus" },
+  { metric: "Design token & Figma integration", brnnd: "Day-one Figma & CSS tokens", agency: "Static PDF deck only", inHouse: "Scattered between teams" },
+  { metric: "Working partners", brnnd: "Direct with senior brand directors", agency: "Account managers & juniors", inHouse: "Stretched internal designers" },
+  { metric: "Pricing model", brnnd: "Transparent, flat project sprint", agency: "$150k–$400k+ with billable hours", inHouse: "High ongoing salary overhead" },
+  { metric: "Source IP & trademark ownership", brnnd: "100% client ownership", agency: "Restricted license terms", inHouse: "Internal" },
 ];
 
 const faqs = [
   {
-    q: "How long does a complete custom marketing website take to launch?",
-    a: "Our typical full-stack marketing website build takes 6 focused weeks from initial kickoff to live DNS rollout. For urgent product launches or single high-converting landing pages, sprint tracks can ship in 2 to 3 weeks.",
+    q: "How do we know if we need a brand refresh or a full rebrand?",
+    a: "A brand refresh is ideal when your core reputation and customer recall remain strong, but your visual identity feels dated or struggles across digital touchpoints. A full rebrand is required when your business model has shifted, you are targeting higher-tier enterprise contracts, or your existing name and narrative limit growth.",
   },
   {
-    q: "Which CMS do you recommend for our marketing team?",
-    a: "We recommend Sanity Studio for modern engineering teams who want complete content flexibility, or Webflow Enterprise for marketing teams who prefer visual canvas editing. Both give non-technical team members complete freedom to launch new pages without calling developers.",
+    q: "How do you preserve customer recognition and brand equity?",
+    a: "We conduct a structured Brand Equity Audit during Week 1. We identify which visual cues—such as a distinctive signature color, silhouette, or mnemonic mark—carry the highest recognition among your customers, and engineer the evolved system around those foundational anchors.",
   },
   {
-    q: "Do you use templates or build custom code from scratch?",
-    a: "Every BRNND website is built completely bespoke. We start from a clean canvas in Figma, tailoring the layout, interactions, and type hierarchy to your brand. The code is written in clean, modern React/Tailwind with zero third-party plugin bloat.",
+    q: "How long does a complete company rebrand take?",
+    a: "Our standard end-to-end rebranding sprints run between 6 and 10 focused weeks. This covers everything from the initial diagnostic and strategic repositioning to final vector master assets, Figma design systems, and launch kits.",
   },
   {
-    q: "How do you guarantee Core Web Vitals and 95+ Lighthouse scores?",
-    a: "We enforce strict performance budgets during development: modern image formats (WebP/AVIF) with explicit aspect ratios to eliminate CLS, server-side static pre-rendering, lazy-loading below-the-fold media, and self-hosting variable web fonts with preload headers.",
+    q: "How do we handle internal employee adoption?",
+    a: "Employees are the primary ambassadors of your rebrand. We supply an Internal Town Hall Kit, employee brand decks, email signature templates, and clear 'Why We Changed' documentation to ensure your entire team embraces the new identity before the public reveal.",
   },
   {
-    q: "Do we own all final Figma designs, source code, and assets?",
-    a: "Yes. 100% of all Figma files, GitHub repositories, CMS schemas, and media assets belong entirely to your company upon final delivery.",
+    q: "Do we own all final assets and vector source files?",
+    a: "Yes. Upon completion, 100% of all intellectual property, source Figma libraries, font pairing guidance, vector SVG/EPS exports, and living guidelines belong entirely to your company.",
   },
 ];
 
-function WebDesignServicesPage() {
+function RebrandingServicesPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [activeTab, setActiveTab] = useState<string>("frontend");
   const selectedCaseStudies = caseStudies.slice(0, 3);
-
-  const currentTab = techStackModules.find((t) => t.id === activeTab) || techStackModules[0];
 
   return (
     <div className="bg-background text-foreground selection:bg-brand-lime selection:text-black min-h-screen">
       {/* ─────────────────────────────────────────────────────────────
-          1. HERO SECTION (Editorial format matching Superside web-design)
+          1. HERO SECTION (Identical high-end editorial format)
           ───────────────────────────────────────────────────────────── */}
       <section className="relative min-h-[90vh] md:h-screen md:min-h-[640px] md:max-h-[1020px] flex flex-col justify-between overflow-hidden bg-stone-950">
-        {/* Real Laptop on Velvet Sofa Web Design Photography */}
+        {/* Real Rebranding Design System & Brand Asset Photography */}
         <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
           <img
-            src={webHeroBg}
-            alt="Web Design and Digital Experiences"
-            className="w-full h-full object-cover object-right md:object-[68%_center]"
+            src={rebrandingHeroBg}
+            alt="Rebranding and Design Systems in Action"
+            className="w-full h-full object-cover object-right md:object-[65%_center]"
           />
-          {/* Subtle directional vignette on the left for crisp white typography */}
-          <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-950/80 to-transparent w-full md:w-[60%]" />
+          {/* Subtle directional vignette from the left so pure white typography is pristine */}
+          <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-950/70 to-transparent w-full md:w-[58%]" />
         </div>
 
         {/* Hero Text Content (Positioned cleanly on the left side) */}
         <div className="relative z-10 pt-28 sm:pt-32 md:pt-36 pb-8 pl-6 sm:pl-10 md:pl-14 lg:pl-16 xl:pl-20 pr-4 max-w-[750px] mr-auto">
           <p className="text-xs sm:text-[13px] font-semibold uppercase tracking-[0.25em] text-white/90 mb-4 font-mono">
-            WEB DESIGN & DEVELOPMENT
+            REBRANDING SERVICES
           </p>
           <h1 className="text-3xl sm:text-4xl md:text-[2.65rem] lg:text-[3rem] xl:text-[3.25rem] font-sans font-bold text-white leading-[1.12] tracking-tight">
             <span className="block whitespace-normal md:whitespace-nowrap">
-              High-performing websites{" "}
+              Modernize your brand{" "}
               <span className="font-serif italic font-normal text-[calc(100%+3px)]">
-                built to
+                without
               </span>
             </span>
             <span className="block whitespace-normal md:whitespace-nowrap mt-1">
               <span className="font-serif italic font-normal text-[calc(100%+3px)]">
-                grow with
+                losing equity,
               </span>{" "}
-              your brand
+              engineered to scale
             </span>
           </h1>
           <p className="mt-5 text-sm sm:text-base text-white/90 max-w-[460px] leading-relaxed font-sans font-normal">
-            BRNND designs and engineers custom marketing websites, high-converting landing pages, and headless digital experiences that combine editorial aesthetics with sub-second performance.
+            BRNND helps market leaders and high-growth brands overhaul outdated identities, unify fractured design systems, and launch bold new chapters without disrupting customer loyalty.
           </p>
 
-          <div className="mt-7 flex items-center gap-4 flex-wrap">
+          <div className="mt-7">
             <button
               onClick={openBookDemo}
               className="bg-[#C7F284] hover:bg-[#b8eb6a] text-stone-950 font-sans font-semibold text-sm sm:text-base px-7 py-3.5 rounded-full transition-all hover:scale-[1.02] active:scale-[0.98] shadow-none"
             >
               Book a demo
             </button>
-            <Link
-              to="/work"
-              className="border border-white/30 hover:border-white text-white font-sans font-semibold text-sm sm:text-base px-6 py-3.5 rounded-full transition-all hover:bg-white/10"
-            >
-              View live web builds →
-            </Link>
           </div>
         </div>
 
@@ -292,9 +217,8 @@ function WebDesignServicesPage() {
         <div className="relative z-20 w-full bg-white/10 dark:bg-black/30 backdrop-blur-md border-t border-white/20 py-3 overflow-hidden shrink-0">
           <div className="flex items-center gap-3 animate-[glassy-marquee_30s_linear_infinite] whitespace-nowrap will-change-transform w-max px-4">
             {[...tickerChips, ...tickerChips, ...tickerChips, ...tickerChips].map((c, i) => (
-              <Link
+              <div
                 key={`${c.label}-${i}`}
-                to={c.to}
                 className="flex items-center gap-3 bg-white/95 hover:bg-white text-stone-900 border border-stone-200/80 rounded-xl p-1.5 pr-4 shrink-0 transition-all cursor-pointer shadow-sm group"
               >
                 <div className="w-9 h-7 rounded-lg overflow-hidden bg-stone-100 flex items-center justify-center shrink-0 border border-stone-200/60">
@@ -308,29 +232,6 @@ function WebDesignServicesPage() {
                 <span className="text-xs sm:text-[13px] font-semibold tracking-tight text-stone-900">
                   {c.label}
                 </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          3. ROI & PERFORMANCE METRIC BAR
-          ───────────────────────────────────────────────────────────── */}
-      <section className="py-16 border-b border-border bg-stone-50 dark:bg-stone-950/60">
-        <div className="container-edge">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-            {roiMetrics.map((m, idx) => (
-              <div key={idx} className="border-l-2 border-brand-lime pl-5">
-                <div className="text-3xl sm:text-4xl font-sans font-bold text-foreground tracking-tight">
-                  {m.value}
-                </div>
-                <div className="text-sm font-sans font-semibold text-foreground mt-1">
-                  {m.label}
-                </div>
-                <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                  {m.sub}
-                </div>
               </div>
             ))}
           </div>
@@ -338,89 +239,19 @@ function WebDesignServicesPage() {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          4. INTERACTIVE TECH STACK & ARCHITECTURE EXPLORER
+          3. CAPABILITIES GRID (Editorial 6 Pillars)
           ───────────────────────────────────────────────────────────── */}
       <section className="py-24 sm:py-32 border-b border-border">
         <div className="container-edge">
-          <div className="max-w-2xl mb-12">
-            <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground mb-3">
-              Modern Engineering Stack
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-sans font-bold tracking-tight text-foreground">
-              Engineered for speed, autonomy, and zero plugin debt.
-            </h2>
-            <p className="mt-4 text-base text-muted-foreground leading-relaxed">
-              We marry art-directed creative design with cutting-edge headless architecture so marketing teams move fast without depending on engineering sprints.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2 overflow-x-auto pb-4 border-b border-border mb-8">
-            {techStackModules.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-sans font-semibold transition-all whitespace-nowrap ${
-                  activeTab === tab.id
-                    ? "bg-foreground text-background"
-                    : "bg-muted/50 text-muted-foreground hover:text-foreground hover:bg-muted"
-                }`}
-              >
-                <span className="opacity-60 mr-1.5 font-mono text-[11px]">{tab.tag}:</span>
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            <div className="lg:col-span-5">
-              <span className="font-mono text-xs text-brand-lime uppercase tracking-wider">
-                {currentTab.tag}
-              </span>
-              <h3 className="text-2xl font-sans font-bold text-foreground mt-2 mb-4 tracking-tight">
-                {currentTab.title}
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-                {currentTab.desc}
-              </p>
-              <div className="flex flex-wrap gap-2 mb-6">
-                {currentTab.specPreview.pills.map((pill, i) => (
-                  <span
-                    key={i}
-                    className="text-xs font-mono px-3 py-1.5 rounded-md border border-border bg-muted/40 text-foreground"
-                  >
-                    {pill}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="lg:col-span-7 border border-border rounded-xl p-6 bg-card">
-              <div className="flex items-center justify-between text-xs font-mono text-muted-foreground mb-3 pb-2 border-b border-border">
-                <span>Architecture Preview</span>
-                <span className="text-[11px] font-semibold text-brand-lime">Production Ready</span>
-              </div>
-              <pre className="text-xs font-mono text-foreground/80 bg-muted/40 p-4 rounded-lg overflow-x-auto leading-relaxed">
-                {currentTab.specPreview.codeSnippet}
-              </pre>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          5. CAPABILITIES GRID (Editorial 6 Pillars)
-          ───────────────────────────────────────────────────────────── */}
-      <section className="py-24 sm:py-32 border-b border-border bg-stone-50 dark:bg-stone-950/40">
-        <div className="container-edge">
           <div className="max-w-2xl mb-16">
             <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground mb-3">
-              Web Capabilities
+              Capabilities
             </p>
             <h2 className="text-3xl sm:text-4xl font-sans font-bold tracking-tight text-foreground">
-              Everything required to launch an elite digital experience.
+              Everything required to transform a legacy brand into a category leader.
             </h2>
             <p className="mt-4 text-base text-muted-foreground leading-relaxed">
-              We handle the entire journey: from strategy and wireframes to custom art direction, headless frontend code, CMS setup, and DNS deployment.
+              We replace disjointed visual identities with coherent design systems engineered for scale across digital product, physical collateral, and international markets.
             </p>
           </div>
 
@@ -428,7 +259,7 @@ function WebDesignServicesPage() {
             {capabilities.map((cap) => (
               <div
                 key={cap.num}
-                className="border border-border p-8 flex flex-col justify-between hover:border-foreground/40 transition-colors bg-card"
+                className="border border-border p-8 flex flex-col justify-between hover:border-foreground/40 transition-colors bg-card/40"
               >
                 <div>
                   <span className="font-mono text-xs text-muted-foreground">
@@ -444,7 +275,7 @@ function WebDesignServicesPage() {
 
                 <div className="mt-8 pt-6 border-t border-border">
                   <p className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground mb-3">
-                    Deliverables
+                    Key Deliverables
                   </p>
                   <ul className="space-y-2">
                     {cap.deliverables.map((d) => (
@@ -465,19 +296,19 @@ function WebDesignServicesPage() {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          6. SPRINT PROCESS (6 Weeks to Production)
+          4. PROCESS & TIMELINE (Phased Sprint)
           ───────────────────────────────────────────────────────────── */}
-      <section className="py-24 sm:py-32 border-b border-border">
+      <section className="py-24 sm:py-32 border-b border-border bg-stone-50 dark:bg-stone-950/40">
         <div className="container-edge">
           <div className="max-w-2xl mb-16">
             <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground mb-3">
-              The Sprint
+              How We Rebrand
             </p>
             <h2 className="text-3xl sm:text-4xl font-sans font-bold tracking-tight text-foreground">
-              A disciplined 6-week path from kickoff to live deployment.
+              A structured 10-week sprint. No endless committee loops.
             </h2>
             <p className="mt-4 text-base text-muted-foreground leading-relaxed">
-              Traditional web agencies get bogged down in endless status meetings. We ship live staging previews every 72 hours with transparent communication.
+              Traditional rebranding exercises take a year and alienate customers. Our agile sprints lock strategic consensus in weeks and ship production assets rapidly.
             </p>
           </div>
 
@@ -512,17 +343,17 @@ function WebDesignServicesPage() {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          7. SELECTED WEB CASE STUDIES
+          5. SELECTED CASE STUDIES
           ───────────────────────────────────────────────────────────── */}
-      <section className="py-24 sm:py-32 border-b border-border bg-stone-50 dark:bg-stone-950/40">
+      <section className="py-24 sm:py-32 border-b border-border">
         <div className="container-edge">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-16 gap-6">
             <div>
               <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground mb-3">
-                Live Platforms
+                Proven Transformations
               </p>
               <h2 className="text-3xl sm:text-4xl font-sans font-bold tracking-tight text-foreground">
-                Real websites designed and engineered by BRNND.
+                Real brands modernized by BRNND.
               </h2>
             </div>
             <Link
@@ -581,19 +412,19 @@ function WebDesignServicesPage() {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          8. ARCHITECTURAL COMPARISON TABLE (Flat, No Shadows)
+          6. COMPARISON TABLE (Clean, Architectural, No Shadows)
           ───────────────────────────────────────────────────────────── */}
-      <section className="py-24 sm:py-32 border-b border-border">
+      <section className="py-24 sm:py-32 border-b border-border bg-stone-50 dark:bg-stone-950/40">
         <div className="container-edge">
           <div className="max-w-2xl mb-16">
             <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground mb-3">
-              Why BRNND Web
+              Why BRNND
             </p>
             <h2 className="text-3xl sm:text-4xl font-sans font-bold tracking-tight text-foreground">
-              A modern operational model for company websites.
+              A modern operational model for company rebrands.
             </h2>
             <p className="mt-4 text-base text-muted-foreground leading-relaxed">
-              No template drag-and-drop mediocrity and no 9-month agency timelines. We combine high-end creative design with production-grade software engineering.
+              Skip agency bureaucracy and avoid burning out internal designers. We partner directly with executive stakeholders to execute complete rebrands with absolute precision.
             </p>
           </div>
 
@@ -602,13 +433,13 @@ function WebDesignServicesPage() {
               <thead>
                 <tr className="border-b border-border bg-muted/40 font-mono text-xs">
                   <th className="p-4 sm:p-5 text-muted-foreground font-semibold">
-                    Engineering Dimension
+                    Rebranding Dimension
                   </th>
                   <th className="p-4 sm:p-5 text-foreground font-bold bg-foreground/[0.04] border-x border-border">
-                    BRNND Production Web
+                    BRNND
                   </th>
                   <th className="p-4 sm:p-5 text-muted-foreground font-normal">
-                    Traditional Web Agency
+                    Traditional Agency
                   </th>
                   <th className="p-4 sm:p-5 text-muted-foreground font-normal">
                     In-House Team
@@ -645,16 +476,16 @@ function WebDesignServicesPage() {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          9. FREQUENTLY ASKED QUESTIONS
+          7. FREQUENTLY ASKED QUESTIONS
           ───────────────────────────────────────────────────────────── */}
-      <section className="py-24 sm:py-32 border-b border-border bg-stone-50 dark:bg-stone-950/40">
+      <section className="py-24 sm:py-32 border-b border-border">
         <div className="container-edge max-w-4xl">
           <div className="mb-16">
             <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground mb-3">
               FAQ
             </p>
             <h2 className="text-3xl sm:text-4xl font-sans font-bold tracking-tight text-foreground">
-              Everything you need to know about building a site with BRNND.
+              Everything you need to know about rebranding with BRNND.
             </h2>
           </div>
 
@@ -685,31 +516,31 @@ function WebDesignServicesPage() {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          10. BOTTOM CALL TO ACTION
+          8. BOTTOM CALL TO ACTION
           ───────────────────────────────────────────────────────────── */}
       <section className="py-24 sm:py-32 bg-stone-950 text-white">
         <div className="container-edge text-center max-w-3xl">
           <p className="text-xs font-mono uppercase tracking-[0.25em] text-white/70 mb-4">
-            Build Your Flagship Website
+            Start Your Transformation
           </p>
           <h2 className="text-3xl sm:text-5xl font-sans font-bold tracking-tight text-white leading-tight">
-            Ready to build a website that out-converts your competition?
+            Ready to evolve into an unmistakable category leader?
           </h2>
           <p className="mt-6 text-base text-white/70 leading-relaxed max-w-xl mx-auto">
-            Book a 30-minute website teardown session with our senior digital operating partners. We'll review your current Core Web Vitals, conversion bottlenecks, and technical architecture.
+            Book a 30-minute discovery session with our brand operating partners. We'll audit your current visual footprint and outline a clear rebranding roadmap.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <button
               onClick={openBookDemo}
               className="bg-[#C7F284] hover:bg-[#b8eb6a] text-stone-950 font-sans font-semibold text-base px-8 py-4 rounded-full transition-all hover:scale-[1.02] active:scale-[0.98] shadow-none"
             >
-              Book a website review
+              Book a discovery call
             </button>
             <Link
               to="/work"
               className="border border-white/20 hover:border-white text-white font-sans font-semibold text-base px-8 py-4 rounded-full transition-all hover:bg-white/5"
             >
-              Explore live case studies
+              Explore our work
             </Link>
           </div>
         </div>

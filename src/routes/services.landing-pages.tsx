@@ -3,7 +3,7 @@ import { useState } from "react";
 import { openBookDemo } from "@/components/site/BookDemoModal";
 import { caseStudies } from "@/data/caseStudies";
 
-import webHeroBg from "@/assets/web-design-hero.jpg";
+import landingHeroBg from "@/assets/landing-pages-hero.jpg";
 import chipLogo from "@/assets/chip-logo.png";
 import chipBrandDev from "@/assets/chip-brand-dev.png";
 import chipRebranding from "@/assets/chip-rebranding.png";
@@ -11,149 +11,141 @@ import chipBrandDesign from "@/assets/chip-brand-design.png";
 import chipGuidelines from "@/assets/chip-guidelines.png";
 import chipMessaging from "@/assets/chip-messaging.png";
 
-export const Route = createFileRoute("/services/web-design")({
+export const Route = createFileRoute("/services/landing-pages")({
   head: () => ({
     meta: [
-      { title: "Web Design & Development — Sites Built to Grow With Your Brand | BRNND" },
+      { title: "High-Converting Landing Pages & CRO — Ship Fast, Convert Traffic | BRNND" },
       {
         name: "description",
         content:
-          "BRNND designs and engineers custom marketing websites, high-converting landing pages, and headless e-commerce platforms with editorial aesthetics and sub-second performance.",
+          "BRNND designs and engineers high-intent landing pages, paid ad destinations, and continuous conversion rate optimization (CRO) sprints that turn ad clicks into pipeline.",
       },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "BRNND" },
-      { property: "og:title", content: "Web Design & Development — BRNND" },
+      { property: "og:title", content: "High-Converting Landing Pages & CRO | BRNND" },
       {
         property: "og:description",
         content:
-          "High-performing web designs built to grow with your brand. Custom art-direction, sub-second Core Web Vitals, and intuitive CMS authoring.",
+          "Stop wasting ad spend on generic pages. We design custom, sub-second landing pages engineered for maximum return on ad spend.",
       },
-      { property: "og:url", content: "https://brnnd.com/services/web-design" },
+      { property: "og:url", content: "https://brnnd.com/services/landing-pages" },
       { property: "og:image", content: "https://brnnd.com/og-image.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Web Design & Development — BRNND" },
+      { name: "twitter:title", content: "High-Converting Landing Pages & CRO | BRNND" },
       {
         name: "twitter:description",
-        content: "Custom marketing websites and digital experiences engineered to convert.",
+        content: "High-intent landing pages engineered to maximize conversion rates and lower customer acquisition costs.",
       },
       { name: "twitter:image", content: "https://brnnd.com/og-image.jpg" },
     ],
-    links: [{ rel: "canonical", href: "https://brnnd.com/services/web-design" }],
+    links: [{ rel: "canonical", href: "https://brnnd.com/services/landing-pages" }],
   }),
-  component: WebDesignServicesPage,
+  component: LandingPagesServicePage,
 });
 
 const tickerChips = [
-  { label: "Marketing websites", thumb: chipBrandDesign, to: "/services/web-design" },
-  { label: "Headless commerce", thumb: chipLogo, to: "/services/web-design" },
-  { label: "Landing pages & CRO", thumb: chipBrandDev, to: "/services/web-design" },
-  { label: "Design system code sync", thumb: chipGuidelines, to: "/services/brand-guidelines" },
-  { label: "Figma-to-React builds", thumb: chipRebranding, to: "/services/web-design" },
-  { label: "Interactive motion & 3D", thumb: chipMessaging, to: "/services/web-design" },
-  { label: "CMS architecture", thumb: chipGuidelines, to: "/services/web-design" },
+  { label: "Paid ad landing pages", thumb: chipBrandDesign, to: "/services/landing-pages" },
+  { label: "A/B split testing", thumb: chipBrandDev, to: "/services/landing-pages" },
+  { label: "Lead generation funnels", thumb: chipLogo, to: "/services/landing-pages" },
+  { label: "Product launch pages", thumb: chipMessaging, to: "/services/landing-pages" },
+  { label: "Conversion optimization", thumb: chipRebranding, to: "/services/landing-pages" },
+  { label: "Webflow & React builds", thumb: chipGuidelines, to: "/services/web-design" },
+  { label: "Sub-second edge loading", thumb: chipGuidelines, to: "/services/landing-pages" },
 ];
 
 const roiMetrics = [
-  { value: "98+", label: "Lighthouse Performance", sub: "Green Core Web Vitals on mobile and desktop." },
-  { value: "< 1.2s", label: "Largest Contentful Paint", sub: "Sub-second load times that keep bounce rates under 25%." },
-  { value: "+74%", label: "Average Conversion Lift", sub: "Art-directed layouts engineered for clear user journeys." },
-  { value: "6 Wks", label: "Kickoff to Production", sub: "Fast sprints with direct access to senior design engineers." },
+  { value: "+68%", label: "Average Conversion Lift", sub: "Engineered user journeys that eliminate decision fatigue." },
+  { value: "< 1.0s", label: "Page Load Speed", sub: "Sub-second edge delivery stops ad bounce before it starts." },
+  { value: "48 Hrs", label: "Variant Iteration Speed", sub: "Ship and test creative variations without engineering delays." },
+  { value: "3.4x", label: "ROAS Multiplier", sub: "Lower acquisition costs through message-to-audience matching." },
 ];
 
 const capabilities = [
   {
     num: "01",
-    title: "Art-Directed Marketing Websites",
-    desc: "We ditch cookie-cutter web templates. Every page is bespoke art-directed to reflect your elevated brand identity with high-converting storytelling and editorial typography.",
-    deliverables: ["Custom Desktop & Mobile Layouts", "Editorial Art Direction", "Interactive Component Systems", "Multi-Language Localization"],
+    title: "Paid Ad Campaign Landing Pages",
+    desc: "Match your ad copy 1-to-1 with the post-click destination. We design dedicated landing experiences for Google Search, Meta Ads, LinkedIn, and TikTok that eliminate ad-bounce.",
+    deliverables: ["Message-Match Hero Sections", "Segmented Audience Variants", "UTM-Driven Dynamic Content", "Sticky Mobile Action Triggers"],
   },
   {
     num: "02",
-    title: "High-Intent Landing Pages & CRO",
-    desc: "Pages engineered to convert cold ad traffic into pipeline. Designed with single-minded visual hierarchy, social proof placements, and friction-free lead capture forms.",
-    deliverables: ["A/B Testing Funnel Architecture", "High-Converting Hero Variations", "Lead Generation Flow Optimization", "Analytics & Heatmap Integration"],
+    title: "Continuous A/B Split Testing & CRO",
+    desc: "Great landing pages aren't a one-time project; they are living conversion engines. We run systematic multivariate experiments on headlines, social proof, and form steps.",
+    deliverables: ["Hypothesis & Experiment Roadmap", "Headline & Hook Variations", "Heatmap & Click-Path Audits", "Statistical Significance Reporting"],
   },
   {
     num: "03",
-    title: "Headless Commerce & DTC Stores",
-    desc: "Custom Shopify, Hydrogen, or headless commerce storefronts engineered for fast unboxing experiences, instantaneous page loads, and mobile checkout optimization.",
-    deliverables: ["Custom Shopify Theme Architecture", "Headless Cart & Checkout Flows", "Dynamic Product Filtering & Search", "Subscription & Upsell System"],
+    title: "Product Launch & Waitlist Funnels",
+    desc: "Build massive anticipation before opening the doors. We architect viral waitlist pages with referral mechanics, milestone unlock tiers, and VIP early-access onboarding.",
+    deliverables: ["Viral Referral Loop Setup", "Animated Countdown Timers", "Early Access Queue System", "Automated Welcome Flow Sync"],
   },
   {
     num: "04",
-    title: "Modern CMS & Self-Serve Authoring",
-    desc: "Your marketing team shouldn't have to submit Jira tickets to change a headline. We construct structured, component-driven CMS workflows in Sanity, Webflow, or Contentful.",
-    deliverables: ["Visual Component Page Builders", "Structured Content Schemas", "Zero-Code Marketing Publishing", "Automated Image CDN Optimization"],
+    title: "Event & Webinar Registration Hubs",
+    desc: "High-intent event landing pages that drive qualified attendees. We structure speaker authority showcases, agenda breakdowns, and frictionless one-click registration.",
+    deliverables: ["Frictionless RSVP Forms", "Calendar Auto-Add (.ics / Google)", "Speaker & Sponsor Grids", "Automated Reminder Webhooks"],
   },
   {
     num: "05",
-    title: "Creative Motion & Micro-Interactions",
-    desc: "Tactile micro-animations, scroll-driven interactive narratives, and subtle canvas physics using Framer Motion that elevate perceived quality without hurting performance.",
-    deliverables: ["Scroll-Triggered Sequences", "Interactive Hover States & Physics", "Smooth Page Transitions", "Reduced-Motion Accessibility Mode"],
+    title: "Headless Webflow & React Fast-Shipping",
+    desc: "Marketing teams need to ship tomorrow, not next quarter. We build modular, reusable component systems in Webflow or React so new campaigns launch in hours.",
+    deliverables: ["Modular Drag-and-Drop Blocks", "Zero-Code Marketing Controls", "Clean Semantic Frontend Code", "Pre-Flighted QA Checklist"],
   },
   {
     num: "06",
-    title: "Technical SEO & Core Web Vitals",
-    desc: "Speed is a feature and an SEO ranking factor. We guarantee pristine semantics, zero layout shift (CLS), structured JSON-LD schemas, and 95+ mobile performance scores.",
-    deliverables: ["Zero-CLS Layout Architecture", "Automated Dynamic Open Graph Previews", "Rich Snippet & Schema JSON-LD", "Full WCAG AA Accessibility Audit"],
+    title: "Attribution & Server-Side Tracking",
+    desc: "Data you can trust. We configure server-side tracking, Meta Conversions API (CAPI), Google Analytics 4, and privacy-compliant consent banners with zero signal loss.",
+    deliverables: ["Meta CAPI & Pixel Setup", "GA4 Custom Event Triggers", "Heatmap & Session Replay Config", "CRM & Webhook Form Integrations"],
   },
 ];
 
-const techStackModules = [
+const conversionModules = [
   {
-    id: "frontend",
-    label: "Frontend & Architecture",
-    tag: "Core Engineering",
-    title: "Modern Jamstack with Sub-Second Edge Delivery",
-    desc: "We build with modern frameworks like Next.js, React, Astro, and TanStack Start deployed on Vercel Edge networks with static pre-rendering and dynamic server capabilities.",
+    id: "hero",
+    label: "Above-the-Fold Hook",
+    tag: "First 3 Seconds",
+    title: "Instant Clarity That Stops the Scroll",
+    desc: "Visitors decide whether to stay in under 3 seconds. We articulate your core value proposition in one clean headline, reinforced by immediate social proof and a single primary action.",
     specPreview: {
-      type: "tech",
-      pills: ["Next.js / React", "TanStack Router", "Astro SSG", "Vercel Edge Network", "Sub-Second TTFB", "Zero Cold-Starts"],
-      codeSnippet: `// Example: Automated ISR & Edge Caching
-export const Route = createFileRoute('/services/web-design')({
-  loader: async () => fetchPageData({ cache: 'force-cache' }),
-  head: () => ({
-    meta: [{ title: 'Sub-Second Edge Rendering' }]
-  })
-});`,
+      type: "hero",
+      items: [
+        { feature: "Bespoke Value Headline", explanation: "Clear statement of the concrete outcome your customer gets, not abstract corporate jargon." },
+        { feature: "Visual Proof Asset", explanation: "High-fidelity interactive screenshot, 3D render, or live product demo that confirms credibility immediately." },
+        { feature: "Single Frictionless CTA", explanation: "High-contrast lime action pill with zero competing secondary links or distraction menus." },
+        { feature: "Tiered Social Proof Row", explanation: "Recognizable customer logos and verified ratings placed directly within the initial viewport." },
+      ],
     },
   },
   {
-    id: "cms",
-    label: "CMS & Authoring",
-    tag: "Marketing Speed",
-    title: "Content Systems Marketers Actually Love",
-    desc: "We configure modular visual block architectures in Sanity, Webflow, or Contentful. Marketers compose new landing pages in minutes using pre-tested brand blocks.",
+    id: "forms",
+    label: "Frictionless Capture",
+    tag: "Form UX",
+    title: "Multi-Step Psychology That Multiplies Leads",
+    desc: "Long 10-field forms scare away prospects. We break lead capture into progressive multi-step micro-commitments with auto-complete and instant calendar integration.",
     specPreview: {
-      type: "cms",
-      pills: ["Sanity Studio v3", "Webflow Enterprise", "Contentful Composable", "Instant Preview Mode", "Role-Based Permissions"],
-      codeSnippet: `// Composable Block Schema
-export default defineType({
-  name: 'page',
-  type: 'document',
-  fields: [
-    defineField({ name: 'hero', type: 'editorialHero' }),
-    defineField({ name: 'modules', type: 'array', of: [{ type: 'featureGrid' }, { type: 'roiBar' }] })
-  ]
-});`,
+      type: "forms",
+      items: [
+        { feature: "Progressive Disclosure", explanation: "Start with low-friction questions (e.g. company size) before asking for email and phone." },
+        { feature: "Automated Data Enrichment", explanation: "Lookup work email domain to pre-fill company name, industry, and location automatically." },
+        { feature: "Direct Calendar Booking", explanation: "Qualified enterprise leads book a demo slot directly on the thank-you screen without back-and-forth emails." },
+        { feature: "Micro-Copy Assurance", explanation: "'No credit card required' and 'Instant 2-minute setup' reassuring micro-copy placed next to the submit button." },
+      ],
     },
   },
   {
-    id: "motion",
-    label: "Motion & UI",
-    tag: "Sensory Polish",
-    title: "60 FPS Micro-Interactions Without Performance Penalties",
-    desc: "Utilizing hardware-accelerated CSS and Framer Motion, our digital experiences respond fluidly to customer gestures while respecting prefers-reduced-motion preferences.",
+    id: "speed",
+    label: "Edge Performance",
+    tag: "Zero Bounce",
+    title: "Sub-Second Load Time on Mobile 4G",
+    desc: "Every second of delay costs 20% of conversions. We deploy to global Vercel Edge networks with next-gen image compression, pre-warmed caches, and zero layout shift.",
     specPreview: {
-      type: "motion",
-      pills: ["Framer Motion", "Lenis Smooth Scroll", "CSS Hardware Transforms", "WCAG Reduced Motion", "Dynamic SVG Physics"],
-      codeSnippet: `// Hardware-Accelerated Micro-Interaction
-<motion.div
-  whileHover={{ scale: 1.02 }}
-  whileTap={{ scale: 0.98 }}
-  transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-  className="rounded-full bg-[#C7F284] text-black"
-/>`,
+      type: "speed",
+      items: [
+        { feature: "Global Edge Pre-Rendering", explanation: "Pages serve from the closest edge node to the user in under 150ms TTFB." },
+        { feature: "Next-Gen WebP/AVIF Assets", explanation: "Images are automatically resized and served in modern compressed formats." },
+        { feature: "Zero Cumulative Layout Shift", explanation: "Strict aspect-ratio containment ensures elements never jump around while loading." },
+        { feature: "Async Script Orchestration", explanation: "Tracking pixels and analytics load without blocking initial paint or interactive buttons." },
+      ],
     },
   },
 ];
@@ -161,86 +153,86 @@ export default defineType({
 const processSteps = [
   {
     step: "01",
-    phase: "Information Architecture & Wireframes",
-    duration: "Week 1",
-    desc: "Customer journey mapping, content hierarchy teardown, and low-fidelity spatial wireframes to establish the conversion path before aesthetics.",
+    phase: "Offer Teardown & Copywriting Wireframe",
+    duration: "Days 1–3",
+    desc: "Analyzing your target audience, competitive alternatives, and ad creative to draft a compelling narrative wireframe engineered to convert.",
   },
   {
     step: "02",
-    phase: "Creative Art Direction & UI Exploration",
-    duration: "Weeks 2–3",
-    desc: "Developing bespoke typography pairings, immersive dark/light palettes, and high-fidelity desktop and mobile viewports in Figma.",
+    phase: "Art Direction & Mobile-First UI",
+    duration: "Days 4–6",
+    desc: "Crafting bespoke visual design in Figma with responsive mobile and desktop viewports, micro-interactions, and conversion hierarchy.",
   },
   {
     step: "03",
-    phase: "Component Engineering & Design System",
-    duration: "Weeks 3–4",
-    desc: "Codifying modular React components with Tailwind CSS tokens and crafting responsive micro-animations.",
+    phase: "Frontend Build & CMS Integration",
+    duration: "Days 7–9",
+    desc: "Developing clean, lightweight code in React or Webflow with modular components and instant content editing capabilities.",
   },
   {
     step: "04",
-    phase: "CMS Integration & Content Ingestion",
-    duration: "Weeks 4–5",
-    desc: "Connecting Sanity or Webflow, building the modular editor workspace, and migrating all client content, images, and case studies.",
+    phase: "Attribution, CAPI & Pixel Verification",
+    duration: "Days 10–12",
+    desc: "Configuring server-side tracking, Meta CAPI, Google Analytics 4 custom events, and testing form webhook submissions.",
   },
   {
     step: "05",
-    phase: "QA, Core Web Vitals & Launch",
-    duration: "Week 6",
-    desc: "Rigorous cross-browser testing across Safari, Chrome, and iOS devices, Lighthouse optimization, and zero-downtime DNS deployment.",
+    phase: "Live Traffic Launch & A/B Sprints",
+    duration: "Days 13–14",
+    desc: "Deploying to production DNS, monitoring real traffic behavior with heatmaps, and launching variant iterations.",
   },
 ];
 
 const comparisonRows = [
-  { metric: "Design Art Direction", brnnd: "100% custom, bespoke editorial typography", agency: "Cookie-cutter templates & frameworks", inHouse: "Iterative tweaks to old code" },
-  { metric: "Core Web Vitals Guarantee", brnnd: "98+ mobile Lighthouse score guaranteed", agency: "Untested (frequently fails LCP/CLS)", inHouse: "Varies wildly by sprint" },
-  { metric: "CMS Autonomy for Marketing", brnnd: "Drag-and-drop modular blocks (zero dev reliance)", agency: "Clunky WordPress / complex code", inHouse: "Engineering backlog bottleneck" },
-  { metric: "Development Speed", brnnd: "6-week production sprint to live launch", agency: "4–8 months of committee approvals", inHouse: "Deprioritized for product features" },
-  { metric: "Design System Alignment", brnnd: "Figma tokens mapped 1-to-1 with React CSS", agency: "Static PDF mockups handed over", inHouse: "Design debt accumulates" },
-  { metric: "IP & Repository Ownership", brnnd: "100% client code & asset ownership", agency: "Proprietary CMS lock-in", inHouse: "Internal" },
+  { metric: "Design Quality", brnnd: "Bespoke editorial art direction tailored to your brand", agency: "Generic bloated templates", inHouse: "Hacked together by busy dev team" },
+  { metric: "Page Load Speed", brnnd: "Sub-second edge delivery (98+ Lighthouse)", agency: "Slow WordPress / 5+ second loads", inHouse: "Varies wildly without optimization" },
+  { metric: "Copywriting & Strategy", brnnd: "Conversion copywriter included in sprint", agency: "Client must provide copy", inHouse: "Written by product manager" },
+  { metric: "Turnaround Time", brnnd: "Production launch in 10–14 days", agency: "2–4 months of committee delays", inHouse: "Backlogged behind core roadmap" },
+  { metric: "Attribution & Tracking", brnnd: "Full server-side Meta CAPI & GA4 integration", agency: "Basic pixel code pasted into header", inHouse: "Partial analytics tracking" },
+  { metric: "Ownership", brnnd: "100% full client code and design ownership", agency: "Locked on proprietary hosted builder", inHouse: "Internal" },
 ];
 
 const faqs = [
   {
-    q: "How long does a complete custom marketing website take to launch?",
-    a: "Our typical full-stack marketing website build takes 6 focused weeks from initial kickoff to live DNS rollout. For urgent product launches or single high-converting landing pages, sprint tracks can ship in 2 to 3 weeks.",
+    q: "How fast can you design and launch a new landing page?",
+    a: "Our rapid landing page sprint delivers a fully designed, coded, and tracking-verified page in 10 to 14 days. For ongoing growth retainers, we ship new creative variants within 48 to 72 hours.",
   },
   {
-    q: "Which CMS do you recommend for our marketing team?",
-    a: "We recommend Sanity Studio for modern engineering teams who want complete content flexibility, or Webflow Enterprise for marketing teams who prefer visual canvas editing. Both give non-technical team members complete freedom to launch new pages without calling developers.",
+    q: "Do you write the conversion copywriting or do we provide it?",
+    a: "We provide end-to-end conversion copywriting. We analyze your customer interviews, competitor positioning, and ad hooks to write clear, high-intent copy. You review and approve before visual design starts.",
   },
   {
-    q: "Do you use templates or build custom code from scratch?",
-    a: "Every BRNND website is built completely bespoke. We start from a clean canvas in Figma, tailoring the layout, interactions, and type hierarchy to your brand. The code is written in clean, modern React/Tailwind with zero third-party plugin bloat.",
+    q: "How do you handle A/B split testing and optimization?",
+    a: "We configure client-side or edge-based split testing using tools like PostHog, Vercel Edge Middleware, or Webflow Optimize. We test bold variables—such as value propositions and form structures—to achieve meaningful statistical wins.",
   },
   {
-    q: "How do you guarantee Core Web Vitals and 95+ Lighthouse scores?",
-    a: "We enforce strict performance budgets during development: modern image formats (WebP/AVIF) with explicit aspect ratios to eliminate CLS, server-side static pre-rendering, lazy-loading below-the-fold media, and self-hosting variable web fonts with preload headers.",
+    q: "Which platforms do you build landing pages on?",
+    a: "We build on Webflow Enterprise for marketing teams who want self-serve visual editing, or clean custom React/Next.js for teams who need deep integration with custom product backends and CRM pipelines.",
   },
   {
-    q: "Do we own all final Figma designs, source code, and assets?",
-    a: "Yes. 100% of all Figma files, GitHub repositories, CMS schemas, and media assets belong entirely to your company upon final delivery.",
+    q: "Do we own 100% of the landing page code and design assets?",
+    a: "Yes. 100% of all Figma source files, Webflow projects, custom code, and media assets belong entirely to your company upon completion.",
   },
 ];
 
-function WebDesignServicesPage() {
+function LandingPagesServicePage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [activeTab, setActiveTab] = useState<string>("frontend");
+  const [activeTab, setActiveTab] = useState<string>("hero");
   const selectedCaseStudies = caseStudies.slice(0, 3);
 
-  const currentTab = techStackModules.find((t) => t.id === activeTab) || techStackModules[0];
+  const currentTab = conversionModules.find((t) => t.id === activeTab) || conversionModules[0];
 
   return (
     <div className="bg-background text-foreground selection:bg-brand-lime selection:text-black min-h-screen">
       {/* ─────────────────────────────────────────────────────────────
-          1. HERO SECTION (Editorial format matching Superside web-design)
+          1. HERO SECTION (Editorial format matching Superside campaign-design)
           ───────────────────────────────────────────────────────────── */}
       <section className="relative min-h-[90vh] md:h-screen md:min-h-[640px] md:max-h-[1020px] flex flex-col justify-between overflow-hidden bg-stone-950">
-        {/* Real Laptop on Velvet Sofa Web Design Photography */}
+        {/* Real Laptop Landing Page Creative Photography */}
         <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
           <img
-            src={webHeroBg}
-            alt="Web Design and Digital Experiences"
+            src={landingHeroBg}
+            alt="High-Converting Landing Pages and CRO"
             className="w-full h-full object-cover object-right md:object-[68%_center]"
           />
           {/* Subtle directional vignette on the left for crisp white typography */}
@@ -250,24 +242,24 @@ function WebDesignServicesPage() {
         {/* Hero Text Content (Positioned cleanly on the left side) */}
         <div className="relative z-10 pt-28 sm:pt-32 md:pt-36 pb-8 pl-6 sm:pl-10 md:pl-14 lg:pl-16 xl:pl-20 pr-4 max-w-[750px] mr-auto">
           <p className="text-xs sm:text-[13px] font-semibold uppercase tracking-[0.25em] text-white/90 mb-4 font-mono">
-            WEB DESIGN & DEVELOPMENT
+            LANDING PAGES & CRO
           </p>
           <h1 className="text-3xl sm:text-4xl md:text-[2.65rem] lg:text-[3rem] xl:text-[3.25rem] font-sans font-bold text-white leading-[1.12] tracking-tight">
             <span className="block whitespace-normal md:whitespace-nowrap">
-              High-performing websites{" "}
+              High-intent landing pages{" "}
               <span className="font-serif italic font-normal text-[calc(100%+3px)]">
                 built to
               </span>
             </span>
             <span className="block whitespace-normal md:whitespace-nowrap mt-1">
               <span className="font-serif italic font-normal text-[calc(100%+3px)]">
-                grow with
+                convert traffic,
               </span>{" "}
-              your brand
+              engineered to scale
             </span>
           </h1>
           <p className="mt-5 text-sm sm:text-base text-white/90 max-w-[460px] leading-relaxed font-sans font-normal">
-            BRNND designs and engineers custom marketing websites, high-converting landing pages, and headless digital experiences that combine editorial aesthetics with sub-second performance.
+            BRNND designs and builds conversion-focused landing pages, product launch funnels, and paid ad destinations that turn cold clicks into qualified customer pipeline.
           </p>
 
           <div className="mt-7 flex items-center gap-4 flex-wrap">
@@ -281,7 +273,7 @@ function WebDesignServicesPage() {
               to="/work"
               className="border border-white/30 hover:border-white text-white font-sans font-semibold text-sm sm:text-base px-6 py-3.5 rounded-full transition-all hover:bg-white/10"
             >
-              View live web builds →
+              Explore conversion results →
             </Link>
           </div>
         </div>
@@ -315,7 +307,7 @@ function WebDesignServicesPage() {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          3. ROI & PERFORMANCE METRIC BAR
+          3. ROI & CONVERSION METRIC BAR
           ───────────────────────────────────────────────────────────── */}
       <section className="py-16 border-b border-border bg-stone-50 dark:bg-stone-950/60">
         <div className="container-edge">
@@ -338,24 +330,24 @@ function WebDesignServicesPage() {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          4. INTERACTIVE TECH STACK & ARCHITECTURE EXPLORER
+          4. INTERACTIVE CONVERSION ARCHITECTURE EXPLORER
           ───────────────────────────────────────────────────────────── */}
       <section className="py-24 sm:py-32 border-b border-border">
         <div className="container-edge">
           <div className="max-w-2xl mb-12">
             <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground mb-3">
-              Modern Engineering Stack
+              Conversion Science
             </p>
             <h2 className="text-3xl sm:text-4xl font-sans font-bold tracking-tight text-foreground">
-              Engineered for speed, autonomy, and zero plugin debt.
+              What makes a landing page convert at 2x the industry average?
             </h2>
             <p className="mt-4 text-base text-muted-foreground leading-relaxed">
-              We marry art-directed creative design with cutting-edge headless architecture so marketing teams move fast without depending on engineering sprints.
+              We eliminate cognitive friction, align message-to-audience intent, and engineer every viewport to drive immediate action.
             </p>
           </div>
 
           <div className="flex items-center gap-2 overflow-x-auto pb-4 border-b border-border mb-8">
-            {techStackModules.map((tab) => (
+            {conversionModules.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
@@ -382,26 +374,36 @@ function WebDesignServicesPage() {
               <p className="text-sm text-muted-foreground leading-relaxed mb-6">
                 {currentTab.desc}
               </p>
-              <div className="flex flex-wrap gap-2 mb-6">
-                {currentTab.specPreview.pills.map((pill, i) => (
-                  <span
-                    key={i}
-                    className="text-xs font-mono px-3 py-1.5 rounded-md border border-border bg-muted/40 text-foreground"
-                  >
-                    {pill}
-                  </span>
-                ))}
+              <div className="p-4 rounded-xl border border-border bg-muted/20">
+                <p className="text-xs font-mono uppercase text-muted-foreground mb-2">
+                  Conversion Principle
+                </p>
+                <p className="text-xs text-foreground/90 leading-relaxed">
+                  Clear visual hierarchy beats clever gimmicks. When users immediately understand the problem you solve and the proof backing your claim, conversion rates skyrocket.
+                </p>
               </div>
             </div>
 
             <div className="lg:col-span-7 border border-border rounded-xl p-6 bg-card">
-              <div className="flex items-center justify-between text-xs font-mono text-muted-foreground mb-3 pb-2 border-b border-border">
-                <span>Architecture Preview</span>
-                <span className="text-[11px] font-semibold text-brand-lime">Production Ready</span>
+              <div className="space-y-3">
+                <div className="text-xs font-mono text-muted-foreground mb-2 flex items-center justify-between">
+                  <span>Conversion Component</span>
+                  <span className="text-[11px] text-brand-lime font-semibold">High Intent</span>
+                </div>
+                {currentTab.specPreview.items.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="p-4 rounded-lg border border-border bg-background hover:border-foreground/40 transition-colors"
+                  >
+                    <p className="text-xs font-mono font-semibold text-foreground mb-1">
+                      {item.feature}
+                    </p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      {item.explanation}
+                    </p>
+                  </div>
+                ))}
               </div>
-              <pre className="text-xs font-mono text-foreground/80 bg-muted/40 p-4 rounded-lg overflow-x-auto leading-relaxed">
-                {currentTab.specPreview.codeSnippet}
-              </pre>
             </div>
           </div>
         </div>
@@ -414,13 +416,13 @@ function WebDesignServicesPage() {
         <div className="container-edge">
           <div className="max-w-2xl mb-16">
             <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground mb-3">
-              Web Capabilities
+              Capabilities
             </p>
             <h2 className="text-3xl sm:text-4xl font-sans font-bold tracking-tight text-foreground">
-              Everything required to launch an elite digital experience.
+              Everything required to scale paid acquisition campaigns.
             </h2>
             <p className="mt-4 text-base text-muted-foreground leading-relaxed">
-              We handle the entire journey: from strategy and wireframes to custom art direction, headless frontend code, CMS setup, and DNS deployment.
+              From creative strategy and conversion copywriting to Webflow development and attribution tracking, we deliver pages ready for heavy ad spend.
             </p>
           </div>
 
@@ -465,19 +467,19 @@ function WebDesignServicesPage() {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          6. SPRINT PROCESS (6 Weeks to Production)
+          6. SPRINT PROCESS (2 Weeks to Live Traffic)
           ───────────────────────────────────────────────────────────── */}
       <section className="py-24 sm:py-32 border-b border-border">
         <div className="container-edge">
           <div className="max-w-2xl mb-16">
             <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground mb-3">
-              The Sprint
+              Rapid Sprint
             </p>
             <h2 className="text-3xl sm:text-4xl font-sans font-bold tracking-tight text-foreground">
-              A disciplined 6-week path from kickoff to live deployment.
+              From offer teardown to live ad traffic in 14 days.
             </h2>
             <p className="mt-4 text-base text-muted-foreground leading-relaxed">
-              Traditional web agencies get bogged down in endless status meetings. We ship live staging previews every 72 hours with transparent communication.
+              We cut out bloated agency bureaucracy. We write the copy, craft the visual designs, write the code, configure tracking, and deploy to live DNS in two weeks.
             </p>
           </div>
 
@@ -512,17 +514,17 @@ function WebDesignServicesPage() {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          7. SELECTED WEB CASE STUDIES
+          7. SELECTED CONVERSION CASE STUDIES
           ───────────────────────────────────────────────────────────── */}
       <section className="py-24 sm:py-32 border-b border-border bg-stone-50 dark:bg-stone-950/40">
         <div className="container-edge">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-16 gap-6">
             <div>
               <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground mb-3">
-                Live Platforms
+                Proven Results
               </p>
               <h2 className="text-3xl sm:text-4xl font-sans font-bold tracking-tight text-foreground">
-                Real websites designed and engineered by BRNND.
+                High-converting destinations built by BRNND.
               </h2>
             </div>
             <Link
@@ -587,13 +589,13 @@ function WebDesignServicesPage() {
         <div className="container-edge">
           <div className="max-w-2xl mb-16">
             <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground mb-3">
-              Why BRNND Web
+              Why BRNND
             </p>
             <h2 className="text-3xl sm:text-4xl font-sans font-bold tracking-tight text-foreground">
-              A modern operational model for company websites.
+              A performance-driven operational standard for landing pages.
             </h2>
             <p className="mt-4 text-base text-muted-foreground leading-relaxed">
-              No template drag-and-drop mediocrity and no 9-month agency timelines. We combine high-end creative design with production-grade software engineering.
+              Say goodbye to generic drag-and-drop templates and disconnected freelance copywriters. We build integrated conversion engines that maximize ROAS.
             </p>
           </div>
 
@@ -602,16 +604,16 @@ function WebDesignServicesPage() {
               <thead>
                 <tr className="border-b border-border bg-muted/40 font-mono text-xs">
                   <th className="p-4 sm:p-5 text-muted-foreground font-semibold">
-                    Engineering Dimension
+                    Landing Page Metric
                   </th>
                   <th className="p-4 sm:p-5 text-foreground font-bold bg-foreground/[0.04] border-x border-border">
-                    BRNND Production Web
+                    BRNND Conversion Sprint
                   </th>
                   <th className="p-4 sm:p-5 text-muted-foreground font-normal">
-                    Traditional Web Agency
+                    Template Builders (Unbounce)
                   </th>
                   <th className="p-4 sm:p-5 text-muted-foreground font-normal">
-                    In-House Team
+                    Traditional Agency
                   </th>
                 </tr>
               </thead>
@@ -654,7 +656,7 @@ function WebDesignServicesPage() {
               FAQ
             </p>
             <h2 className="text-3xl sm:text-4xl font-sans font-bold tracking-tight text-foreground">
-              Everything you need to know about building a site with BRNND.
+              Everything you need to know about landing page sprints.
             </h2>
           </div>
 
@@ -690,26 +692,26 @@ function WebDesignServicesPage() {
       <section className="py-24 sm:py-32 bg-stone-950 text-white">
         <div className="container-edge text-center max-w-3xl">
           <p className="text-xs font-mono uppercase tracking-[0.25em] text-white/70 mb-4">
-            Build Your Flagship Website
+            Maximize Your ROAS
           </p>
           <h2 className="text-3xl sm:text-5xl font-sans font-bold tracking-tight text-white leading-tight">
-            Ready to build a website that out-converts your competition?
+            Stop wasting paid ad traffic on low-converting pages.
           </h2>
           <p className="mt-6 text-base text-white/70 leading-relaxed max-w-xl mx-auto">
-            Book a 30-minute website teardown session with our senior digital operating partners. We'll review your current Core Web Vitals, conversion bottlenecks, and technical architecture.
+            Book a 30-minute conversion teardown with our growth operating partners. We'll audit your current ad destinations, identify bounce points, and map out a 14-day landing page sprint.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <button
               onClick={openBookDemo}
               className="bg-[#C7F284] hover:bg-[#b8eb6a] text-stone-950 font-sans font-semibold text-base px-8 py-4 rounded-full transition-all hover:scale-[1.02] active:scale-[0.98] shadow-none"
             >
-              Book a website review
+              Book a conversion teardown
             </button>
             <Link
               to="/work"
               className="border border-white/20 hover:border-white text-white font-sans font-semibold text-base px-8 py-4 rounded-full transition-all hover:bg-white/5"
             >
-              Explore live case studies
+              Explore conversion results
             </Link>
           </div>
         </div>

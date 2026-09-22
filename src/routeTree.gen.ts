@@ -33,13 +33,21 @@ import { Route as ToolsPitchDeckTemplatesRouteImport } from './routes/tools.pitc
 import { Route as ToolsNamingGeneratorRouteImport } from './routes/tools.naming-generator'
 import { Route as ToolsBrandColorKitRouteImport } from './routes/tools.brand-color-kit'
 import { Route as ServicesWebDesignRouteImport } from './routes/services.web-design'
+import { Route as ServicesUiUxRouteImport } from './routes/services.ui-ux'
 import { Route as ServicesSocialMediaCreativeRouteImport } from './routes/services.social-media-creative'
+import { Route as ServicesRebrandingServicesRouteImport } from './routes/services.rebranding-services'
+import { Route as ServicesRebrandingRouteImport } from './routes/services.rebranding'
 import { Route as ServicesProductionRouteImport } from './routes/services.production'
+import { Route as ServicesProductDesignRouteImport } from './routes/services.product-design'
+import { Route as ServicesLandingPagesRouteImport } from './routes/services.landing-pages'
 import { Route as ServicesIllustrationDesignRouteImport } from './routes/services.illustration-design'
 import { Route as ServicesEmailCreationRouteImport } from './routes/services.email-creation'
+import { Route as ServicesEcommerceRouteImport } from './routes/services.ecommerce'
+import { Route as ServicesECommerceRouteImport } from './routes/services.e-commerce'
 import { Route as ServicesCreativeDesignRouteImport } from './routes/services.creative-design'
 import { Route as ServicesCampaignStrategyRouteImport } from './routes/services.campaign-strategy'
 import { Route as ServicesBrandingServicesRouteImport } from './routes/services.branding-services'
+import { Route as ServicesBrandGuidelinesRouteImport } from './routes/services.brand-guidelines'
 import { Route as ServicesAutomationRouteImport } from './routes/services.automation'
 import { Route as ServicesAiPoweredCreativeRouteImport } from './routes/services.ai-powered-creative'
 import { Route as ServicesAiMarketingRouteImport } from './routes/services.ai-marketing'
@@ -166,15 +174,41 @@ const ServicesWebDesignRoute = ServicesWebDesignRouteImport.update({
   path: '/services/web-design',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServicesUiUxRoute = ServicesUiUxRouteImport.update({
+  id: '/services/ui-ux',
+  path: '/services/ui-ux',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesSocialMediaCreativeRoute =
   ServicesSocialMediaCreativeRouteImport.update({
     id: '/services/social-media-creative',
     path: '/services/social-media-creative',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ServicesRebrandingServicesRoute =
+  ServicesRebrandingServicesRouteImport.update({
+    id: '/services/rebranding-services',
+    path: '/services/rebranding-services',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ServicesRebrandingRoute = ServicesRebrandingRouteImport.update({
+  id: '/services/rebranding',
+  path: '/services/rebranding',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesProductionRoute = ServicesProductionRouteImport.update({
   id: '/services/production',
   path: '/services/production',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesProductDesignRoute = ServicesProductDesignRouteImport.update({
+  id: '/services/product-design',
+  path: '/services/product-design',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesLandingPagesRoute = ServicesLandingPagesRouteImport.update({
+  id: '/services/landing-pages',
+  path: '/services/landing-pages',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesIllustrationDesignRoute =
@@ -186,6 +220,16 @@ const ServicesIllustrationDesignRoute =
 const ServicesEmailCreationRoute = ServicesEmailCreationRouteImport.update({
   id: '/services/email-creation',
   path: '/services/email-creation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesEcommerceRoute = ServicesEcommerceRouteImport.update({
+  id: '/services/ecommerce',
+  path: '/services/ecommerce',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesECommerceRoute = ServicesECommerceRouteImport.update({
+  id: '/services/e-commerce',
+  path: '/services/e-commerce',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesCreativeDesignRoute = ServicesCreativeDesignRouteImport.update({
@@ -205,6 +249,11 @@ const ServicesBrandingServicesRoute =
     path: '/services/branding-services',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ServicesBrandGuidelinesRoute = ServicesBrandGuidelinesRouteImport.update({
+  id: '/services/brand-guidelines',
+  path: '/services/brand-guidelines',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesAutomationRoute = ServicesAutomationRouteImport.update({
   id: '/services/automation',
   path: '/services/automation',
@@ -256,13 +305,21 @@ export interface FileRoutesByFullPath {
   '/services/ai-marketing': typeof ServicesAiMarketingRoute
   '/services/ai-powered-creative': typeof ServicesAiPoweredCreativeRoute
   '/services/automation': typeof ServicesAutomationRoute
+  '/services/brand-guidelines': typeof ServicesBrandGuidelinesRoute
   '/services/branding-services': typeof ServicesBrandingServicesRoute
   '/services/campaign-strategy': typeof ServicesCampaignStrategyRoute
   '/services/creative-design': typeof ServicesCreativeDesignRoute
+  '/services/e-commerce': typeof ServicesECommerceRoute
+  '/services/ecommerce': typeof ServicesEcommerceRoute
   '/services/email-creation': typeof ServicesEmailCreationRoute
   '/services/illustration-design': typeof ServicesIllustrationDesignRoute
+  '/services/landing-pages': typeof ServicesLandingPagesRoute
+  '/services/product-design': typeof ServicesProductDesignRoute
   '/services/production': typeof ServicesProductionRoute
+  '/services/rebranding': typeof ServicesRebrandingRoute
+  '/services/rebranding-services': typeof ServicesRebrandingServicesRoute
   '/services/social-media-creative': typeof ServicesSocialMediaCreativeRoute
+  '/services/ui-ux': typeof ServicesUiUxRoute
   '/services/web-design': typeof ServicesWebDesignRoute
   '/tools/brand-color-kit': typeof ToolsBrandColorKitRoute
   '/tools/naming-generator': typeof ToolsNamingGeneratorRoute
@@ -293,13 +350,21 @@ export interface FileRoutesByTo {
   '/services/ai-marketing': typeof ServicesAiMarketingRoute
   '/services/ai-powered-creative': typeof ServicesAiPoweredCreativeRoute
   '/services/automation': typeof ServicesAutomationRoute
+  '/services/brand-guidelines': typeof ServicesBrandGuidelinesRoute
   '/services/branding-services': typeof ServicesBrandingServicesRoute
   '/services/campaign-strategy': typeof ServicesCampaignStrategyRoute
   '/services/creative-design': typeof ServicesCreativeDesignRoute
+  '/services/e-commerce': typeof ServicesECommerceRoute
+  '/services/ecommerce': typeof ServicesEcommerceRoute
   '/services/email-creation': typeof ServicesEmailCreationRoute
   '/services/illustration-design': typeof ServicesIllustrationDesignRoute
+  '/services/landing-pages': typeof ServicesLandingPagesRoute
+  '/services/product-design': typeof ServicesProductDesignRoute
   '/services/production': typeof ServicesProductionRoute
+  '/services/rebranding': typeof ServicesRebrandingRoute
+  '/services/rebranding-services': typeof ServicesRebrandingServicesRoute
   '/services/social-media-creative': typeof ServicesSocialMediaCreativeRoute
+  '/services/ui-ux': typeof ServicesUiUxRoute
   '/services/web-design': typeof ServicesWebDesignRoute
   '/tools/brand-color-kit': typeof ToolsBrandColorKitRoute
   '/tools/naming-generator': typeof ToolsNamingGeneratorRoute
@@ -332,13 +397,21 @@ export interface FileRoutesById {
   '/services/ai-marketing': typeof ServicesAiMarketingRoute
   '/services/ai-powered-creative': typeof ServicesAiPoweredCreativeRoute
   '/services/automation': typeof ServicesAutomationRoute
+  '/services/brand-guidelines': typeof ServicesBrandGuidelinesRoute
   '/services/branding-services': typeof ServicesBrandingServicesRoute
   '/services/campaign-strategy': typeof ServicesCampaignStrategyRoute
   '/services/creative-design': typeof ServicesCreativeDesignRoute
+  '/services/e-commerce': typeof ServicesECommerceRoute
+  '/services/ecommerce': typeof ServicesEcommerceRoute
   '/services/email-creation': typeof ServicesEmailCreationRoute
   '/services/illustration-design': typeof ServicesIllustrationDesignRoute
+  '/services/landing-pages': typeof ServicesLandingPagesRoute
+  '/services/product-design': typeof ServicesProductDesignRoute
   '/services/production': typeof ServicesProductionRoute
+  '/services/rebranding': typeof ServicesRebrandingRoute
+  '/services/rebranding-services': typeof ServicesRebrandingServicesRoute
   '/services/social-media-creative': typeof ServicesSocialMediaCreativeRoute
+  '/services/ui-ux': typeof ServicesUiUxRoute
   '/services/web-design': typeof ServicesWebDesignRoute
   '/tools/brand-color-kit': typeof ToolsBrandColorKitRoute
   '/tools/naming-generator': typeof ToolsNamingGeneratorRoute
@@ -372,13 +445,21 @@ export interface FileRouteTypes {
     | '/services/ai-marketing'
     | '/services/ai-powered-creative'
     | '/services/automation'
+    | '/services/brand-guidelines'
     | '/services/branding-services'
     | '/services/campaign-strategy'
     | '/services/creative-design'
+    | '/services/e-commerce'
+    | '/services/ecommerce'
     | '/services/email-creation'
     | '/services/illustration-design'
+    | '/services/landing-pages'
+    | '/services/product-design'
     | '/services/production'
+    | '/services/rebranding'
+    | '/services/rebranding-services'
     | '/services/social-media-creative'
+    | '/services/ui-ux'
     | '/services/web-design'
     | '/tools/brand-color-kit'
     | '/tools/naming-generator'
@@ -409,13 +490,21 @@ export interface FileRouteTypes {
     | '/services/ai-marketing'
     | '/services/ai-powered-creative'
     | '/services/automation'
+    | '/services/brand-guidelines'
     | '/services/branding-services'
     | '/services/campaign-strategy'
     | '/services/creative-design'
+    | '/services/e-commerce'
+    | '/services/ecommerce'
     | '/services/email-creation'
     | '/services/illustration-design'
+    | '/services/landing-pages'
+    | '/services/product-design'
     | '/services/production'
+    | '/services/rebranding'
+    | '/services/rebranding-services'
     | '/services/social-media-creative'
+    | '/services/ui-ux'
     | '/services/web-design'
     | '/tools/brand-color-kit'
     | '/tools/naming-generator'
@@ -447,13 +536,21 @@ export interface FileRouteTypes {
     | '/services/ai-marketing'
     | '/services/ai-powered-creative'
     | '/services/automation'
+    | '/services/brand-guidelines'
     | '/services/branding-services'
     | '/services/campaign-strategy'
     | '/services/creative-design'
+    | '/services/e-commerce'
+    | '/services/ecommerce'
     | '/services/email-creation'
     | '/services/illustration-design'
+    | '/services/landing-pages'
+    | '/services/product-design'
     | '/services/production'
+    | '/services/rebranding'
+    | '/services/rebranding-services'
     | '/services/social-media-creative'
+    | '/services/ui-ux'
     | '/services/web-design'
     | '/tools/brand-color-kit'
     | '/tools/naming-generator'
@@ -486,13 +583,21 @@ export interface RootRouteChildren {
   ServicesAiMarketingRoute: typeof ServicesAiMarketingRoute
   ServicesAiPoweredCreativeRoute: typeof ServicesAiPoweredCreativeRoute
   ServicesAutomationRoute: typeof ServicesAutomationRoute
+  ServicesBrandGuidelinesRoute: typeof ServicesBrandGuidelinesRoute
   ServicesBrandingServicesRoute: typeof ServicesBrandingServicesRoute
   ServicesCampaignStrategyRoute: typeof ServicesCampaignStrategyRoute
   ServicesCreativeDesignRoute: typeof ServicesCreativeDesignRoute
+  ServicesECommerceRoute: typeof ServicesECommerceRoute
+  ServicesEcommerceRoute: typeof ServicesEcommerceRoute
   ServicesEmailCreationRoute: typeof ServicesEmailCreationRoute
   ServicesIllustrationDesignRoute: typeof ServicesIllustrationDesignRoute
+  ServicesLandingPagesRoute: typeof ServicesLandingPagesRoute
+  ServicesProductDesignRoute: typeof ServicesProductDesignRoute
   ServicesProductionRoute: typeof ServicesProductionRoute
+  ServicesRebrandingRoute: typeof ServicesRebrandingRoute
+  ServicesRebrandingServicesRoute: typeof ServicesRebrandingServicesRoute
   ServicesSocialMediaCreativeRoute: typeof ServicesSocialMediaCreativeRoute
+  ServicesUiUxRoute: typeof ServicesUiUxRoute
   ServicesWebDesignRoute: typeof ServicesWebDesignRoute
   ToolsBrandColorKitRoute: typeof ToolsBrandColorKitRoute
   ToolsNamingGeneratorRoute: typeof ToolsNamingGeneratorRoute
@@ -669,6 +774,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesWebDesignRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/services/ui-ux': {
+      id: '/services/ui-ux'
+      path: '/services/ui-ux'
+      fullPath: '/services/ui-ux'
+      preLoaderRoute: typeof ServicesUiUxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services/social-media-creative': {
       id: '/services/social-media-creative'
       path: '/services/social-media-creative'
@@ -676,11 +788,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesSocialMediaCreativeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/services/rebranding-services': {
+      id: '/services/rebranding-services'
+      path: '/services/rebranding-services'
+      fullPath: '/services/rebranding-services'
+      preLoaderRoute: typeof ServicesRebrandingServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/rebranding': {
+      id: '/services/rebranding'
+      path: '/services/rebranding'
+      fullPath: '/services/rebranding'
+      preLoaderRoute: typeof ServicesRebrandingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services/production': {
       id: '/services/production'
       path: '/services/production'
       fullPath: '/services/production'
       preLoaderRoute: typeof ServicesProductionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/product-design': {
+      id: '/services/product-design'
+      path: '/services/product-design'
+      fullPath: '/services/product-design'
+      preLoaderRoute: typeof ServicesProductDesignRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/landing-pages': {
+      id: '/services/landing-pages'
+      path: '/services/landing-pages'
+      fullPath: '/services/landing-pages'
+      preLoaderRoute: typeof ServicesLandingPagesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services/illustration-design': {
@@ -695,6 +835,20 @@ declare module '@tanstack/react-router' {
       path: '/services/email-creation'
       fullPath: '/services/email-creation'
       preLoaderRoute: typeof ServicesEmailCreationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/ecommerce': {
+      id: '/services/ecommerce'
+      path: '/services/ecommerce'
+      fullPath: '/services/ecommerce'
+      preLoaderRoute: typeof ServicesEcommerceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/e-commerce': {
+      id: '/services/e-commerce'
+      path: '/services/e-commerce'
+      fullPath: '/services/e-commerce'
+      preLoaderRoute: typeof ServicesECommerceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services/creative-design': {
@@ -716,6 +870,13 @@ declare module '@tanstack/react-router' {
       path: '/services/branding-services'
       fullPath: '/services/branding-services'
       preLoaderRoute: typeof ServicesBrandingServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/brand-guidelines': {
+      id: '/services/brand-guidelines'
+      path: '/services/brand-guidelines'
+      fullPath: '/services/brand-guidelines'
+      preLoaderRoute: typeof ServicesBrandGuidelinesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services/automation': {
@@ -792,13 +953,21 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesAiMarketingRoute: ServicesAiMarketingRoute,
   ServicesAiPoweredCreativeRoute: ServicesAiPoweredCreativeRoute,
   ServicesAutomationRoute: ServicesAutomationRoute,
+  ServicesBrandGuidelinesRoute: ServicesBrandGuidelinesRoute,
   ServicesBrandingServicesRoute: ServicesBrandingServicesRoute,
   ServicesCampaignStrategyRoute: ServicesCampaignStrategyRoute,
   ServicesCreativeDesignRoute: ServicesCreativeDesignRoute,
+  ServicesECommerceRoute: ServicesECommerceRoute,
+  ServicesEcommerceRoute: ServicesEcommerceRoute,
   ServicesEmailCreationRoute: ServicesEmailCreationRoute,
   ServicesIllustrationDesignRoute: ServicesIllustrationDesignRoute,
+  ServicesLandingPagesRoute: ServicesLandingPagesRoute,
+  ServicesProductDesignRoute: ServicesProductDesignRoute,
   ServicesProductionRoute: ServicesProductionRoute,
+  ServicesRebrandingRoute: ServicesRebrandingRoute,
+  ServicesRebrandingServicesRoute: ServicesRebrandingServicesRoute,
   ServicesSocialMediaCreativeRoute: ServicesSocialMediaCreativeRoute,
+  ServicesUiUxRoute: ServicesUiUxRoute,
   ServicesWebDesignRoute: ServicesWebDesignRoute,
   ToolsBrandColorKitRoute: ToolsBrandColorKitRoute,
   ToolsNamingGeneratorRoute: ToolsNamingGeneratorRoute,

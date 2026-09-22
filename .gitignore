@@ -23,6 +23,8 @@ dist-ssr
 
 # Local environment
 .env
+scratch-*
+
 
 # Editor directories and files
 .vscode/*

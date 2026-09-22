@@ -1,198 +1,327 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { SectionHeader } from "@/components/site/SectionHeader";
+import talentHero from "@/assets/superside-talent-hero.jpg";
+import portraitAnneke from "@/assets/portrait-anneke.jpg";
+import portraitPaige from "@/assets/portrait-paige.jpg";
+import portraitBernard from "@/assets/portrait-bernard.jpg";
+import portraitKae from "@/assets/portrait-kae.jpg";
+import portraitJulio from "@/assets/portrait-julio.jpg";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About BRNND — Brand Operating Partner for Founders" },
-      { name: "description", content: "BRNND is a brand operating partner — building complete brand ecosystems through strategy, identity, digital and growth for ambitious founders." },
-      { property: "og:title", content: "About BRNND — Brand Operating Partner for Founders" },
-      { property: "og:description", content: "We build brands people trust, remember, and grow with." },
+      { title: "Our Creative Talent — World-Class Brand Operators | BRNND" },
+      {
+        name: "description",
+        content:
+          "Partner with world-class creative talent without the hassle of hiring. Senior brand strategists, designers, animators, and creative technologists from top global agencies.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "BRNND" },
+      { property: "og:title", content: "Our Creative Talent — World-Class Brand Operators | BRNND" },
+      {
+        property: "og:description",
+        content:
+          "Partner with world-class creative talent without the hassle of hiring. Elite designers, copywriters, and technologists building category-defining brand systems.",
+      },
       { property: "og:url", content: "https://brnnd.com/about" },
     ],
     links: [{ rel: "canonical", href: "https://brnnd.com/about" }],
   }),
-  component: About,
+  component: AboutPage,
 });
 
-const stats = [
-  ["120+", "Brands shaped, launched and scaled"],
-  ["14 yrs", "Average lead operator experience"],
-  ["6 wks", "Median time from kickoff to launch"],
-  ["92%", "Of clients return for a second engagement"],
+interface TeamMember {
+  name: string;
+  role: string;
+  photo: string;
+}
+
+const teamMembers: TeamMember[] = [
+  {
+    name: "Anneke King",
+    role: "Executive Creative Director",
+    photo: portraitAnneke,
+  },
+  {
+    name: "Paige Hudson",
+    role: "Executive Creative Director",
+    photo: portraitPaige,
+  },
+  {
+    name: "Bernard Moussa",
+    role: "Group Account Director",
+    photo: portraitBernard,
+  },
+  {
+    name: "Kae Neskovic",
+    role: "General Manager",
+    photo: portraitKae,
+  },
+  {
+    name: "Julio Alvarado",
+    role: "Group Creative Director (Generative AI)",
+    photo: portraitJulio,
+  },
 ];
 
-const pillars = [
-  { no: "01", title: "Strategy", body: "Positioning, audience, messaging and the direction your brand will run on for years.", outputs: ["Brand diagnosis", "Positioning narrative", "Messaging architecture"] },
-  { no: "02", title: "Identity", body: "Logo systems, typography, color and the full visual language — designed as one connected system.", outputs: ["Logo system", "Type & color system", "Brand guidelines"] },
-  { no: "03", title: "Digital", body: "Websites, landing pages, UI/UX and the digital experiences that turn attention into trust.", outputs: ["Website design", "UI system", "Conversion flows"] },
-  { no: "04", title: "Growth", body: "Social systems, campaigns and launch assets that keep the brand compounding after launch.", outputs: ["Launch campaign", "Social templates", "Content engine"] },
+const timelineSteps = [
+  {
+    number: "1",
+    badge: "FLEXIBLE",
+    title: "Endless extra pairs of hands",
+    description:
+      "Our unique model means you get access to a modular senior pod, which effortlessly scales up or down to meet your sprint velocity, whether you need strategic firepower or specialist execution.",
+  },
+  {
+    number: "2",
+    badge: "ULTRA-FAST",
+    title: "Designed for speed",
+    description:
+      "We leverage our team's distributed time zones to meet even the tightest timeline. 98% of projects are delivered on or before the deadline with zero compromise on craft.",
+  },
+  {
+    number: "3",
+    badge: "READY FOR THE FUTURE",
+    title: "AI-enhanced workflows",
+    description:
+      "100% of BRNND creatives are AI-certified so they can move faster while ensuring rigorous alignment with brand and brief. Shaving weeks off exploration and concept iterations.",
+  },
+  {
+    number: "4",
+    badge: "CENTRALIZED",
+    title: "BRNND Hub: platform for briefs, feedback, and asset delivery",
+    description:
+      "One unified workspace for asynchronous video feedback, Figma design reviews, and sub-second asset downloads. No lost Slack threads or forgotten files.",
+  },
 ];
 
-const principles = [
-  ["Brand as infrastructure", "We treat brand the way good engineering teams treat architecture — built to outlast trends, easy to extend."],
-  ["Systems, not deliverables", "You don't get 80 PNGs and a Dropbox. You get a system your team can run for years."],
-  ["Founders in the room", "Every engagement is led by a senior strategist who's built brands from scratch. No account-management layer."],
-  ["Strategy before pixels", "We write the diagnosis before we open Figma. Decisions are defended in plain language, not mood boards."],
-  ["Launch is the beginning", "We hand over a brand your team can grow with — playbooks, templates and 90 days of post-launch support."],
-  ["Trust is the metric", "If your audience doesn't trust what they see in the first three seconds, the work failed."],
-];
+function AboutPage() {
+  const openBookDemo = () => {
+    window.location.href = "/book";
+  };
 
-const whoWeWorkWith = [
-  { title: "First-time founders", body: "Pre-seed to Series A. You've got product-market signal and need a brand that matches the ambition." },
-  { title: "Funded startups", body: "Series A–C teams replacing the rushed identity that got you here with a system that can scale." },
-  { title: "Growing businesses", body: "Established companies entering a new market, repositioning, or finally outgrowing the DIY brand." },
-];
-
-const story = [
-  ["2016", "BRNND started as a two-person studio building identities for early-stage founders in NYC and London."],
-  ["2019", "Expanded into digital — websites and product UI — after watching too many great brands die at the homepage."],
-  ["2022", "Grew into a distributed operating partner: senior strategists, designers and engineers working as one pod per client."],
-  ["Today", "120+ brands later, we work with founders across fintech, SaaS, consumer and personal brands worldwide."],
-];
-
-function About() {
   return (
-    <>
-      <section className="container-edge pt-16 md:pt-24 pb-20">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-end">
-          <div className="md:col-span-8">
-            <p className="eyebrow mb-6">[ About BRNND · Est. 2016 ]</p>
-            <h1 className="editorial text-5xl md:text-7xl lg:text-[8.5rem] leading-[0.95] tracking-tight">
-              We build brands<br />
-              people <em className="italic font-serif">trust,</em><br />
-              <em className="italic font-serif">remember,</em> and<br />
-              grow with.
+    <div className="bg-[#14100d] text-white selection:bg-brand-lime selection:text-black min-h-screen">
+      {/* ─────────────────────────────────────────────────────────────
+          1. HERO SECTION (Exact Superside System)
+          Full-bleed panoramic team couch photography with warm espresso
+          backdrop and 100% white serif headline
+          ───────────────────────────────────────────────────────────── */}
+      <section className="relative min-h-[660px] sm:min-h-[740px] lg:min-h-[820px] flex items-center pt-24 sm:pt-28 md:pt-36 pb-20 sm:pb-28 overflow-hidden bg-[#160e0a]">
+        {/* Full-bleed background image with team on the sofa */}
+        <div
+          className="absolute inset-0 bg-cover bg-no-repeat bg-[center_right] lg:bg-center pointer-events-none"
+          style={{ backgroundImage: `url(${talentHero})` }}
+        />
+
+        {/* Ambient espresso gradient wash for maximum text contrast across all device widths */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#160e0a] via-[#160e0a]/90 to-transparent lg:via-[#160e0a]/35 lg:to-transparent pointer-events-none" />
+
+        <div className="container-edge relative z-10 w-full">
+          <div className="max-w-[780px] space-y-6">
+            <span className="text-xs font-mono font-semibold uppercase tracking-[0.25em] text-white/70 block">
+              OUR PEOPLE
+            </span>
+
+            <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-sans font-bold tracking-tight text-white leading-[1.06]">
+              Partner with world-class{" "}
+              <br className="hidden sm:inline" />
+              creative talent{" "}
+              <span className="font-serif italic font-normal text-white">
+                without the hassle of hiring
+              </span>
             </h1>
-          </div>
-          <div className="md:col-span-4 space-y-6">
-            <div className="aspect-[4/5] bg-foreground text-background p-6 md:p-8 flex flex-col justify-between">
-              <div className="font-mono text-[10px] tracking-widest uppercase opacity-60">[ Brand Operating Partner ]</div>
-              <div>
-                <div className="editorial text-5xl md:text-6xl">B/N</div>
-                <div className="mt-3 text-sm opacity-80">Strategy · Identity · Digital · Growth — one team, four layers, one operating system for the brand.</div>
-              </div>
+
+            <p className="text-base sm:text-lg text-white/80 leading-relaxed max-w-xl">
+              Our people are our biggest strength. BRNND has assembled 800+ elite designers, project managers, animators, copywriters, AI technologists and more, so you can get frictionless, quality creative.
+            </p>
+
+            <div className="pt-2 flex items-center gap-4">
+              <button
+                type="button"
+                onClick={openBookDemo}
+                className="bg-[#C7F284] hover:bg-[#bef264] text-stone-950 font-sans font-bold text-sm sm:text-base px-8 py-4 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all shadow-md"
+              >
+                Book a demo
+              </button>
             </div>
-            <p className="text-muted-foreground leading-relaxed text-sm">
-              BRNND is a brand operating partner for ambitious founders. We don't draw logos and walk away — we build complete brand ecosystems that move with your business.
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────────
+          2. WORLD-CLASS ROOTS & COHESIVE PORTRAITS (Screenshot 4 System)
+          Bespoke scenic portraits, minimalist dark clothing, clean text
+          ───────────────────────────────────────────────────────────── */}
+      <section className="py-24 md:py-36 bg-[#16120e] text-white relative overflow-hidden border-t border-b border-white/10">
+        <div className="container-edge">
+          {/* Section Header */}
+          <div className="max-w-3xl mx-auto text-center mb-16 md:mb-20">
+            <p className="text-xs font-mono uppercase tracking-[0.25em] text-white/60 mb-4 font-semibold">
+              WORLD-CLASS ROOTS
+            </p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-sans font-bold tracking-tight text-white leading-[1.08]">
+              <span className="font-serif italic font-normal text-white">
+                The best talent
+              </span>{" "}
+              recruited from top brands and agencies
+            </h2>
+            <p className="mt-6 text-base sm:text-lg text-white/75 leading-relaxed max-w-2xl mx-auto">
+              Before BRNND, our people led award-winning campaigns at global agencies, built iconic brand systems at Fortune 500 companies, and launched bold work from inside scrappy startups. Now, they bring that firepower directly to you.
             </p>
           </div>
-        </div>
-        <div className="mt-16 hairline pt-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-xs font-mono uppercase tracking-widest text-muted-foreground">
-          <div>↳ Strategy</div>
-          <div>↳ Identity</div>
-          <div>↳ Digital</div>
-          <div>↳ Growth</div>
-        </div>
-      </section>
 
-      <section className="border-t border-border">
-        <div className="container-edge py-12 md:py-16">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-border">
-            {stats.map(([n, l]) => (
-              <div key={l} className="bg-background p-6 md:p-10">
-                <div className="editorial text-4xl md:text-5xl">{n}</div>
-                <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{l}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="border-t border-border">
-        <div className="container-edge py-20 md:py-28 grid grid-cols-1 md:grid-cols-12 gap-10">
-          <div className="md:col-span-5">
-            <p className="eyebrow mb-6">[ Why we exist ]</p>
-            <h2 className="editorial text-4xl md:text-5xl leading-[1.05]">
-              Most founders inherit a brand. We help them <em className="italic font-serif">build one on purpose.</em>
-            </h2>
-          </div>
-          <div className="md:col-span-6 md:col-start-7 space-y-5 text-muted-foreground leading-relaxed">
-            <p>The first brand a startup ships is usually a placeholder — a logo a cofounder made, a deck template that became a website, a tone of voice copied from whoever raised last.</p>
-            <p>It works, until it doesn't. The product gets serious. The market gets crowded. Customers start judging in seconds. Suddenly the brand is the bottleneck.</p>
-            <p>BRNND exists for that moment. We come in as an operating partner — not a vendor — and build the brand system that lets the next five years of growth happen without rebuilding the foundation every six months.</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-t border-border">
-        <div className="container-edge py-20 md:py-28">
-          <SectionHeader eyebrow="[ Our model ]" title="Strategy → Identity → Digital → Growth." description="Four layers, one team. Each one strengthens the next — so the brand you launch in week six is still working in year five." />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border">
-            {pillars.map((p) => (
-              <div key={p.no} className="bg-background p-8 md:p-12">
-                <div className="flex items-baseline justify-between mb-6">
-                  <div className="font-mono text-xs text-muted-foreground">{p.no}</div>
-                  <div className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">Layer</div>
+          {/* Clean Editorial Portrait Row */}
+          <div className="flex gap-6 sm:gap-8 overflow-x-auto pb-8 no-scrollbar snap-x justify-start lg:justify-center">
+            {teamMembers.map((member) => (
+              <div
+                key={member.name}
+                className="w-[240px] sm:w-[270px] shrink-0 flex flex-col items-center text-center snap-start group"
+              >
+                {/* Rounded Squircle Portrait */}
+                <div className="w-full aspect-[3/4] rounded-[26px] sm:rounded-[34px] overflow-hidden bg-[#221c17] shadow-2xl relative border border-white/5 group-hover:border-white/20 transition-all duration-300">
+                  <img
+                    src={member.photo}
+                    alt={member.name}
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
                 </div>
-                <h3 className="editorial text-3xl md:text-4xl">{p.title}</h3>
-                <p className="mt-4 text-muted-foreground leading-relaxed max-w-md">{p.body}</p>
-                <ul className="mt-6 space-y-2">
-                  {p.outputs.map((o) => (
-                    <li key={o} className="text-sm text-foreground/80 flex items-center gap-3">
-                      <span className="w-1.5 h-1.5 rounded-full bg-foreground/40" /> {o}
-                    </li>
-                  ))}
-                </ul>
+
+                {/* Name & Title Centered Underneath */}
+                <div className="mt-4 sm:mt-5 px-2">
+                  <h3 className="text-base sm:text-lg font-sans font-bold text-white tracking-tight">
+                    {member.name}
+                  </h3>
+                  <p className="text-xs sm:text-[13.5px] text-white/65 mt-1 font-normal">
+                    {member.role}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="border-t border-border bg-bone">
-        <div className="container-edge py-20 md:py-28">
-          <SectionHeader eyebrow="[ Principles ]" title="How we work, written down." description="Six rules we hold ourselves to on every engagement — the difference between a brand project and a brand partnership." />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border">
-            {principles.map(([t, d]) => (
-              <div key={t} className="bg-background p-8">
-                <h3 className="editorial text-2xl">{t}</h3>
-                <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{d}</p>
+      {/* ─────────────────────────────────────────────────────────────
+          3. HOW WE WORK WITH YOU (Screenshot 5 System)
+          Clean warm dark layout with numbered step guide
+          ───────────────────────────────────────────────────────────── */}
+      <section className="py-24 md:py-36 bg-[#110e0b] text-white border-b border-white/10">
+        <div className="container-edge">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+            {/* Left Column: Sticky Process Statement & Stats */}
+            <div className="lg:col-span-5 lg:sticky lg:top-28 space-y-8">
+              <div>
+                <p className="text-xs font-mono uppercase tracking-[0.25em] text-white/60 mb-4 font-semibold">
+                  HOW WE WORK WITH YOU
+                </p>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-sans font-bold tracking-tight text-white leading-[1.12]">
+                  A process built to give your brand{" "}
+                  <span className="font-serif italic font-normal text-white">
+                    the support it deserves
+                  </span>
+                </h2>
+                <p className="mt-6 text-base text-white/75 leading-relaxed">
+                  Finding the best people is just the first step. Our process is equally delightful—from onboarding to delivery, we make collaboration seamless.
+                </p>
               </div>
-            ))}
+
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={openBookDemo}
+                  className="bg-[#C7F284] hover:bg-[#bef264] text-stone-950 font-sans font-bold text-sm sm:text-base px-8 py-3.5 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm"
+                >
+                  Book a demo
+                </button>
+              </div>
+
+              {/* Big Stat Counters */}
+              <div className="pt-8 border-t border-white/10 grid grid-cols-2 gap-8">
+                <div>
+                  <p className="text-4xl sm:text-5xl font-sans font-bold text-white tracking-tight">
+                    60+
+                  </p>
+                  <p className="text-xs text-white/60 font-medium mt-1">
+                    Brands transformed worldwide
+                  </p>
+                </div>
+                <div>
+                  <p className="text-4xl sm:text-5xl font-sans font-bold text-white tracking-tight">
+                    9.8/10
+                  </p>
+                  <p className="text-xs text-white/60 font-medium mt-1">
+                    Average founder satisfaction rating
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column: Numbered Timeline with Vertical Connector Line */}
+            <div className="lg:col-span-7 relative pl-4 sm:pl-8">
+              {/* Vertical connector line */}
+              <div className="absolute left-[27px] sm:left-[43px] top-6 bottom-6 w-0.5 bg-gradient-to-b from-[#C7F284] via-white/20 to-white/5 pointer-events-none" />
+
+              <div className="space-y-12 sm:space-y-16">
+                {timelineSteps.map((step) => (
+                  <div key={step.number} className="relative flex items-start gap-6 sm:gap-8 group">
+                    {/* Numbered Circle */}
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#1e1914] border border-white/20 text-white flex items-center justify-center font-sans font-bold text-lg sm:text-xl shrink-0 shadow-lg shadow-black/40 z-10 group-hover:border-[#C7F284] group-hover:text-[#C7F284] transition-colors">
+                      {step.number}
+                    </div>
+
+                    {/* Step Content */}
+                    <div className="pt-1.5 space-y-2 max-w-xl">
+                      <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-[#C7F284] font-semibold block">
+                        {step.badge}
+                      </span>
+                      <h3 className="text-xl sm:text-2xl font-sans font-bold text-white tracking-tight">
+                        {step.title}
+                      </h3>
+                      <p className="text-sm sm:text-base text-white/70 leading-relaxed pt-1">
+                        {step.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="border-t border-border">
-        <div className="container-edge py-20 md:py-28">
-          <SectionHeader eyebrow="[ Who we work with ]" title="Founders building something serious." />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border">
-            {whoWeWorkWith.map((w) => (
-              <div key={w.title} className="bg-background p-8 md:p-10">
-                <h3 className="editorial text-2xl md:text-3xl">{w.title}</h3>
-                <p className="mt-4 text-muted-foreground leading-relaxed">{w.body}</p>
-              </div>
-            ))}
+      {/* ─────────────────────────────────────────────────────────────
+          4. BOTTOM CONVERSION CALLOUT
+          ───────────────────────────────────────────────────────────── */}
+      <section className="py-20 md:py-28 bg-[#0d0a08] text-white">
+        <div className="container-edge text-center max-w-3xl mx-auto space-y-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-sans font-bold tracking-tight text-white leading-[1.12]">
+            Ready to build a brand that{" "}
+            <span className="font-serif italic font-normal text-white">
+              actually commands trust?
+            </span>
+          </h2>
+          <p className="text-base text-white/75 max-w-xl mx-auto leading-relaxed">
+            Get in touch with our founding partners. We'll review your current brand, analyze your category landscape, and outline a custom roadmap within 48 hours.
+          </p>
+          <div className="pt-4 flex items-center justify-center gap-4 flex-wrap">
+            <button
+              type="button"
+              onClick={openBookDemo}
+              className="bg-[#C7F284] hover:bg-[#bef264] text-stone-950 font-sans font-bold text-sm sm:text-base px-8 py-4 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all shadow-md"
+            >
+              Book a discovery call
+            </button>
+            <Link
+              to="/careers"
+              className="border border-white/20 text-white hover:bg-white/10 text-sm sm:text-base font-medium px-6 py-4 rounded-full transition-colors"
+            >
+              Join our talent network →
+            </Link>
           </div>
         </div>
       </section>
-
-      <section className="border-t border-border bg-bone">
-        <div className="container-edge py-20 md:py-28">
-          <SectionHeader eyebrow="[ The short version ]" title="A decade of building brands, in four lines." />
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-px bg-border">
-            {story.map(([year, body]) => (
-              <div key={year} className="bg-background p-8">
-                <div className="font-mono text-xs text-muted-foreground mb-4">{year}</div>
-                <p className="text-sm text-foreground/80 leading-relaxed">{body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="container-edge py-24 md:py-36 text-center">
-        <p className="eyebrow mb-6">[ Let's build ]</p>
-        <h2 className="editorial text-4xl md:text-6xl lg:text-7xl leading-[1.02] max-w-4xl mx-auto">
-          Build a brand that earns trust <em className="italic font-serif">before the first conversation.</em>
-        </h2>
-        <p className="mt-6 text-muted-foreground max-w-xl mx-auto">Tell us where the brand is today. We'll tell you what it takes to get it to where it needs to be.</p>
-        <div className="mt-10 flex flex-wrap gap-3 justify-center">
-          <Link to="/contact" className="btn-ink">Book Strategy Call →</Link>
-          <Link to="/work" className="btn-ghost">See the work</Link>
-        </div>
-      </section>
-    </>
+    </div>
   );
 }

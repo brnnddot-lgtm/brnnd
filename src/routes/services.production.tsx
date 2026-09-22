@@ -23,7 +23,7 @@ function Page() {
       title={<>Production that <em className="italic font-serif">keeps shipping.</em></>}
       intro="The production layer that turns brand into output. Video, email and web — built by dedicated craft pods, delivered on a calendar your team can plan around."
       services={[
-        { label: "Email creation", desc: "Click-worthy emails that convert", to: "/services/email-creation" },
+        { label: "E-commerce flagships", desc: "Custom Shopify & headless commerce stores", to: "/services/ecommerce" },
         { label: "Web design", desc: "Sites and landing pages that ship", to: "/services/web-design" },
       ]}
       closing={<>Built to <em className="italic font-serif">go live.</em></>}

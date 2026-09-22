@@ -3,7 +3,7 @@ import { useState } from "react";
 import { openBookDemo } from "@/components/site/BookDemoModal";
 import { caseStudies } from "@/data/caseStudies";
 
-import webHeroBg from "@/assets/web-design-hero.jpg";
+import uiUxHeroBg from "@/assets/ui-ux-hero.jpg";
 import chipLogo from "@/assets/chip-logo.png";
 import chipBrandDev from "@/assets/chip-brand-dev.png";
 import chipRebranding from "@/assets/chip-rebranding.png";
@@ -11,149 +11,141 @@ import chipBrandDesign from "@/assets/chip-brand-design.png";
 import chipGuidelines from "@/assets/chip-guidelines.png";
 import chipMessaging from "@/assets/chip-messaging.png";
 
-export const Route = createFileRoute("/services/web-design")({
+export const Route = createFileRoute("/services/ui-ux")({
   head: () => ({
     meta: [
-      { title: "Web Design & Development — Sites Built to Grow With Your Brand | BRNND" },
+      { title: "UI/UX & Product Design Services — Digital Products Built to Scale | BRNND" },
       {
         name: "description",
         content:
-          "BRNND designs and engineers custom marketing websites, high-converting landing pages, and headless e-commerce platforms with editorial aesthetics and sub-second performance.",
+          "BRNND designs intuitive consumer mobile apps, complex B2B SaaS platforms, and enterprise digital experiences engineered for high retention and seamless developer execution.",
       },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "BRNND" },
-      { property: "og:title", content: "Web Design & Development — BRNND" },
+      { property: "og:title", content: "UI/UX & Product Design Services | BRNND" },
       {
         property: "og:description",
         content:
-          "High-performing web designs built to grow with your brand. Custom art-direction, sub-second Core Web Vitals, and intuitive CMS authoring.",
+          "Digital products that retain users and scale effortlessly. Custom user flows, design system integration, and pixel-perfect developer handoff.",
       },
-      { property: "og:url", content: "https://brnnd.com/services/web-design" },
+      { property: "og:url", content: "https://brnnd.com/services/ui-ux" },
       { property: "og:image", content: "https://brnnd.com/og-image.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Web Design & Development — BRNND" },
+      { name: "twitter:title", content: "UI/UX & Product Design Services | BRNND" },
       {
         name: "twitter:description",
-        content: "Custom marketing websites and digital experiences engineered to convert.",
+        content: "Intuitive product design engineered to turn complex workflows into effortless customer journeys.",
       },
       { name: "twitter:image", content: "https://brnnd.com/og-image.jpg" },
     ],
-    links: [{ rel: "canonical", href: "https://brnnd.com/services/web-design" }],
+    links: [{ rel: "canonical", href: "https://brnnd.com/services/ui-ux" }],
   }),
-  component: WebDesignServicesPage,
+  component: UiUxServicesPage,
 });
 
 const tickerChips = [
-  { label: "Marketing websites", thumb: chipBrandDesign, to: "/services/web-design" },
-  { label: "Headless commerce", thumb: chipLogo, to: "/services/web-design" },
-  { label: "Landing pages & CRO", thumb: chipBrandDev, to: "/services/web-design" },
-  { label: "Design system code sync", thumb: chipGuidelines, to: "/services/brand-guidelines" },
-  { label: "Figma-to-React builds", thumb: chipRebranding, to: "/services/web-design" },
-  { label: "Interactive motion & 3D", thumb: chipMessaging, to: "/services/web-design" },
-  { label: "CMS architecture", thumb: chipGuidelines, to: "/services/web-design" },
+  { label: "Mobile app design", thumb: chipBrandDesign, to: "/services/ui-ux" },
+  { label: "SaaS dashboard UX", thumb: chipLogo, to: "/services/ui-ux" },
+  { label: "Design systems & tokens", thumb: chipGuidelines, to: "/services/brand-guidelines" },
+  { label: "Interactive prototyping", thumb: chipBrandDev, to: "/services/ui-ux" },
+  { label: "User journey mapping", thumb: chipRebranding, to: "/services/ui-ux" },
+  { label: "Usability testing & audits", thumb: chipMessaging, to: "/services/ui-ux" },
+  { label: "Wireframing & IA", thumb: chipGuidelines, to: "/services/ui-ux" },
 ];
 
 const roiMetrics = [
-  { value: "98+", label: "Lighthouse Performance", sub: "Green Core Web Vitals on mobile and desktop." },
-  { value: "< 1.2s", label: "Largest Contentful Paint", sub: "Sub-second load times that keep bounce rates under 25%." },
-  { value: "+74%", label: "Average Conversion Lift", sub: "Art-directed layouts engineered for clear user journeys." },
-  { value: "6 Wks", label: "Kickoff to Production", sub: "Fast sprints with direct access to senior design engineers." },
+  { value: "+82%", label: "Day-30 Retention Lift", sub: "User journeys engineered to eliminate initial onboarding friction." },
+  { value: "-48%", label: "Task Completion Time", sub: "Intuitive information architecture that reduces cognitive load." },
+  { value: "99.2%", label: "Task Success Rate", sub: "Tested with real user personas before writing a single line of code." },
+  { value: "0", label: "Developer Handoff Guesswork", sub: "Production Figma tokens mapped 1-to-1 with React & mobile code." },
 ];
 
 const capabilities = [
   {
     num: "01",
-    title: "Art-Directed Marketing Websites",
-    desc: "We ditch cookie-cutter web templates. Every page is bespoke art-directed to reflect your elevated brand identity with high-converting storytelling and editorial typography.",
-    deliverables: ["Custom Desktop & Mobile Layouts", "Editorial Art Direction", "Interactive Component Systems", "Multi-Language Localization"],
+    title: "Mobile App Design (iOS & Android)",
+    desc: "Tactile, responsive mobile app interfaces designed natively for touch. From biometric authentication and gesture-driven bottom sheets to frictionless checkout flows.",
+    deliverables: ["Native iOS & Material 3 Specs", "Interactive Micro-Interactions", "App Store Screenshot Suites", "Figma Auto-Layout Master Components"],
   },
   {
     num: "02",
-    title: "High-Intent Landing Pages & CRO",
-    desc: "Pages engineered to convert cold ad traffic into pipeline. Designed with single-minded visual hierarchy, social proof placements, and friction-free lead capture forms.",
-    deliverables: ["A/B Testing Funnel Architecture", "High-Converting Hero Variations", "Lead Generation Flow Optimization", "Analytics & Heatmap Integration"],
+    title: "Complex B2B SaaS & Web Platforms",
+    desc: "Transforming dense enterprise workflows into calm, intuitive dashboards. We design multi-tenant permission controls, high-density data tables, and actionable analytics visualizers.",
+    deliverables: ["Data Grid & Filter Architecture", "Multi-Role Dashboard Views", "Complex State & Error Handlers", "Bulk Operation Modal Workflows"],
   },
   {
     num: "03",
-    title: "Headless Commerce & DTC Stores",
-    desc: "Custom Shopify, Hydrogen, or headless commerce storefronts engineered for fast unboxing experiences, instantaneous page loads, and mobile checkout optimization.",
-    deliverables: ["Custom Shopify Theme Architecture", "Headless Cart & Checkout Flows", "Dynamic Product Filtering & Search", "Subscription & Upsell System"],
+    title: "Design Systems & Component Architecture",
+    desc: "A single living source of truth for product designers and frontend engineers. We build multi-brand token systems in Figma synced directly to React and mobile codebases.",
+    deliverables: ["Atomic Component Libraries", "Figma Variables & Modes", "Dark / Light Mode Tokens", "Component Documentation & Specs"],
   },
   {
     num: "04",
-    title: "Modern CMS & Self-Serve Authoring",
-    desc: "Your marketing team shouldn't have to submit Jira tickets to change a headline. We construct structured, component-driven CMS workflows in Sanity, Webflow, or Contentful.",
-    deliverables: ["Visual Component Page Builders", "Structured Content Schemas", "Zero-Code Marketing Publishing", "Automated Image CDN Optimization"],
+    title: "Wireframing & Information Architecture",
+    desc: "Structuring complex product systems before committing to visual polish. We construct customer mental models, user journey maps, and interactive wireframe flows.",
+    deliverables: ["Information Architecture Blueprints", "Low-Fidelity Clickable Wireframes", "User Journey & Funnel Maps", "Card Sorting & Tree Testing"],
   },
   {
     num: "05",
-    title: "Creative Motion & Micro-Interactions",
-    desc: "Tactile micro-animations, scroll-driven interactive narratives, and subtle canvas physics using Framer Motion that elevate perceived quality without hurting performance.",
-    deliverables: ["Scroll-Triggered Sequences", "Interactive Hover States & Physics", "Smooth Page Transitions", "Reduced-Motion Accessibility Mode"],
+    title: "Usability Audits & Friction Teardowns",
+    desc: "Diagnosing why users drop off. We analyze behavioral heatmaps, session recordings, and qualitative feedback to identify UX bottlenecks and optimize conversion funnels.",
+    deliverables: ["Heuristic UX Evaluation", "Drop-off Funnel Analysis", "Accessibility WCAG Audit", "Prioritized UX Fix Matrix"],
   },
   {
     num: "06",
-    title: "Technical SEO & Core Web Vitals",
-    desc: "Speed is a feature and an SEO ranking factor. We guarantee pristine semantics, zero layout shift (CLS), structured JSON-LD schemas, and 95+ mobile performance scores.",
-    deliverables: ["Zero-CLS Layout Architecture", "Automated Dynamic Open Graph Previews", "Rich Snippet & Schema JSON-LD", "Full WCAG AA Accessibility Audit"],
+    title: "Interactive Prototyping & Motion Specs",
+    desc: "High-fidelity clickable prototypes that look and behave like finished production code. Perfect for executive buy-in, customer validation, and engineering alignment.",
+    deliverables: ["Figma & ProtoPie Prototypes", "Easing Curve Motion Specs", "Haptic & Sound Feedback Direction", "User Testing Simulation Kits"],
   },
 ];
 
-const techStackModules = [
+const productModules = [
   {
-    id: "frontend",
-    label: "Frontend & Architecture",
-    tag: "Core Engineering",
-    title: "Modern Jamstack with Sub-Second Edge Delivery",
-    desc: "We build with modern frameworks like Next.js, React, Astro, and TanStack Start deployed on Vercel Edge networks with static pre-rendering and dynamic server capabilities.",
+    id: "saas",
+    label: "B2B SaaS Architecture",
+    tag: "Enterprise",
+    title: "High-Density Data Without Cognitive Clutter",
+    desc: "Enterprise operators need to process hundreds of records without getting lost. We architect modular card layouts, batch-editing drawers, and contextual tooltips.",
     specPreview: {
-      type: "tech",
-      pills: ["Next.js / React", "TanStack Router", "Astro SSG", "Vercel Edge Network", "Sub-Second TTFB", "Zero Cold-Starts"],
-      codeSnippet: `// Example: Automated ISR & Edge Caching
-export const Route = createFileRoute('/services/web-design')({
-  loader: async () => fetchPageData({ cache: 'force-cache' }),
-  head: () => ({
-    meta: [{ title: 'Sub-Second Edge Rendering' }]
-  })
-});`,
+      type: "saas",
+      items: [
+        { name: "Adaptive Data Grids", detail: "Customizable columns with sticky headers, frozen action menus, and inline editing." },
+        { name: "Contextual Filter Drawers", detail: "Faceted search, multi-condition logic, and saved view presets." },
+        { name: "Role-Based Navigation", detail: "Dynamic sidebars that adapt seamlessly between Admin, Manager, and Read-Only roles." },
+        { name: "Empty & Error States", detail: "Zero dead ends. Every empty state guides the user toward their next productive action." },
+      ],
     },
   },
   {
-    id: "cms",
-    label: "CMS & Authoring",
-    tag: "Marketing Speed",
-    title: "Content Systems Marketers Actually Love",
-    desc: "We configure modular visual block architectures in Sanity, Webflow, or Contentful. Marketers compose new landing pages in minutes using pre-tested brand blocks.",
+    id: "mobile",
+    label: "Mobile UX Patterns",
+    tag: "Native Touch",
+    title: "Ergonomic Interaction Designed for the Thumb Zone",
+    desc: "Over 75% of mobile interactions happen with one thumb. We place primary actions in the lower third, design swipe-to-dismiss sheets, and eliminate accidental taps.",
     specPreview: {
-      type: "cms",
-      pills: ["Sanity Studio v3", "Webflow Enterprise", "Contentful Composable", "Instant Preview Mode", "Role-Based Permissions"],
-      codeSnippet: `// Composable Block Schema
-export default defineType({
-  name: 'page',
-  type: 'document',
-  fields: [
-    defineField({ name: 'hero', type: 'editorialHero' }),
-    defineField({ name: 'modules', type: 'array', of: [{ type: 'featureGrid' }, { type: 'roiBar' }] })
-  ]
-});`,
+      type: "mobile",
+      items: [
+        { name: "Bottom Sheet Workflows", detail: "Progressive disclosure drawers that keep context visible while executing tasks." },
+        { name: "Haptic Micro-Feedback", detail: "Subtle tactile responses mapped to successful payments, toggle changes, and form submissions." },
+        { name: "Fluid Sheet Transitions", detail: "Spring-physics gestures that respond instantaneously to user touch velocity." },
+        { name: "Offline-First States", detail: "Optimistic UI updates that prevent spinner fatigue during intermittent connectivity." },
+      ],
     },
   },
   {
-    id: "motion",
-    label: "Motion & UI",
-    tag: "Sensory Polish",
-    title: "60 FPS Micro-Interactions Without Performance Penalties",
-    desc: "Utilizing hardware-accelerated CSS and Framer Motion, our digital experiences respond fluidly to customer gestures while respecting prefers-reduced-motion preferences.",
+    id: "tokens",
+    label: "Component Engineering",
+    tag: "Dev Handoff",
+    title: "Zero Lost In Translation Between Figma and Code",
+    desc: "Our design deliverables use identical naming conventions, props, and variant states as production React components, cutting implementation time in half.",
     specPreview: {
-      type: "motion",
-      pills: ["Framer Motion", "Lenis Smooth Scroll", "CSS Hardware Transforms", "WCAG Reduced Motion", "Dynamic SVG Physics"],
-      codeSnippet: `// Hardware-Accelerated Micro-Interaction
-<motion.div
-  whileHover={{ scale: 1.02 }}
-  whileTap={{ scale: 0.98 }}
-  transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-  className="rounded-full bg-[#C7F284] text-black"
-/>`,
+      type: "tokens",
+      items: [
+        { name: "State-Complete Variants", detail: "Default, Hover, Focused, Active, Disabled, Loading, and Error states designed for every element." },
+        { name: "Responsive Auto-Layout", detail: "Components flex cleanly across 320px mobile up to 2560px ultrawide displays." },
+        { name: "Automated Token Pipeline", detail: "Color, spacing, and typography tokens exported directly to CSS and Tailwind themes." },
+        { name: "Interactive Specs in Storybook", detail: "Self-documenting UI components inspectable by engineers with zero guesswork." },
+      ],
     },
   },
 ];
@@ -161,86 +153,86 @@ export default defineType({
 const processSteps = [
   {
     step: "01",
-    phase: "Information Architecture & Wireframes",
-    duration: "Week 1",
-    desc: "Customer journey mapping, content hierarchy teardown, and low-fidelity spatial wireframes to establish the conversion path before aesthetics.",
+    phase: "Product Discovery & Mental Models",
+    duration: "Weeks 1–2",
+    desc: "Stakeholder interviews, customer journey mapping, and competitive product teardowns to establish clear UX success metrics.",
   },
   {
     step: "02",
-    phase: "Creative Art Direction & UI Exploration",
-    duration: "Weeks 2–3",
-    desc: "Developing bespoke typography pairings, immersive dark/light palettes, and high-fidelity desktop and mobile viewports in Figma.",
+    phase: "Information Architecture & Wireframes",
+    duration: "Weeks 3–4",
+    desc: "Low-fidelity interactive wireframe sprints. We map every screen, decision branch, and error state before applying visual design.",
   },
   {
     step: "03",
-    phase: "Component Engineering & Design System",
-    duration: "Weeks 3–4",
-    desc: "Codifying modular React components with Tailwind CSS tokens and crafting responsive micro-animations.",
+    phase: "Visual UI & Component System",
+    duration: "Weeks 5–6",
+    desc: "Crafting the visual language: bespoke typography, elevation tokens, dark/light modes, and high-fidelity desktop and mobile viewports.",
   },
   {
     step: "04",
-    phase: "CMS Integration & Content Ingestion",
-    duration: "Weeks 4–5",
-    desc: "Connecting Sanity or Webflow, building the modular editor workspace, and migrating all client content, images, and case studies.",
+    phase: "Interactive Prototyping & Usability Tests",
+    duration: "Weeks 7–8",
+    desc: "Validating the prototype with real target users. We measure task completion times, eliminate friction points, and refine micro-interactions.",
   },
   {
     step: "05",
-    phase: "QA, Core Web Vitals & Launch",
-    duration: "Week 6",
-    desc: "Rigorous cross-browser testing across Safari, Chrome, and iOS devices, Lighthouse optimization, and zero-downtime DNS deployment.",
+    phase: "Design Token Architecture & Dev Handoff",
+    duration: "Weeks 9–10",
+    desc: "Structuring the master Figma token library, writing engineering handoff documentation, and conducting design QA alongside developers.",
   },
 ];
 
 const comparisonRows = [
-  { metric: "Design Art Direction", brnnd: "100% custom, bespoke editorial typography", agency: "Cookie-cutter templates & frameworks", inHouse: "Iterative tweaks to old code" },
-  { metric: "Core Web Vitals Guarantee", brnnd: "98+ mobile Lighthouse score guaranteed", agency: "Untested (frequently fails LCP/CLS)", inHouse: "Varies wildly by sprint" },
-  { metric: "CMS Autonomy for Marketing", brnnd: "Drag-and-drop modular blocks (zero dev reliance)", agency: "Clunky WordPress / complex code", inHouse: "Engineering backlog bottleneck" },
-  { metric: "Development Speed", brnnd: "6-week production sprint to live launch", agency: "4–8 months of committee approvals", inHouse: "Deprioritized for product features" },
-  { metric: "Design System Alignment", brnnd: "Figma tokens mapped 1-to-1 with React CSS", agency: "Static PDF mockups handed over", inHouse: "Design debt accumulates" },
-  { metric: "IP & Repository Ownership", brnnd: "100% client code & asset ownership", agency: "Proprietary CMS lock-in", inHouse: "Internal" },
+  { metric: "Product Understanding", brnnd: "Deep UX research & business logic immersion", agency: "Surface-level skinning over templates", inHouse: "Tunnel vision from internal consensus" },
+  { metric: "Developer Handoff Quality", brnnd: "Production tokens & 1-to-1 component variants", agency: "Static image mockups with missing states", inHouse: "Ad-hoc Figma files without documentation" },
+  { metric: "Mobile Ergonomics", brnnd: "Thumb-zone physics & native touch patterns", agency: "Desktop layouts squeezed onto mobile", inHouse: "Inconsistent across platforms" },
+  { metric: "Prototyping Fidelity", brnnd: "Interactive prototypes that feel like real apps", agency: "Flat click-through slides", inHouse: "Basic Figma page links" },
+  { metric: "Sprint Speed", brnnd: "Agile 8–10 week sprint to final handoff", agency: "6–12 months of bureaucratic committees", inHouse: "Constantly interrupted by bug fixes" },
+  { metric: "Deliverable Ownership", brnnd: "100% client ownership of master Figma files & tokens", agency: "Restricted licensing", inHouse: "Internal" },
 ];
 
 const faqs = [
   {
-    q: "How long does a complete custom marketing website take to launch?",
-    a: "Our typical full-stack marketing website build takes 6 focused weeks from initial kickoff to live DNS rollout. For urgent product launches or single high-converting landing pages, sprint tracks can ship in 2 to 3 weeks.",
+    q: "How do you conduct UX research with real users?",
+    a: "We combine qualitative user interviews with unmoderated usability tests using clickable prototypes. We record user sessions, analyze drop-off rates on key tasks, and identify cognitive friction before writing production code.",
   },
   {
-    q: "Which CMS do you recommend for our marketing team?",
-    a: "We recommend Sanity Studio for modern engineering teams who want complete content flexibility, or Webflow Enterprise for marketing teams who prefer visual canvas editing. Both give non-technical team members complete freedom to launch new pages without calling developers.",
+    q: "Can you integrate directly with our existing engineering sprint cycles?",
+    a: "Yes. We work in tight agile cadence alongside your engineering leads, product managers, and frontend developers. We provide annotated Figma handoff frames, component state matrices, and participate in sprint planning to ensure smooth implementation.",
   },
   {
-    q: "Do you use templates or build custom code from scratch?",
-    a: "Every BRNND website is built completely bespoke. We start from a clean canvas in Figma, tailoring the layout, interactions, and type hierarchy to your brand. The code is written in clean, modern React/Tailwind with zero third-party plugin bloat.",
+    q: "How do you prepare Figma files for developer handoff?",
+    a: "Every frame uses Figma Auto-Layout, standardized token naming (mapped directly to CSS/Tailwind variables), and explicit component variants for all interactive states (hover, focus, disabled, loading, error). We also provide a dedicated Dev Mode spec frame.",
   },
   {
-    q: "How do you guarantee Core Web Vitals and 95+ Lighthouse scores?",
-    a: "We enforce strict performance budgets during development: modern image formats (WebP/AVIF) with explicit aspect ratios to eliminate CLS, server-side static pre-rendering, lazy-loading below-the-fold media, and self-hosting variable web fonts with preload headers.",
+    q: "Do you design for both native iOS and Android?",
+    a: "Yes. We follow Apple Human Interface Guidelines (HIG) and Google Material 3 principles, ensuring your app feels completely native on each operating system while maintaining a coherent brand identity.",
   },
   {
-    q: "Do we own all final Figma designs, source code, and assets?",
-    a: "Yes. 100% of all Figma files, GitHub repositories, CMS schemas, and media assets belong entirely to your company upon final delivery.",
+    q: "Do we own 100% of all master Figma files, design tokens, and components?",
+    a: "Yes. 100% of all Figma source files, interactive prototypes, design tokens, and documentation belong entirely to your company upon project completion.",
   },
 ];
 
-function WebDesignServicesPage() {
+function UiUxServicesPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [activeTab, setActiveTab] = useState<string>("frontend");
+  const [activeTab, setActiveTab] = useState<string>("saas");
   const selectedCaseStudies = caseStudies.slice(0, 3);
 
-  const currentTab = techStackModules.find((t) => t.id === activeTab) || techStackModules[0];
+  const currentTab = productModules.find((t) => t.id === activeTab) || productModules[0];
 
   return (
     <div className="bg-background text-foreground selection:bg-brand-lime selection:text-black min-h-screen">
       {/* ─────────────────────────────────────────────────────────────
-          1. HERO SECTION (Editorial format matching Superside web-design)
+          1. HERO SECTION (Editorial format matching Superside product-design)
           ───────────────────────────────────────────────────────────── */}
       <section className="relative min-h-[90vh] md:h-screen md:min-h-[640px] md:max-h-[1020px] flex flex-col justify-between overflow-hidden bg-stone-950">
-        {/* Real Laptop on Velvet Sofa Web Design Photography */}
+        {/* Real Product App Design Photography on Velvet Surface */}
         <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
           <img
-            src={webHeroBg}
-            alt="Web Design and Digital Experiences"
+            src={uiUxHeroBg}
+            alt="UI/UX and Product Design Services"
             className="w-full h-full object-cover object-right md:object-[68%_center]"
           />
           {/* Subtle directional vignette on the left for crisp white typography */}
@@ -250,24 +242,24 @@ function WebDesignServicesPage() {
         {/* Hero Text Content (Positioned cleanly on the left side) */}
         <div className="relative z-10 pt-28 sm:pt-32 md:pt-36 pb-8 pl-6 sm:pl-10 md:pl-14 lg:pl-16 xl:pl-20 pr-4 max-w-[750px] mr-auto">
           <p className="text-xs sm:text-[13px] font-semibold uppercase tracking-[0.25em] text-white/90 mb-4 font-mono">
-            WEB DESIGN & DEVELOPMENT
+            UI/UX & PRODUCT DESIGN
           </p>
           <h1 className="text-3xl sm:text-4xl md:text-[2.65rem] lg:text-[3rem] xl:text-[3.25rem] font-sans font-bold text-white leading-[1.12] tracking-tight">
             <span className="block whitespace-normal md:whitespace-nowrap">
-              High-performing websites{" "}
+              Intuitive digital products{" "}
               <span className="font-serif italic font-normal text-[calc(100%+3px)]">
                 built to
               </span>
             </span>
             <span className="block whitespace-normal md:whitespace-nowrap mt-1">
               <span className="font-serif italic font-normal text-[calc(100%+3px)]">
-                grow with
+                retain users,
               </span>{" "}
-              your brand
+              engineered to scale
             </span>
           </h1>
           <p className="mt-5 text-sm sm:text-base text-white/90 max-w-[460px] leading-relaxed font-sans font-normal">
-            BRNND designs and engineers custom marketing websites, high-converting landing pages, and headless digital experiences that combine editorial aesthetics with sub-second performance.
+            BRNND designs consumer mobile apps, complex B2B SaaS platforms, and enterprise digital experiences that balance human intuition with high-converting interaction architecture.
           </p>
 
           <div className="mt-7 flex items-center gap-4 flex-wrap">
@@ -281,7 +273,7 @@ function WebDesignServicesPage() {
               to="/work"
               className="border border-white/30 hover:border-white text-white font-sans font-semibold text-sm sm:text-base px-6 py-3.5 rounded-full transition-all hover:bg-white/10"
             >
-              View live web builds →
+              Explore UX case studies →
             </Link>
           </div>
         </div>
@@ -315,7 +307,7 @@ function WebDesignServicesPage() {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          3. ROI & PERFORMANCE METRIC BAR
+          3. ROI & PRODUCT METRICS BAR
           ───────────────────────────────────────────────────────────── */}
       <section className="py-16 border-b border-border bg-stone-50 dark:bg-stone-950/60">
         <div className="container-edge">
@@ -338,24 +330,24 @@ function WebDesignServicesPage() {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          4. INTERACTIVE TECH STACK & ARCHITECTURE EXPLORER
+          4. INTERACTIVE PRODUCT EXPERIENCE EXPLORER
           ───────────────────────────────────────────────────────────── */}
       <section className="py-24 sm:py-32 border-b border-border">
         <div className="container-edge">
           <div className="max-w-2xl mb-12">
             <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground mb-3">
-              Modern Engineering Stack
+              Product Architecture
             </p>
             <h2 className="text-3xl sm:text-4xl font-sans font-bold tracking-tight text-foreground">
-              Engineered for speed, autonomy, and zero plugin debt.
+              Engineered for high retention and effortless adoption.
             </h2>
             <p className="mt-4 text-base text-muted-foreground leading-relaxed">
-              We marry art-directed creative design with cutting-edge headless architecture so marketing teams move fast without depending on engineering sprints.
+              We design digital products that look stunning on marketing decks and perform flawlessly in production under complex user workflows.
             </p>
           </div>
 
           <div className="flex items-center gap-2 overflow-x-auto pb-4 border-b border-border mb-8">
-            {techStackModules.map((tab) => (
+            {productModules.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
@@ -382,26 +374,36 @@ function WebDesignServicesPage() {
               <p className="text-sm text-muted-foreground leading-relaxed mb-6">
                 {currentTab.desc}
               </p>
-              <div className="flex flex-wrap gap-2 mb-6">
-                {currentTab.specPreview.pills.map((pill, i) => (
-                  <span
-                    key={i}
-                    className="text-xs font-mono px-3 py-1.5 rounded-md border border-border bg-muted/40 text-foreground"
-                  >
-                    {pill}
-                  </span>
-                ))}
+              <div className="p-4 rounded-xl border border-border bg-muted/20">
+                <p className="text-xs font-mono uppercase text-muted-foreground mb-2">
+                  Product Advantage
+                </p>
+                <p className="text-xs text-foreground/90 leading-relaxed">
+                  We don't design isolated screens—we build comprehensive interaction systems that consider network latency, error boundaries, empty states, and progressive disclosure.
+                </p>
               </div>
             </div>
 
             <div className="lg:col-span-7 border border-border rounded-xl p-6 bg-card">
-              <div className="flex items-center justify-between text-xs font-mono text-muted-foreground mb-3 pb-2 border-b border-border">
-                <span>Architecture Preview</span>
-                <span className="text-[11px] font-semibold text-brand-lime">Production Ready</span>
+              <div className="space-y-3">
+                <div className="text-xs font-mono text-muted-foreground mb-2 flex items-center justify-between">
+                  <span>Architecture Component</span>
+                  <span className="text-[11px] text-brand-lime font-semibold">Production Ready</span>
+                </div>
+                {currentTab.specPreview.items.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="p-4 rounded-lg border border-border bg-background hover:border-foreground/40 transition-colors"
+                  >
+                    <p className="text-xs font-mono font-semibold text-foreground mb-1">
+                      {item.name}
+                    </p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      {item.detail}
+                    </p>
+                  </div>
+                ))}
               </div>
-              <pre className="text-xs font-mono text-foreground/80 bg-muted/40 p-4 rounded-lg overflow-x-auto leading-relaxed">
-                {currentTab.specPreview.codeSnippet}
-              </pre>
             </div>
           </div>
         </div>
@@ -414,13 +416,13 @@ function WebDesignServicesPage() {
         <div className="container-edge">
           <div className="max-w-2xl mb-16">
             <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground mb-3">
-              Web Capabilities
+              Core Capabilities
             </p>
             <h2 className="text-3xl sm:text-4xl font-sans font-bold tracking-tight text-foreground">
-              Everything required to launch an elite digital experience.
+              End-to-end product design from concept to engineering handoff.
             </h2>
             <p className="mt-4 text-base text-muted-foreground leading-relaxed">
-              We handle the entire journey: from strategy and wireframes to custom art direction, headless frontend code, CMS setup, and DNS deployment.
+              Whether you are launching a zero-to-one MVP or redesigning a mature enterprise SaaS platform, we provide senior product design firepower that delivers results.
             </p>
           </div>
 
@@ -465,19 +467,19 @@ function WebDesignServicesPage() {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          6. SPRINT PROCESS (6 Weeks to Production)
+          6. PROCESS & TIMELINE (10-Week Product Sprint)
           ───────────────────────────────────────────────────────────── */}
       <section className="py-24 sm:py-32 border-b border-border">
         <div className="container-edge">
           <div className="max-w-2xl mb-16">
             <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground mb-3">
-              The Sprint
+              The Product Sprint
             </p>
             <h2 className="text-3xl sm:text-4xl font-sans font-bold tracking-tight text-foreground">
-              A disciplined 6-week path from kickoff to live deployment.
+              A structured 10-week sprint to a validated, scalable product.
             </h2>
             <p className="mt-4 text-base text-muted-foreground leading-relaxed">
-              Traditional web agencies get bogged down in endless status meetings. We ship live staging previews every 72 hours with transparent communication.
+              We iterate rapidly with clickable prototypes, test with real target users, and deliver production-ready design tokens that engineers love working with.
             </p>
           </div>
 
@@ -512,17 +514,17 @@ function WebDesignServicesPage() {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          7. SELECTED WEB CASE STUDIES
+          7. SELECTED PRODUCT CASE STUDIES
           ───────────────────────────────────────────────────────────── */}
       <section className="py-24 sm:py-32 border-b border-border bg-stone-50 dark:bg-stone-950/40">
         <div className="container-edge">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-16 gap-6">
             <div>
               <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground mb-3">
-                Live Platforms
+                Proven Platforms
               </p>
               <h2 className="text-3xl sm:text-4xl font-sans font-bold tracking-tight text-foreground">
-                Real websites designed and engineered by BRNND.
+                Digital products and platforms engineered by BRNND.
               </h2>
             </div>
             <Link
@@ -587,13 +589,13 @@ function WebDesignServicesPage() {
         <div className="container-edge">
           <div className="max-w-2xl mb-16">
             <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground mb-3">
-              Why BRNND Web
+              Why BRNND Product
             </p>
             <h2 className="text-3xl sm:text-4xl font-sans font-bold tracking-tight text-foreground">
-              A modern operational model for company websites.
+              A modern operational model for product design.
             </h2>
             <p className="mt-4 text-base text-muted-foreground leading-relaxed">
-              No template drag-and-drop mediocrity and no 9-month agency timelines. We combine high-end creative design with production-grade software engineering.
+              Skip agency bureaucracy and unvetted freelancers. We partner directly with founders and product executives to build software that scales effortlessly.
             </p>
           </div>
 
@@ -602,16 +604,16 @@ function WebDesignServicesPage() {
               <thead>
                 <tr className="border-b border-border bg-muted/40 font-mono text-xs">
                   <th className="p-4 sm:p-5 text-muted-foreground font-semibold">
-                    Engineering Dimension
+                    Product Design Dimension
                   </th>
                   <th className="p-4 sm:p-5 text-foreground font-bold bg-foreground/[0.04] border-x border-border">
-                    BRNND Production Web
+                    BRNND Product Design
                   </th>
                   <th className="p-4 sm:p-5 text-muted-foreground font-normal">
-                    Traditional Web Agency
+                    Traditional Agency
                   </th>
                   <th className="p-4 sm:p-5 text-muted-foreground font-normal">
-                    In-House Team
+                    Contract Freelancers
                   </th>
                 </tr>
               </thead>
@@ -654,7 +656,7 @@ function WebDesignServicesPage() {
               FAQ
             </p>
             <h2 className="text-3xl sm:text-4xl font-sans font-bold tracking-tight text-foreground">
-              Everything you need to know about building a site with BRNND.
+              Everything you need to know about product design with BRNND.
             </h2>
           </div>
 
@@ -690,20 +692,20 @@ function WebDesignServicesPage() {
       <section className="py-24 sm:py-32 bg-stone-950 text-white">
         <div className="container-edge text-center max-w-3xl">
           <p className="text-xs font-mono uppercase tracking-[0.25em] text-white/70 mb-4">
-            Build Your Flagship Website
+            Build Exceptional Software
           </p>
           <h2 className="text-3xl sm:text-5xl font-sans font-bold tracking-tight text-white leading-tight">
-            Ready to build a website that out-converts your competition?
+            Ready to design a product users love returning to?
           </h2>
           <p className="mt-6 text-base text-white/70 leading-relaxed max-w-xl mx-auto">
-            Book a 30-minute website teardown session with our senior digital operating partners. We'll review your current Core Web Vitals, conversion bottlenecks, and technical architecture.
+            Book a 30-minute product teardown with our senior UX operating partners. We'll audit your core user flows, identify drop-off bottlenecks, and outline a clear design sprint.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <button
               onClick={openBookDemo}
               className="bg-[#C7F284] hover:bg-[#b8eb6a] text-stone-950 font-sans font-semibold text-base px-8 py-4 rounded-full transition-all hover:scale-[1.02] active:scale-[0.98] shadow-none"
             >
-              Book a website review
+              Book a product teardown
             </button>
             <Link
               to="/work"

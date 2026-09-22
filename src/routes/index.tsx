@@ -4,6 +4,8 @@ import { Route as WorkCaseRoute } from "./work.$slug";
 import { motion, useMotionValue, useSpring, useTransform, useInView, animate } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { SectionHeader } from "@/components/site/SectionHeader";
+import { openBookDemo } from "@/components/site/BookDemoModal";
+import { caseStudies } from "@/data/caseStudies";
 
 import hero from "@/assets/hero-showcase.jpg";
 import heroTypeSystem from "@/assets/hero-type-system.webp";
@@ -26,8 +28,6 @@ import transformation from "@/assets/transformation.jpg";
 import work3foods from "@/assets/work-3foods.webp";
 import workBaggy from "@/assets/work-baggy.webp";
 import workMinthost from "@/assets/work-minthost.webp";
-import talentTrio from "@/assets/talent-trio.webp";
-import talentTrioSet from "@/assets/talent-trio.webp?w=480;800;1200;1600&format=webp&as=srcset";
 import burnoutDesk from "@/assets/burnout-desk.webp";
 import burnoutDeskSet from "@/assets/burnout-desk.webp?w=480;800;1200;1600&format=webp&as=srcset";
 import storySoothe from "@/assets/story-soothe.webp";
@@ -39,23 +39,58 @@ import aboutSplit from "@/assets/about-split.webp";
 import aboutSplitSet from "@/assets/about-split.webp?w=480;800;1200;1600&format=webp&as=srcset";
 import editorialSplit from "@/assets/editorial-split.webp";
 import editorialSplitSet from "@/assets/editorial-split.webp?w=480;800;1200;1600&format=webp&as=srcset";
-import serviceBrand from "@/assets/service-brand.webp";
-import serviceBrandSet from "@/assets/service-brand.webp?w=480;800;1200;1600&format=webp&as=srcset";
-import serviceDigital from "@/assets/service-digital.webp";
-import serviceDigitalSet from "@/assets/service-digital.webp?w=480;800;1200;1600&format=webp&as=srcset";
-import serviceGrowth from "@/assets/service-growth.webp";
-import serviceGrowthSet from "@/assets/service-growth.webp?w=480;800;1200;1600&format=webp&as=srcset";
+import serviceBrand from "@/assets/service-brand.jpg";
+import serviceBrandSet from "@/assets/service-brand.jpg?w=480;800;1200;1600&format=webp&as=srcset";
+import serviceDigital from "@/assets/service-digital.jpg";
+import serviceDigitalSet from "@/assets/service-digital.jpg?w=480;800;1200;1600&format=webp&as=srcset";
+import serviceGrowth from "@/assets/service-growth.jpg";
+import serviceGrowthSet from "@/assets/service-growth.jpg?w=480;800;1200;1600&format=webp&as=srcset";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "BRNND — Brand transformation partner for ambitious founders" },
-      { name: "description", content: "BRNND builds complete brand systems — strategy, identity, websites and growth — for founders, startups and businesses ready to scale." },
-      { property: "og:title", content: "BRNND — Brand transformation partner for ambitious founders" },
-      { property: "og:description", content: "We build brands people trust, remember, and grow with. Strategy → Identity → Digital → Growth." },
+      { title: "BRNND — Brand Transformation Partner for Ambitious Founders" },
+      {
+        name: "description",
+        content:
+          "BRNND builds complete brand systems — strategy, identity, websites, and growth — for founders and high-growth businesses ready to scale. Real projects, verified metrics.",
+      },
+      // Open Graph Tags (OGs)
+      { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "BRNND" },
+      { property: "og:locale", content: "en_US" },
       { property: "og:url", content: "https://brnnd.com/" },
+      { property: "og:title", content: "BRNND — Brand Transformation Partner for Ambitious Founders" },
+      {
+        property: "og:description",
+        content:
+          "We build brand systems people trust, remember, and grow with. Strategy → Identity → Digital Experiences → Growth Systems.",
+      },
+      { property: "og:image", content: "https://brnnd.com/og-image.jpg" },
+      { property: "og:image:secure_url", content: "https://brnnd.com/og-image.jpg" },
+      { property: "og:image:type", content: "image/jpeg" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "BRNND — Brand Transformations That Grow The Business" },
+      // Twitter Card Meta
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:site", content: "@brnndstudio" },
+      { name: "twitter:creator", content: "@brnndstudio" },
+      { name: "twitter:title", content: "BRNND — Brand Transformation Partner for Ambitious Founders" },
+      {
+        name: "twitter:description",
+        content:
+          "Complete brand systems — strategy, identity, websites, and growth — for founders ready to scale.",
+      },
+      { name: "twitter:image", content: "https://brnnd.com/og-image.jpg" },
+      { name: "twitter:image:alt", content: "BRNND — Brand Transformations That Grow The Business" },
+      // Theme & Mobile
+      { name: "theme-color", content: "#051610" },
     ],
-  links: [{ rel: "canonical", href: "https://brnnd.com/" }],
+    links: [
+      { rel: "canonical", href: "https://brnnd.com/" },
+      { rel: "image_src", href: "https://brnnd.com/og-image.jpg" },
+    ],
   }),
   component: Home,
 });
@@ -75,43 +110,59 @@ function Home() {
           <LogoMarquee />
         </div>
 
-        {/* Editorial split — Beyond AI-powered */}
-        <div className="container-edge py-24 md:py-36 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        {/* Editorial split — Beyond traditional agencies (Superside style) */}
+        <div className="container-edge py-20 md:py-32 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="max-w-xl">
-            <p className="eyebrow border-t border-foreground/20 pt-4">About BRNND</p>
-            <h2 className="editorial text-4xl md:text-5xl lg:text-6xl mt-6">
-              We don't draw logos. We build{" "}
-              <em className="italic font-serif">complete brand ecosystems.</em>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-t border-border pt-4">About BRNND</p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-semibold tracking-tight text-foreground mt-6 leading-[1.15]">
+              Beyond traditional agencies.<br />
+              <span className="font-serif italic text-accent">Complete brand systems,</span> built to scale.
             </h2>
-            <p className="mt-8 text-lg text-foreground/80">
-              Strategy → Identity → Digital → Growth.
+            <p className="mt-6 text-lg font-medium text-foreground/90">
+              What happens when strategy and senior execution meet?
             </p>
-            <p className="mt-4 text-sm text-foreground/60 leading-relaxed max-w-md">
-              BRNND is a brand operating partner for ambitious founders. Four layers of work, one senior team — designed so the brand you launch keeps compounding long after the day it goes live.
+            <p className="mt-3 text-base text-foreground/70 leading-relaxed">
+              By uniting senior brand strategists, digital designers, and growth specialists into a dedicated operating partner, founders get sharper positioning, faster sprint delivery, stronger consistency, and complete brand systems that actually perform.
             </p>
-            <BookRoute.Link className="btn-ink mt-10">Book Strategy Call</BookRoute.Link>
+            <div className="mt-8">
+              <button
+                type="button"
+                onClick={openBookDemo}
+                className="rounded-full bg-foreground hover:bg-foreground/90 text-background px-7 py-3 text-sm font-semibold tracking-tight transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+              >
+                Book a demo
+              </button>
+            </div>
           </div>
-          <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-bone">
+          <div className="relative aspect-[4/3] lg:aspect-[5/4] overflow-hidden rounded-xl bg-stone-100 border border-border/40 shadow-none">
             <img src={aboutSplit} srcSet={aboutSplitSet} sizes="(min-width: 768px) 50vw, 100vw" alt="Brand transformation in motion — BRNND identity sketches, Pantone swatches and brand book in studio" className="w-full h-full object-cover" loading="lazy" />
           </div>
         </div>
 
         {/* Editorial split — Brand operating partner */}
-        <div className="container-edge pb-24 md:pb-36 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-bone order-2 lg:order-1">
+        <div className="container-edge pb-20 md:pb-32 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <div className="relative aspect-[4/3] lg:aspect-[5/4] overflow-hidden rounded-xl bg-stone-100 border border-border/40 shadow-none order-2 lg:order-1">
             <img src={editorialSplit} srcSet={editorialSplitSet} sizes="(min-width: 768px) 50vw, 100vw" alt="Brand operating partner — BRNND guidelines, website and social system across print, web and mobile" className="w-full h-full object-cover" loading="lazy" />
           </div>
           <div className="max-w-xl order-1 lg:order-2">
-            <p className="eyebrow border-t border-foreground/20 pt-4">Brand operating partner</p>
-            <h2 className="editorial text-4xl md:text-5xl lg:text-6xl mt-6">
-              The brand partner founders <em className="italic font-serif">stay with.</em>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-t border-border pt-4">Brand operating partner</p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-semibold tracking-tight text-foreground mt-6 leading-[1.15]">
+              The brand partner founders <em className="italic font-serif text-accent">stay with.</em>
             </h2>
-            <p className="mt-8 text-base text-foreground/80 leading-relaxed">
-              BRNND works the way a founding team would want their brand built — strategy-led, design-strong, shipped end-to-end, and handed over as a system you can keep running.
+            <p className="mt-6 text-lg font-medium text-foreground/90">
+              Strategy → Identity → Digital → Growth.
             </p>
-            <p className="mt-4 text-sm text-foreground/60 leading-relaxed max-w-md">
-              Not a freelance studio. Not an agency middleman. A brand operating partner for the long game.
+            <p className="mt-3 text-base text-foreground/70 leading-relaxed">
+              BRNND works the way a founding team would want their brand built — strategy-led, design-strong, shipped end-to-end, and handed over as an operational system you can keep running without dependencies.
             </p>
+            <div className="mt-8">
+              <Link
+                to="/contact"
+                className="rounded-full border border-border hover:border-foreground/40 text-foreground hover:bg-foreground/5 px-7 py-3 text-sm font-medium transition-all duration-200 inline-block"
+              >
+                Talk to us
+              </Link>
+            </div>
           </div>
         </div>
         <div className="container-edge pb-14 grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -122,10 +173,10 @@ function Home() {
             { to: 4.9, suffix: " / 5", decimals: 1, v: "Founder satisfaction" },
           ].map((m) => (
             <div key={m.v} className="hairline pt-4">
-              <div className="editorial text-4xl md:text-5xl">
+              <div className="text-3xl md:text-4xl font-sans font-bold tracking-tight">
                 <CountUp to={m.to} prefix={m.prefix} suffix={m.suffix} decimals={m.decimals} />
               </div>
-              <div className="text-xs uppercase tracking-widest text-muted-foreground mt-2">{m.v}</div>
+              <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground mt-2">{m.v}</div>
             </div>
           ))}
         </div>
@@ -133,27 +184,27 @@ function Home() {
 
       {/* DARK FEATURE BAND — World-class talent */}
       <section
-        style={{ background: "#4B0082", color: "oklch(0.97 0.015 100)" }}
+        style={{ background: "#061812", color: "#F2EEE3" }}
         className="theme-dark"
       >
         <div className="container-edge py-24 md:py-32">
           <div className="text-center max-w-3xl mx-auto">
-            <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-foreground/60 mb-6">Our services</p>
-            <h2 className="editorial text-4xl md:text-5xl lg:text-6xl">
-              Complete brand systems for founders <em className="italic font-serif text-accent">building to last.</em>
+            <p className="text-xs font-semibold uppercase tracking-wider text-white/60 mb-4">Our services</p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-semibold tracking-tight text-white leading-[1.15]">
+              Complete brand systems for founders <em className="italic font-serif text-brand-lime">building to last.</em>
             </h2>
           </div>
 
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
+          <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             {[
               { tag: "Brand", rest: "Strategy & Identity", img: serviceBrand, srcset: serviceBrandSet, solid: true },
               { tag: "Digital", rest: "Websites & UI/UX", img: serviceDigital, srcset: serviceDigitalSet },
               { tag: "Growth", rest: "Social, Launch, Campaigns", img: serviceGrowth, srcset: serviceGrowthSet },
             ].map((f) => (
-              <div key={f.tag} className="group relative aspect-[4/5] overflow-hidden rounded-2xl bg-white/5 ring-1 ring-white/10">
+              <div key={f.tag} className="group relative aspect-[4/5] overflow-hidden rounded-xl bg-white/5 ring-1 ring-white/10 hover:ring-white/20 transition-all duration-300 shadow-none">
                 <img src={f.img} srcSet={f.srcset} sizes="(min-width: 768px) 33vw, 100vw" alt={`${f.tag} ${f.rest}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-                <div className="absolute inset-x-0 bottom-0 p-4 md:p-5">
-                  <div className={`rounded-lg px-4 py-3 text-sm md:text-base ${f.solid ? "bg-accent text-accent-foreground" : "bg-foreground/[0.08] backdrop-blur text-foreground border border-white/10"}`}>
+                <div className="absolute inset-x-0 bottom-0 p-5 md:p-6">
+                  <div className={`rounded-xl px-4 py-3 text-sm md:text-base font-sans font-medium ${f.solid ? "bg-brand-lime text-stone-950 font-semibold" : "bg-black/50 backdrop-blur-md text-white border border-white/15"}`}>
                     <em className="italic font-serif">{f.tag}</em> {f.rest}
                   </div>
                 </div>
@@ -165,9 +216,9 @@ function Home() {
         {/* STATS — best return on your investment */}
         <div className="container-edge pb-28 md:pb-36">
           <div className="text-center mb-20">
-            <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-foreground/60 mb-6">Why founders choose BRNND</p>
-            <h3 className="editorial text-4xl md:text-5xl lg:text-6xl">
-              Brands that earn trust, <em className="italic font-serif text-accent">remembered, and grown with.</em>
+            <p className="text-xs font-semibold uppercase tracking-wider text-white/60 mb-4">Why founders choose BRNND</p>
+            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-semibold tracking-tight text-white leading-[1.15]">
+              Brands that earn trust, <em className="italic font-serif text-brand-lime">remembered, and grown with.</em>
             </h3>
           </div>
 
@@ -189,83 +240,74 @@ function Home() {
         </div>
       </section>
 
-      {/* OUR SERVICES — scalable creative services */}
-      <section className="container-edge py-24 md:py-36">
-        <div className="text-center max-w-3xl mx-auto">
-          <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-foreground/60 mb-6">What we build</p>
-          <h2 className="editorial text-4xl md:text-5xl lg:text-6xl">
-            Everything inside a <em className="italic font-serif">complete brand system.</em>
-          </h2>
-        </div>
-
-        <div className="mt-20 max-w-5xl mx-auto flex flex-wrap justify-center gap-2.5 md:gap-3">
-          {[
-            { l: "Brand Strategy", c: "bg-[oklch(0.85_0.16_140)] text-[oklch(0.2_0.04_165)]" },
-            { l: "Rebranding", c: "bg-[oklch(0.92_0.06_85)] text-[oklch(0.2_0.04_165)]" },
-            
-            { l: "Logo Systems", c: "bg-[oklch(0.88_0.08_50)] text-[oklch(0.2_0.04_165)]" },
-            { l: "Brand Guidelines", c: "bg-[oklch(0.78_0.15_50)] text-[oklch(0.2_0.04_165)]" },
-            { l: "Websites", c: "bg-[oklch(0.88_0.12_140)] text-[oklch(0.2_0.04_165)]" },
-            { l: "UI/UX", c: "bg-[oklch(0.85_0.16_140)] text-[oklch(0.2_0.04_165)]" },
-            { l: "Landing Pages", c: "bg-[oklch(0.7_0.18_25)] text-foreground" },
-            { l: "Social Media Systems", c: "bg-[oklch(0.92_0.06_85)] text-[oklch(0.2_0.04_165)]" },
-            { l: "Email Design", c: "bg-[oklch(0.78_0.15_50)] text-[oklch(0.2_0.04_165)]" },
-            { l: "Launch Campaigns", c: "bg-[oklch(0.88_0.12_140)] text-[oklch(0.2_0.04_165)]" },
-            { l: "Growth Assets", c: "bg-[oklch(0.25_0.05_30)] text-foreground" },
-            { l: "Naming", c: "bg-[oklch(0.94_0.04_120)] text-[oklch(0.2_0.04_165)] border border-foreground/15" },
-            { l: "Pitch Decks", c: "bg-[oklch(0.85_0.16_140)] text-[oklch(0.2_0.04_165)]" },
-            { l: "Packaging", c: "bg-[oklch(0.94_0.04_120)] text-[oklch(0.2_0.04_165)] border border-foreground/15" },
-            { l: "Brand Photography", c: "bg-[oklch(0.85_0.16_140)] text-[oklch(0.2_0.04_165)]" },
-            { l: "…and more", c: "bg-transparent text-foreground/60 border border-foreground/20" },
-          ].map((s) => (
-            <span key={s.l} className={`rounded-full px-4 py-2 text-sm md:text-[15px] ${s.c} hover:scale-105 transition-transform cursor-default`}>
-              {s.l}
-            </span>
-          ))}
-        </div>
-      </section>
 
       {/* OUR WORK — top brand showcase grid */}
-      <section className="container-edge pb-24 md:pb-36">
+      <section className="container-edge pt-24 md:pt-36 pb-24 md:pb-36">
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-12">
           <div>
-            <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-foreground/60 mb-4">Case studies</p>
-            <h2 className="editorial text-4xl md:text-5xl lg:text-6xl max-w-2xl">
-              Brand transformations <em className="italic font-serif">that grew the business.</em>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Case studies</p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-semibold tracking-tight text-foreground max-w-2xl leading-[1.15]">
+              Brand transformations <em className="italic font-serif text-accent">that grew the business.</em>
             </h2>
           </div>
           <Link to="/work" className="btn-ghost shrink-0">See all case studies →</Link>
         </div>
 
-        <div className="grid grid-cols-12 gap-4 md:gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {[
-            { name: "3Foods", tags: "Food & Beverage · DTC — Digital ordering experience", img: work3foods, span: "col-span-12 md:col-span-6 aspect-[16/10]", slug: "3foods" },
-            { name: "Baggy Co", tags: "Fashion · DTC — Conversion-focused checkout", img: workBaggy, span: "col-span-6 md:col-span-3 aspect-[4/5]", slug: "baggy-co" },
-            { name: "MintHost", tags: "Hosting · SaaS — Platform redesign", img: workMinthost, span: "col-span-6 md:col-span-3 aspect-[4/5]", slug: "minthost" },
+            caseStudies.find((c) => c.slug === "muntajar") || caseStudies[0],
+            caseStudies.find((c) => c.slug === "sanvogue") || caseStudies[4],
+            caseStudies.find((c) => c.slug === "formline") || caseStudies[8],
+            caseStudies.find((c) => c.slug === "dress-dhaka") || caseStudies[3],
+            caseStudies.find((c) => c.slug === "luniso") || caseStudies[5],
+            caseStudies.find((c) => c.slug === "edvice-uk") || caseStudies[1],
           ].map((w) => (
-            <WorkCaseRoute.Link key={w.name} params={{ slug: w.slug }} className={`group ${w.span}`}>
-              <div className="relative w-full h-full overflow-hidden rounded-2xl bg-bone">
-                <img src={w.img} alt={w.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
+            <Link
+              key={w.slug}
+              to="/work/$slug"
+              params={{ slug: w.slug }}
+              className="group block focus:outline-none"
+            >
+              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-stone-100 dark:bg-stone-900 shadow-none border border-border/40">
+                <img
+                  src={w.hero.hero_image.src}
+                  alt={w.client}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute bottom-3 right-3 bg-white/95 dark:bg-stone-900/95 backdrop-blur px-2.5 py-1 rounded text-[11px] font-sans font-semibold uppercase tracking-wider text-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-300 border border-border/40 shadow-sm">
+                  View case study →
+                </div>
               </div>
               <div className="mt-4">
-                <h3 className="editorial text-xl md:text-2xl italic">{w.name}</h3>
-                <p className="text-xs text-foreground/55 mt-1">{w.tags}</p>
+                <div className="flex items-baseline justify-between gap-2">
+                  <h3 className="font-sans font-bold text-xl md:text-2xl text-foreground group-hover:text-accent transition-colors">
+                    {w.client}
+                  </h3>
+                  <span className="text-xs font-semibold text-muted-foreground group-hover:text-foreground transition-colors shrink-0">
+                    Explore →
+                  </span>
+                </div>
+                <p className="text-xs text-foreground/60 mt-1 line-clamp-1">
+                  {w.industry} · {w.project_type}
+                </p>
               </div>
-            </WorkCaseRoute.Link>
+            </Link>
           ))}
         </div>
       </section>
 
       {/* COMPARISON — Hiring or traditional outsourcing? */}
       <section
-        style={{ background: "#000000", color: "oklch(0.97 0.015 100)" }}
+        style={{ background: "#051610", color: "oklch(0.97 0.015 100)" }}
         className="theme-dark"
       >
         <div className="container-edge py-24 md:py-36">
           <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
-            <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-foreground/60 mb-6">BRNND vs. the alternatives</p>
-            <h2 className="editorial text-4xl md:text-5xl lg:text-6xl">
-              A freelance designer? A big agency? <em className="italic font-serif" style={{ color: "#FF5A1F" }}>Neither.</em>
+            <p className="text-xs font-semibold uppercase tracking-wider text-white/60 mb-4">BRNND vs. the alternatives</p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-semibold tracking-tight text-white leading-[1.15]">
+              A freelance designer? A big agency? <em className="italic font-serif text-brand-lime">Neither.</em>
             </h2>
           </div>
 
@@ -335,43 +377,49 @@ function HeroCinematic() {
       />
 
 
-      <div className="container-edge grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-12 lg:gap-16 items-start min-h-[calc(100vh-7rem)]">
+      <div className="container-edge grid grid-cols-1 lg:grid-cols-[minmax(0,5.2fr)_minmax(0,6.8fr)] gap-10 lg:gap-14 items-center min-h-[calc(100vh-6rem)]">
         {/* LEFT */}
         <motion.div
           initial="hidden"
           animate="show"
           variants={{
             hidden: {},
-            show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+            show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
           }}
-          className="relative"
+          className="relative py-8 lg:py-14"
         >
           <motion.h1
-            variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.22, 1, 0.36, 1] } } }}
-            className="font-serif text-accent text-[2.5rem] sm:text-6xl md:text-7xl lg:text-[6.5rem] leading-[1.05] sm:leading-[1] tracking-[-0.01em] break-words"
+            variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } }}
+            className="text-4xl sm:text-5xl md:text-6xl xl:text-[4.75rem] font-sans font-medium tracking-tight text-white leading-[1.08]"
           >
-            Brand transformation <em className="italic">partner</em>
-            <br />for ambitious founders.
+            The brand partner for<br />
+            <span className="font-serif italic text-brand-lime">ambitious founders™</span>
           </motion.h1>
 
           <motion.p
-            variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } } }}
-            className="mt-8 max-w-md text-[15px] text-foreground/75 leading-relaxed"
+            variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } }}
+            className="mt-6 text-white/75 text-base sm:text-lg max-w-lg leading-relaxed font-normal"
           >
-            BRNND builds complete brand systems — strategy, identity,
-            websites and growth — for founders, startups and businesses
-            ready to grow into the brand they were meant to be.
+            Scale your brand with senior strategists and designers. Complete brand systems — strategy, identity, websites and growth — delivered fast.
           </motion.p>
 
           <motion.div
-            variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } } }}
-            className="mt-10"
+            variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } }}
+            className="mt-8 flex flex-wrap items-center gap-4"
           >
-            <BookRoute.Link
-              className="inline-flex items-center rounded-full bg-accent text-accent-foreground px-7 py-4 text-sm font-medium hover:opacity-90 transition-opacity"
+            <button
+              type="button"
+              onClick={openBookDemo}
+              className="rounded-full bg-brand-lime hover:bg-[#bef264] text-stone-950 px-8 py-3.5 text-[15px] font-semibold tracking-tight transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
             >
-              Book Strategy Call
-            </BookRoute.Link>
+              Book a demo
+            </button>
+            <Link
+              to="/work"
+              className="rounded-full border border-white/20 text-white/90 hover:text-white hover:bg-white/10 px-6 py-3.5 text-[14.5px] font-medium transition-all duration-200"
+            >
+              Explore work
+            </Link>
           </motion.div>
         </motion.div>
 
@@ -503,18 +551,18 @@ function LoopRow({
 function RowTile({ src, srcset, brand, ratio }: Tile) {
   const aspect = ratio === "3/4" ? "aspect-[3/4]" : ratio === "4/5" ? "aspect-[4/5]" : "aspect-square";
   return (
-    <div className={`group relative h-40 sm:h-48 ${aspect} shrink-0 overflow-hidden rounded-[20px] bg-white/5 ring-1 ring-white/10 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)] hover:ring-white/25 transition-all duration-500`}>
+    <div className={`group relative h-40 sm:h-48 ${aspect} shrink-0 overflow-hidden rounded-xl bg-white/5 ring-1 ring-white/10 shadow-none hover:ring-white/25 transition-all duration-300`}>
       <img
         src={src}
         srcSet={srcset || undefined}
         sizes="40vw"
         alt={brand}
         loading="lazy"
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.05]"
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40 opacity-80" />
       <div className="absolute inset-0 flex items-start p-4">
-        <span className="font-semibold tracking-tight text-white text-[15px] drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">
+        <span className="font-sans font-semibold tracking-tight text-white text-[15px]">
           {brand}
         </span>
       </div>
@@ -526,20 +574,20 @@ function RowTile({ src, srcset, brand, ratio }: Tile) {
 function GalleryTile({ src, srcset, brand, ratio }: Tile) {
   const aspect = ratio === "3/4" ? "aspect-[3/4]" : ratio === "4/5" ? "aspect-[4/5]" : "aspect-square";
   return (
-    <div className={`group relative ${aspect} overflow-hidden rounded-[20px] bg-white/5 ring-1 ring-white/10 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)] hover:ring-white/25 transition-all duration-500`}>
+    <div className={`group relative ${aspect} overflow-hidden rounded-xl bg-white/5 ring-1 ring-white/10 hover:ring-white/30 transition-all duration-300 shadow-none`}>
       <img
         src={src}
         srcSet={srcset || undefined}
         sizes="(min-width: 1024px) 20vw, (min-width: 640px) 30vw, 33vw"
         alt={brand}
         loading="lazy"
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.05]"
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
       />
       {/* Subtle dark wash for logo legibility */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40 opacity-80" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/30 opacity-70 group-hover:opacity-60 transition-opacity" />
       {/* Brand wordmark */}
-      <div className="absolute inset-0 flex items-start p-4 md:p-5">
-        <span className="font-semibold tracking-tight text-white text-[15px] md:text-[17px] drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">
+      <div className="absolute inset-0 flex items-start p-3.5 md:p-4">
+        <span className="font-sans font-bold tracking-tight text-white text-[14px] md:text-[16px]">
           {brand}
         </span>
       </div>
@@ -594,36 +642,35 @@ function LogoMarquee() {
 /* ───────────────── Comparison Table ───────────────── */
 
 const compareCols = ["Speed", "Flexibility", "Quality", "Scalability", "Efficiency", "AI & Strategy"];
-const compareRows: { name: string; desc: string; icon: string; featured?: boolean; values: boolean[] }[] = [
+
+const compareRows: {
+  name: string;
+  desc: string;
+  values: boolean[];
+}[] = [
   {
     name: "BRNND",
     desc: "A senior brand operating partner. Strategy, identity, digital and growth — built as one system, shipped end-to-end.",
-    icon: "brnnd",
-    featured: true,
     values: [true, true, true, true, true, true],
   },
   {
     name: "In-house team",
-    desc: "Founders rarely have a senior brand team in-house — and hiring one before product-market-fit is risky and expensive.",
-    icon: "◐",
+    desc: "Founders rarely have a senior brand team in-house — hiring one before scale is slow, risky, and expensive.",
     values: [false, true, true, false, false, false],
   },
   {
     name: "Big agencies",
-    desc: "Six-figure retainers, six-month timelines, six rounds of revisions — built for enterprise, not for founders.",
-    icon: "✎",
+    desc: "Six-figure retainers, six-month timelines, six rounds of revisions — built for enterprise committees, not founders.",
     values: [false, false, true, false, false, false],
   },
   {
     name: "Freelancers",
-    desc: "Talented people, but one discipline at a time. You end up stitching together a brand instead of building one.",
-    icon: "◇",
+    desc: "Talented individuals, but one discipline at a time. You end up stitching together pieces instead of building a brand.",
     values: [false, true, false, false, false, false],
   },
   {
     name: "DIY / no-code",
-    desc: "Templates get you online fast, but they don't earn trust. The brand never feels like one anyone built on purpose.",
-    icon: "▣",
+    desc: "Templates get you online fast, but they don't command authority. The brand never feels intentional.",
     values: [true, false, false, true, true, false],
   },
 ];
@@ -631,53 +678,73 @@ const compareRows: { name: string; desc: string; icon: string; featured?: boolea
 function ComparisonTable() {
   return (
     <div className="max-w-6xl mx-auto overflow-x-auto">
-      <div className="min-w-[860px]">
+      <div className="min-w-[860px] border border-white/10 rounded-xl">
         {/* Header row */}
-        <div className="grid grid-cols-[minmax(280px,1.6fr)_repeat(6,minmax(0,1fr))] gap-2 px-4 md:px-6 py-4">
-          <div />
+        <div className="grid grid-cols-[minmax(280px,1.6fr)_repeat(6,minmax(0,1fr))] gap-2 px-6 py-4 border-b border-white/10 bg-white/[0.02]">
+          <div className="text-xs uppercase tracking-wider text-white/40 font-mono">Model</div>
           {compareCols.map((c) => (
-            <div key={c} className="text-center font-serif italic text-sm md:text-base text-foreground/90">{c}</div>
+            <div key={c} className="text-center font-serif italic text-sm text-white/70">
+              {c}
+            </div>
           ))}
         </div>
 
-        {compareRows.map((r) => (
-          <div
-            key={r.name}
-            className={`grid grid-cols-[minmax(280px,1.6fr)_repeat(6,minmax(0,1fr))] gap-2 items-center px-4 md:px-6 py-6 rounded-2xl ${
-              r.featured
-                ? "my-2"
-                : "border-b border-white/10"
-            }`}
-            style={r.featured ? { background: "#FF5A1F", color: "#1a1a1a" } : undefined}
-          >
-            <div className="flex items-start gap-4">
-              <div className={`h-11 w-11 shrink-0 rounded-xl flex items-center justify-center overflow-hidden text-lg ${r.featured ? "bg-black" : "bg-white/[0.06] text-foreground"}`}>
-                {r.icon === "brnnd" ? (
-                  <img src={logoBlack} alt="Brnnd" className="h-9 w-9 object-contain rounded-md" />
-                ) : (
-                  <span>{r.icon}</span>
-                )}
+        {/* Rows */}
+        {compareRows.map((r, idx) => {
+          const isBrnnd = r.name === "BRNND";
+          return (
+            <div
+              key={r.name}
+              className={`grid grid-cols-[minmax(280px,1.6fr)_repeat(6,minmax(0,1fr))] gap-2 items-center px-6 py-5 ${
+                idx !== compareRows.length - 1 ? "border-b border-white/10" : ""
+              } ${isBrnnd ? "bg-white/[0.04]" : ""}`}
+            >
+              <div className="pr-4">
+                <p className={`font-sans text-base font-semibold ${isBrnnd ? "text-white" : "text-white/80"}`}>
+                  {r.name}
+                </p>
+                <p className="text-xs text-white/50 mt-1 leading-relaxed max-w-sm">
+                  {r.desc}
+                </p>
               </div>
-              <div>
-                <p className={`font-medium text-sm md:text-base ${r.featured ? "" : "text-foreground"}`}>{r.name}</p>
-                <p className={`text-xs md:text-[13px] mt-1 leading-relaxed max-w-xs ${r.featured ? "text-black/70" : "text-foreground/55"}`}>{r.desc}</p>
-              </div>
+
+              {r.values.map((v, i) => (
+                <div key={i} className="flex justify-center">
+                  {v ? (
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="18"
+                      height="18"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className={isBrnnd ? "text-white" : "text-white/60"}
+                    >
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  ) : (
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="16"
+                      height="16"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="text-white/20"
+                    >
+                      <line x1="18" y1="6" x2="6" y2="18" />
+                      <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                  )}
+                </div>
+              ))}
             </div>
-            {r.values.map((v, i) => (
-              <div key={i} className="flex justify-center">
-                {v ? (
-                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={r.featured ? "" : "text-foreground/85"}>
-                    <path d="M5 12l4 4 10-10" />
-                  </svg>
-                ) : (
-                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-foreground/35">
-                    <path d="M6 6l12 12M18 6L6 18" />
-                  </svg>
-                )}
-              </div>
-            ))}
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
@@ -839,35 +906,6 @@ function OurDifference() {
 function TalentAndBurnout() {
   return (
     <>
-      {/* World-class talent — dark split */}
-      <section
-        className="theme-dark"
-        style={{
-          ["--background" as any]: "oklch(0.18 0.025 30)",
-          ["--foreground" as any]: "oklch(0.97 0.015 80)",
-        }}
-      >
-        <div className="bg-background text-foreground">
-          <div className="container-edge py-24 md:py-36 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div className="max-w-xl">
-              <h2 className="editorial text-4xl md:text-5xl lg:text-6xl leading-[1.05] mb-8">
-                <em className="italic font-serif text-[oklch(0.78_0.12_30)]">Senior brand operators</em><br/>
-                on every<br/>engagement
-              </h2>
-              <p className="text-base md:text-lg text-foreground/85 leading-relaxed mb-5 max-w-md">
-                Strategists, designers and engineers who've shipped brands from idea to IPO.
-              </p>
-              <p className="text-sm text-foreground/65 leading-relaxed max-w-md">
-                Every BRNND engagement is led by senior people doing the work — not pitched by partners and handed to juniors. You work directly with the operators building your brand, from first call to launch and beyond.
-              </p>
-            </div>
-            <div className="rounded-3xl overflow-hidden aspect-[4/3] lg:aspect-[5/4]">
-              <img src={talentTrio} srcSet={talentTrioSet} sizes="(min-width: 768px) 50vw, 100vw" alt="Senior brand operators" loading="lazy" width={1280} height={960} className="w-full h-full object-cover" />
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Burnout — green split */}
       <section
         className="theme-dark"
@@ -877,13 +915,13 @@ function TalentAndBurnout() {
         }}
       >
         <div className="bg-background text-foreground">
-          <div className="container-edge py-24 md:py-36 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div className="rounded-3xl overflow-hidden aspect-[4/3] order-2 lg:order-1">
+          <div className="container-edge py-24 md:py-32 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div className="rounded-xl overflow-hidden aspect-[4/3] order-2 lg:order-1 shadow-none">
               <img src={burnoutDesk} srcSet={burnoutDeskSet} sizes="(min-width: 768px) 50vw, 100vw" alt="Overworked creative team" loading="lazy" width={1280} height={960} className="w-full h-full object-cover" />
             </div>
             <div className="max-w-xl order-1 lg:order-2">
-              <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-foreground/65 mb-6 pb-6 border-b border-foreground/15">For founders who are tired of half-built brands</p>
-              <h2 className="editorial text-4xl md:text-5xl lg:text-6xl leading-[1.05] mb-8 text-[oklch(0.92_0.08_150)]">
+              <p className="text-xs font-semibold uppercase tracking-wider text-foreground/75 mb-6 pb-6 border-b border-foreground/15">For founders who are tired of half-built brands</p>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-semibold tracking-tight text-[oklch(0.92_0.08_150)] leading-[1.15] mb-8">
                 Stop stitching freelancers. <em className="italic font-serif">Build a brand on purpose.</em>
               </h2>
               <p className="text-base md:text-lg text-foreground/85 leading-relaxed mb-4 max-w-md">

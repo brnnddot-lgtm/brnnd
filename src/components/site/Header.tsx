@@ -1,8 +1,11 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { openBookDemo } from "@/components/site/BookDemoModal";
 import logoBlack from "@/assets/brnnd-logo-black.png";
 import logoWhite from "@/assets/brnnd-logo-white.png";
+import talentTrio from "@/assets/talent-trio.webp";
+import testAi from "@/assets/test-ai.jpg";
+import burnoutDesk from "@/assets/burnout-desk.webp";
 
 type IconName =
   | "target" | "share" | "slides" | "pencil" | "grid" | "bulb" | "book" | "shirt"
@@ -30,7 +33,6 @@ type NavItem = {
 };
 
 const nav: NavItem[] = [
-  { to: "/work", label: "Our Work" },
   {
     to: "/contact",
     label: "Services",
@@ -42,8 +44,8 @@ const nav: NavItem[] = [
             variant: "solid",
             items: [
               { label: "Brand strategy", desc: "Positioning, audience, messaging", icon: "compass", to: "/services/branding-services" },
-              { label: "Rebranding", desc: "Modernize without losing equity", icon: "spark", to: "/services/branding-services" },
-              { label: "Brand guidelines", desc: "A system your team can run", icon: "book", to: "/services/branding-services" },
+              { label: "Rebranding", desc: "Modernize without losing equity", icon: "spark", to: "/services/rebranding" },
+              { label: "Brand guidelines", desc: "A system your team can run", icon: "book", to: "/services/brand-guidelines" },
             ],
           },
         ],
@@ -55,9 +57,9 @@ const nav: NavItem[] = [
             variant: "accent",
             items: [
               { label: "Websites", desc: "Marketing sites built to convert", icon: "monitor", to: "/services/web-design" },
-              { label: "UI/UX", desc: "Product and app experiences", icon: "frame", to: "/services/web-design" },
-              { label: "Landing pages", desc: "High-intent pages that ship fast", icon: "target", to: "/services/web-design" },
-              { label: "Email design", desc: "Lifecycle and campaign emails", icon: "at", to: "/services/email-creation" },
+              { label: "UI/UX", desc: "Product and app experiences", icon: "frame", to: "/services/ui-ux" },
+              { label: "Landing pages", desc: "High-intent pages that ship fast", icon: "target", to: "/services/landing-pages" },
+              { label: "E-commerce", desc: "Digital flagships & high-converting stores", icon: "bag", to: "/services/ecommerce" },
             ],
           },
         ],
@@ -71,16 +73,16 @@ const nav: NavItem[] = [
               { label: "Social media systems", desc: "Always-on assets for every platform", icon: "share", to: "/services/social-media-creative" },
               { label: "Growth assets", desc: "Ads, decks, sales collateral", icon: "trend", to: "/services/ad-creative" },
               { label: "Launch campaigns", desc: "Coordinated brand rollouts", icon: "flag", to: "/services/campaign-strategy" },
-              
             ],
           },
         ],
       },
     ],
   },
+  { to: "/work", label: "Our work" },
   {
     to: "/about",
-    label: "Why BRNND",
+    label: "Why us",
     menu: [
       {
         sections: [
@@ -111,7 +113,6 @@ const nav: NavItem[] = [
       },
     ],
   },
-  { to: "/careers", label: "Careers" },
   {
     to: "/insights",
     label: "Resources",
@@ -144,6 +145,7 @@ const nav: NavItem[] = [
       },
     ],
   },
+  { to: "/careers", label: "Careers" },
 ];
 
 function MenuIcon({ name }: { name: IconName }) {
@@ -170,6 +172,7 @@ function MenuIcon({ name }: { name: IconName }) {
     case "play": return (<svg {...props}><circle cx="12" cy="12" r="9"/><path d="M10 9l5 3-5 3z"/></svg>);
     case "spark": return (<svg {...props}><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M6 18l2.5-2.5M15.5 8.5L18 6"/></svg>);
     case "at": return (<svg {...props}><circle cx="12" cy="12" r="4"/><path d="M16 12v1.5a2.5 2.5 0 005 0V12a9 9 0 10-3.5 7.1"/></svg>);
+    case "bag": return (<svg {...props}><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>);
     case "monitor": return (<svg {...props}><rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M8 21h8M12 17v4"/></svg>);
     case "shapes": return (<svg {...props}><circle cx="7" cy="7" r="3.5"/><rect x="13" y="3.5" width="7" height="7" rx="1"/><path d="M12 14l4 7H8z"/></svg>);
     case "frame": return (<svg {...props}><rect x="4" y="4" width="16" height="16" rx="1.5"/><path d="M4 9h16M4 15h16M9 4v16M15 4v16"/></svg>);
@@ -201,192 +204,387 @@ export function Header() {
   const [hovered, setHovered] = useState<string | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
 
+  const location = useLocation();
+  const isDarkHeroPage =
+    location.pathname === "/" ||
+    location.pathname === "" ||
+    location.pathname === "/about" ||
+    location.pathname.startsWith("/services/branding-services") ||
+    location.pathname.startsWith("/services/rebranding") ||
+    location.pathname.startsWith("/services/brand-guidelines") ||
+    location.pathname.startsWith("/services/web-design") ||
+    location.pathname.startsWith("/services/ui-ux") ||
+    location.pathname.startsWith("/services/landing-pages") ||
+    location.pathname.startsWith("/services/ecommerce") ||
+    location.pathname.startsWith("/services/e-commerce");
+  const isDarkHero = isDarkHeroPage && !scrolled;
+
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => setScrolled(window.scrollY > 20);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    setOpen(false);
+    setHovered(null);
+  }, [location.pathname]);
 
   const activeMenu = nav.find((n) => n.label === hovered)?.menu;
 
   return (
     <header
       onMouseLeave={() => setHovered(null)}
-      className={`sticky top-0 inset-x-0 z-50 transition-all duration-500 text-foreground ${
-        scrolled || hovered
-          ? "bg-background/90 backdrop-blur-xl border-b border-border"
-          : "bg-background border-b border-transparent"
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 shadow-none ${
+        scrolled || hovered || open
+          ? isDarkHero
+            ? "bg-[#14100d]/95 backdrop-blur-xl border-b border-white/10"
+            : "bg-background/90 backdrop-blur-xl border-b border-foreground/10"
+          : "bg-transparent border-b border-transparent"
       }`}
     >
-      <div className="container-edge flex h-16 md:h-20 items-center justify-between">
-        <Link to="/" className="flex items-center group" aria-label="Brnnd home">
-          <img
-            src={logoBlack}
-            alt="Brnnd"
-            width={1920}
-            height={733}
-            fetchPriority="high"
-            decoding="async"
-            className="h-8 md:h-9 w-auto transition-opacity duration-300"
-          />
-        </Link>
+      <div className="container-edge flex h-16 md:h-20 items-center justify-between relative">
+        {/* Left Side: Logo + Nav Links (Superside style) */}
+        <div className="flex items-center gap-9 lg:gap-12 xl:gap-14">
+          <Link
+            to="/"
+            className="flex items-center group shrink-0"
+            aria-label="BRNND home"
+          >
+            <img
+              src={isDarkHero ? logoWhite : logoBlack}
+              alt="BRNND"
+              width={1920}
+              height={733}
+              fetchPriority="high"
+              decoding="async"
+              className="h-9 md:h-11 lg:h-12 w-auto transition-opacity duration-300 group-hover:opacity-90 object-contain"
+            />
+          </Link>
 
-        <nav className="hidden lg:flex items-center gap-5 xl:gap-7 mx-auto">
-          {nav.map((n) => {
-            const isHover = hovered === n.label;
-            return (
-              <div
-                key={n.label}
-                onMouseEnter={() => setHovered(n.menu ? n.label : null)}
-                className="relative"
-              >
-                <Link
-                  to={n.to}
-                  className={`group/link relative text-[13px] font-light whitespace-nowrap flex items-center gap-1.5 py-1.5 transition-colors duration-300 data-[status=active]:text-accent ${
-                    isHover ? "text-accent" : "opacity-90 hover:opacity-100"
-                  }`}
+          {/* Desktop Nav Links — Superside style */}
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
+            {nav.map((n) => {
+              const isHover = hovered === n.label;
+              const isActive = location.pathname === n.to || (n.to !== "/" && location.pathname.startsWith(n.to));
+              return (
+                <div
+                  key={n.label}
+                  id={`nav-item-${n.label.toLowerCase().replace(/\s+/g, "-")}`}
+                  onMouseEnter={() => setHovered(n.menu ? n.label : null)}
+                  className="relative py-4"
                 >
-                  {n.label}
-                  {n.menu && (
-                    <svg
-                      className={`h-3 w-3 transition-transform duration-300 ${isHover ? "rotate-180" : ""}`}
-                      viewBox="0 0 12 12"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                    >
-                      <path d="M3 4.5l3 3 3-3" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  )}
-                  <span
-                    aria-hidden
-                    className={`pointer-events-none absolute left-0 right-0 -bottom-0.5 h-[2px] rounded-full bg-accent origin-left scale-x-0 transition-transform duration-300 group-data-[status=active]/link:scale-x-100 ${
-                      isHover ? "scale-x-100" : ""
+                  <Link
+                    to={n.to}
+                    className={`text-[14px] font-normal tracking-normal whitespace-nowrap flex items-center gap-1.5 transition-colors duration-200 ${
+                      isHover
+                        ? isDarkHero
+                          ? "text-white"
+                          : "text-accent"
+                        : isActive
+                        ? isDarkHero
+                          ? "text-brand-lime font-medium"
+                          : "text-accent font-medium"
+                        : isDarkHero
+                        ? "text-white/85 hover:text-white"
+                        : "text-foreground/75 hover:text-foreground"
                     }`}
-                  />
-                </Link>
-              </div>
-            );
-          })}
-        </nav>
+                  >
+                    <span>{n.label}</span>
+                    {n.menu && (
+                      <svg
+                        className={`h-3 w-3 transition-transform duration-200 ${
+                          isHover ? "rotate-180 text-white" : ""
+                        } ${isDarkHero ? "text-white/60" : "text-foreground/45"}`}
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
+                        <path d="M3 4.5l3 3 3-3" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    )}
+                  </Link>
+                </div>
+              );
+            })}
+          </nav>
+        </div>
 
+        {/* Desktop Action Buttons — Superside style */}
         <div className="hidden lg:flex items-center gap-3 shrink-0">
           <button
             type="button"
             onClick={openBookDemo}
-            className="rounded-full bg-accent text-accent-foreground px-4 py-2.5 text-[13px] font-medium whitespace-nowrap hover:opacity-90 hover:-translate-y-px transition-all duration-300"
+            className="rounded-full px-5 py-2.5 text-[13.5px] font-semibold tracking-tight whitespace-nowrap transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] bg-brand-lime text-stone-950 hover:bg-[#bef264] shadow-sm"
           >
-            Book Strategy Call
+            Book a demo
           </button>
           <Link
             to="/contact"
-            className="rounded-full border border-foreground/20 text-foreground hover:bg-foreground/5 hover:border-foreground/40 px-4 py-2.5 text-[13px] font-light whitespace-nowrap transition-all duration-300"
+            className={`rounded-full px-5 py-2.5 text-[13.5px] font-medium whitespace-nowrap transition-all duration-200 ${
+              isDarkHero
+                ? "border border-white/20 text-white hover:bg-white/10 hover:border-white/40"
+                : "border border-foreground/15 text-foreground hover:bg-foreground/5"
+            }`}
           >
             Talk to us
           </Link>
         </div>
 
-
-        <button
-          className="lg:hidden flex flex-col gap-1.5 p-2"
-          onClick={() => setOpen(!open)}
-          aria-label="Menu"
-        >
-          <span className={`block h-px w-6 bg-foreground transition ${open ? "translate-y-1.5 rotate-45" : ""}`} />
-          <span className={`block h-px w-6 bg-foreground transition ${open ? "-translate-y-1 -rotate-45" : ""}`} />
-        </button>
-      </div>
-
-      {/* Mega menu */}
-      <div
-        className={`hidden lg:block absolute inset-x-0 top-full overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          activeMenu ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0"
-        }`}
-      >
-        {activeMenu && (
-          <div className="bg-background/95 backdrop-blur-xl border-b border-white/5">
-            <div className="container-edge py-12 grid grid-cols-3 gap-x-12 gap-y-10">
-              {activeMenu.map((col, ci) => (
-                <div
-                  key={ci}
-                  className="opacity-0 animate-[fadeUp_0.5s_ease-out_forwards] flex flex-col gap-10"
-                  style={{ animationDelay: `${ci * 80}ms` }}
-                >
-                  {col.sections.map((section) => {
-                    const pillClass =
-                      section.variant === "solid"
-                        ? "bg-accent text-accent-foreground border border-accent"
-                        : section.variant === "accent"
-                        ? "border border-accent/40 text-accent bg-transparent"
-                        : "border border-white/15 text-foreground/80 bg-white/[0.03]";
-                    return (
-                      <div key={section.title}>
-                        <Link
-                          to={nav.find((n) => n.menu === activeMenu)?.to ?? "/"}
-                          className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 mb-5 font-serif italic text-[18px] leading-none hover:opacity-90 transition-opacity ${pillClass}`}
-                        >
-                          {section.title}
-                          <span className="text-[14px] not-italic">↗</span>
-                        </Link>
-                        <div className="flex flex-col">
-                          {section.items.map((it) => {
-                            const parentTo = nav.find((n) => n.menu === activeMenu)?.to ?? "/";
-                            const target = it.to ?? parentTo;
-                            return (
-                              <Link
-                                key={it.label}
-                                to={target}
-                                className="group flex items-center justify-between gap-4 py-3 border-b border-white/5 hover:bg-white/[0.03] -mx-2 px-2 rounded-md transition-colors"
-                              >
-                                <div className="min-w-0">
-                                  <div className="flex items-center gap-2">
-                                    <span className="text-[14px] text-foreground group-hover:text-accent transition-colors">
-                                      {it.label}
-                                    </span>
-                                    {it.badge && (
-                                      <span className="text-[10px] uppercase tracking-wider bg-accent/15 text-accent px-1.5 py-0.5 rounded">
-                                        {it.badge}
-                                      </span>
-                                    )}
-                                  </div>
-                                  <p className="text-[12.5px] text-foreground/55 mt-1">{it.desc}</p>
-                                </div>
-                                <span className="text-foreground/40 group-hover:text-accent transition-colors shrink-0">
-                                  <MenuIcon name={it.icon} />
-                                </span>
-                              </Link>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              ))}
+        {/* Mobile Right Controls */}
+        <div className="lg:hidden flex items-center gap-2">
+          <button
+            type="button"
+            onClick={openBookDemo}
+            className="rounded-full px-3.5 py-1.5 text-xs font-semibold tracking-tight transition-all bg-brand-lime text-stone-950 hover:bg-[#bef264]"
+          >
+            Book a demo
+          </button>
+          <button
+            className={`p-2 rounded-full transition-colors ${
+              isDarkHero ? "text-white hover:bg-white/10" : "text-foreground hover:bg-foreground/5"
+            }`}
+            onClick={() => setOpen(!open)}
+            aria-label="Toggle navigation menu"
+          >
+            <div className="w-5 h-4 relative flex flex-col justify-between">
+              <span
+                className={`block h-0.5 w-5 rounded-full transition-all duration-300 ${
+                  isDarkHero ? "bg-white" : "bg-foreground"
+                } ${open ? "translate-y-1.5 rotate-45" : ""}`}
+              />
+              <span
+                className={`block h-0.5 w-5 rounded-full transition-all duration-300 ${
+                  isDarkHero ? "bg-white" : "bg-foreground"
+                } ${open ? "opacity-0" : ""}`}
+              />
+              <span
+                className={`block h-0.5 w-5 rounded-full transition-all duration-300 ${
+                  isDarkHero ? "bg-white" : "bg-foreground"
+                } ${open ? "-translate-y-2 -rotate-45" : ""}`}
+              />
             </div>
-          </div>
-        )}
+          </button>
+        </div>
+
+        {/* Floating Mega-Menu Panel — The hover dropdown the user likes */}
+        <div
+          id="desktop-mega-menu"
+          className={`hidden lg:block absolute left-0 right-0 top-full pt-1 transition-all duration-200 ease-out before:absolute before:-top-3 before:inset-x-0 before:h-3 before:content-[''] ${
+            activeMenu
+              ? "opacity-100 translate-y-0 pointer-events-auto"
+              : "opacity-0 -translate-y-2 pointer-events-none"
+          }`}
+        >
+          {activeMenu && (
+            <div
+              className={`rounded-2xl p-7 overflow-hidden transition-all duration-300 ${
+                isDarkHero
+                  ? "bg-[#091f18] border border-white/20 text-[#F2EEE3] shadow-2xl shadow-black/80"
+                  : "bg-white dark:bg-stone-900 border border-border text-foreground shadow-2xl shadow-black/20"
+              }`}
+              style={{
+                backgroundColor: isDarkHero ? "#091f18" : undefined,
+              }}
+            >
+              {hovered === "Why us" ? (
+                /* Why Us Dropdown: 3 Visual Photography Cards (Superside Screenshot style) */
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {[
+                    {
+                      image: talentTrio,
+                      title: "Our creative talent",
+                      subtitle: "Meet your dedicated team",
+                      to: "/about",
+                    },
+                    {
+                      image: testAi,
+                      title: "AI excellence",
+                      subtitle: "Your shortcut to AI's creative advantage",
+                      to: "/process",
+                    },
+                    {
+                      image: burnoutDesk,
+                      title: "Our technology",
+                      subtitle: "The tech powering your creative edge",
+                      to: "/how-we-work",
+                    },
+                  ].map((card) => (
+                    <Link
+                      key={card.title}
+                      to={card.to}
+                      onClick={() => setHovered(null)}
+                      className="group block rounded-xl overflow-hidden focus:outline-none"
+                    >
+                      <div className="relative aspect-[16/9] rounded-xl overflow-hidden bg-stone-900 border border-white/10">
+                        <img
+                          src={card.image}
+                          alt={card.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      </div>
+                      <div className="mt-3.5">
+                        <h4
+                          className={`text-base font-sans font-bold transition-colors ${
+                            isDarkHero
+                              ? "text-white group-hover:text-brand-lime"
+                              : "text-foreground group-hover:text-accent"
+                          }`}
+                        >
+                          {card.title}
+                        </h4>
+                        <p
+                          className={`text-xs sm:text-[13px] mt-1 ${
+                            isDarkHero ? "text-white/75" : "text-muted-foreground"
+                          }`}
+                        >
+                          {card.subtitle}
+                        </p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                /* Services & Resources Dropdown: Superside Pill Headers and Clean Divided Rows */
+                <div className={`grid gap-8 ${activeMenu.length === 3 ? "grid-cols-3" : "grid-cols-2"}`}>
+                  {activeMenu.map((col, ci) => (
+                    <div key={ci} className="flex flex-col gap-6">
+                      {col.sections.map((section, sidx) => {
+                        // Superside category pill styles
+                        const pillBg =
+                          ci === 0
+                            ? "bg-[#C7F284] text-stone-950"
+                            : ci === 1
+                            ? "bg-[#193F30] text-white"
+                            : "bg-[#2A2621] text-white";
+
+                        return (
+                          <div key={section.title}>
+                            {hovered === "Services" ? (
+                              <div className="mb-4">
+                                <span
+                                  className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg font-serif text-lg font-normal tracking-normal shadow-sm ${pillBg}`}
+                                >
+                                  {section.title}{" "}
+                                  <span className="text-xs font-sans font-bold opacity-80">↗</span>
+                                </span>
+                              </div>
+                            ) : (
+                              <div
+                                className={`flex items-center gap-2 mb-3 pb-2 border-b ${
+                                  isDarkHero ? "border-white/10" : "border-foreground/10"
+                                }`}
+                              >
+                                <span
+                                  className={`text-[11.5px] font-sans font-semibold uppercase tracking-wider ${
+                                    isDarkHero ? "text-white/55" : "text-foreground/60"
+                                  }`}
+                                >
+                                  {section.title}
+                                </span>
+                              </div>
+                            )}
+
+                            <div className="flex flex-col">
+                              {section.items.map((it) => {
+                                const parentTo = nav.find((n) => n.menu === activeMenu)?.to ?? "/";
+                                const target = it.to ?? parentTo;
+                                return (
+                                  <Link
+                                    key={it.label}
+                                    to={target}
+                                    onClick={() => setHovered(null)}
+                                    className={`group flex items-center justify-between py-3 border-b ${
+                                      isDarkHero ? "border-white/10" : "border-foreground/10"
+                                    } last:border-b-0 transition-all duration-200 px-1 rounded-lg ${
+                                      isDarkHero
+                                        ? "hover:bg-white/[0.06]"
+                                        : "hover:bg-foreground/[0.04]"
+                                    }`}
+                                  >
+                                    <div className="min-w-0 flex-1 pr-3">
+                                      <div className="flex items-center gap-2">
+                                        <span
+                                          className={`text-[14px] font-medium transition-colors ${
+                                            isDarkHero
+                                              ? "text-white group-hover:text-brand-lime"
+                                              : "text-foreground group-hover:text-accent"
+                                          }`}
+                                        >
+                                          {it.label}
+                                        </span>
+                                        {it.badge && (
+                                          <span
+                                            className={`text-[10px] font-sans font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded-full ${
+                                              isDarkHero
+                                                ? "bg-brand-lime/20 text-brand-lime"
+                                                : "bg-accent/15 text-accent"
+                                            }`}
+                                          >
+                                            {it.badge}
+                                          </span>
+                                        )}
+                                      </div>
+                                      <p
+                                        className={`text-[12px] mt-0.5 line-clamp-1 ${
+                                          isDarkHero ? "text-white/60" : "text-muted-foreground"
+                                        }`}
+                                      >
+                                        {it.desc}
+                                      </p>
+                                    </div>
+                                    <div
+                                      className={`w-7 h-7 rounded-md flex items-center justify-center shrink-0 opacity-70 group-hover:opacity-100 transition-all ${
+                                        isDarkHero
+                                          ? "text-white/60 group-hover:text-brand-lime"
+                                          : "text-muted-foreground group-hover:text-foreground"
+                                      }`}
+                                    >
+                                      <MenuIcon name={it.icon} />
+                                    </div>
+                                  </Link>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
-      <style>{`
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(12px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
-
+      {/* Mobile Drawer */}
       {open && (
-        <div className="lg:hidden border-t border-white/5 bg-background/95 backdrop-blur-xl max-h-[calc(100vh-4rem)] overflow-y-auto">
-          <div className="container-edge py-6 flex flex-col gap-1">
+        <div
+          className={`lg:hidden px-4 pb-6 pt-2 transition-all ${
+            isDarkHero
+              ? "bg-stone-950/98 backdrop-blur-2xl border-b border-white/15 text-white"
+              : "bg-background/98 backdrop-blur-2xl border-b border-foreground/10 text-foreground"
+          }`}
+        >
+          <div className="container-edge flex flex-col gap-2">
             {nav.map((n) => {
               const isExpanded = mobileExpanded === n.label;
               return (
-                <div key={n.label} className="border-b border-white/5">
+                <div
+                  key={n.label}
+                  className={`border-b last:border-0 pb-2 ${
+                    isDarkHero ? "border-white/10" : "border-foreground/10"
+                  }`}
+                >
                   <div className="flex items-center justify-between">
                     <Link
                       to={n.to}
-                      className="text-2xl editorial py-3 flex-1"
+                      className={`text-lg font-serif py-2 flex-1 ${
+                        isDarkHero ? "text-white" : "text-foreground"
+                      }`}
                       onClick={() => setOpen(false)}
                     >
                       {n.label}
@@ -396,7 +594,11 @@ export function Header() {
                         type="button"
                         aria-label={isExpanded ? "Collapse" : "Expand"}
                         onClick={() => setMobileExpanded(isExpanded ? null : n.label)}
-                        className="p-3 text-foreground/60"
+                        className={`p-2 ${
+                          isDarkHero
+                            ? "text-white/60 hover:text-white"
+                            : "text-foreground/60 hover:text-foreground"
+                        }`}
                       >
                         <svg
                           className={`h-4 w-4 transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`}
@@ -411,36 +613,48 @@ export function Header() {
                     )}
                   </div>
                   {n.menu && isExpanded && (
-                    <div className="pb-4 pl-2 flex flex-col gap-4">
+                    <div className="pt-2 pb-3 pl-3 flex flex-col gap-3">
                       {n.menu.flatMap((col) =>
                         col.sections.map((section) => (
-                          <div key={section.title}>
-                            <div className="text-[11px] uppercase tracking-[0.18em] text-foreground/50 mb-2">
+                          <div key={section.title} className="space-y-1.5">
+                            <div
+                              className={`text-[10px] uppercase font-mono tracking-widest ${
+                                isDarkHero ? "text-white/40" : "text-foreground/50"
+                              }`}
+                            >
                               {section.title}
                             </div>
-                            <div className="flex flex-col">
-                              {section.items.map((it) => {
-                                const target = it.to ?? n.to;
-                                return (
-                                  <Link
-                                    key={it.label}
-                                    to={target}
-                                    onClick={() => setOpen(false)}
-                                    className="flex items-center gap-3 py-2.5 text-[15px] text-foreground/85 hover:text-accent"
-                                  >
-                                    <span className="text-foreground/40">
-                                      <MenuIcon name={it.icon} />
+                            {section.items.map((it) => {
+                              const target = it.to ?? n.to;
+                              return (
+                                <Link
+                                  key={it.label}
+                                  to={target}
+                                  onClick={() => setOpen(false)}
+                                  className={`flex items-center gap-2.5 py-1.5 text-[14px] ${
+                                    isDarkHero
+                                      ? "text-white/80 hover:text-brand-lime"
+                                      : "text-foreground/80 hover:text-accent"
+                                  }`}
+                                >
+                                  <span className={isDarkHero ? "text-white/40" : "text-foreground/40"}>
+                                    <MenuIcon name={it.icon} />
+                                  </span>
+                                  <span>{it.label}</span>
+                                  {it.badge && (
+                                    <span
+                                      className={`text-[9px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded ${
+                                        isDarkHero
+                                          ? "bg-brand-lime/20 text-brand-lime"
+                                          : "bg-accent/15 text-accent"
+                                      }`}
+                                    >
+                                      {it.badge}
                                     </span>
-                                    <span>{it.label}</span>
-                                    {it.badge && (
-                                      <span className="text-[10px] uppercase tracking-wider bg-accent/15 text-accent px-1.5 py-0.5 rounded">
-                                        {it.badge}
-                                      </span>
-                                    )}
-                                  </Link>
-                                );
-                              })}
-                            </div>
+                                  )}
+                                </Link>
+                              );
+                            })}
                           </div>
                         ))
                       )}
@@ -449,13 +663,32 @@ export function Header() {
                 </div>
               );
             })}
-            <button
-              type="button"
-              onClick={() => { setOpen(false); openBookDemo(); }}
-              className="rounded-full bg-accent text-accent-foreground px-5 py-3 mt-6 self-start text-sm font-medium"
-            >
-              Book Strategy Call
-            </button>
+
+            <div className="pt-4 flex flex-col gap-2.5">
+              <button
+                type="button"
+                onClick={() => { setOpen(false); openBookDemo(); }}
+                className={`w-full rounded-full py-3 text-sm font-semibold tracking-tight flex items-center justify-center gap-2 ${
+                  isDarkHero
+                    ? "bg-brand-lime text-stone-950 hover:bg-[#bef264]"
+                    : "bg-accent text-accent-foreground"
+                }`}
+              >
+                <span>Book a demo</span>
+                <span>→</span>
+              </button>
+              <Link
+                to="/contact"
+                onClick={() => setOpen(false)}
+                className={`w-full text-center rounded-full border py-2.5 text-sm font-medium ${
+                  isDarkHero
+                    ? "border-white/20 text-white hover:bg-white/10"
+                    : "border-foreground/20 text-foreground hover:bg-foreground/5"
+                }`}
+              >
+                Talk to us
+              </Link>
+            </div>
           </div>
         </div>
       )}
