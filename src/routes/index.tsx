@@ -49,18 +49,18 @@ import serviceGrowthSet from "@/assets/service-growth.jpg?w=480;800;1200;1600&fo
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "BRNND — Brand Transformation Partner for Ambitious Founders" },
+      { title: "BRNND: Brand Transformation Partner for Ambitious Founders" },
       {
         name: "description",
         content:
-          "BRNND builds complete brand systems — strategy, identity, websites, and growth — for founders and high-growth businesses ready to scale. Real projects, verified metrics.",
+          "BRNND builds complete brand systems across strategy, identity, websites, and growth for founders and high-growth businesses ready to scale. Real projects, verified metrics.",
       },
       // Open Graph Tags (OGs)
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "BRNND" },
       { property: "og:locale", content: "en_US" },
       { property: "og:url", content: "https://brnnd.com/" },
-      { property: "og:title", content: "BRNND — Brand Transformation Partner for Ambitious Founders" },
+      { property: "og:title", content: "BRNND: Brand Transformation Partner for Ambitious Founders" },
       {
         property: "og:description",
         content:
@@ -71,19 +71,19 @@ export const Route = createFileRoute("/")({
       { property: "og:image:type", content: "image/jpeg" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: "BRNND — Brand Transformations That Grow The Business" },
+      { property: "og:image:alt", content: "BRNND: Brand Transformations That Grow The Business" },
       // Twitter Card Meta
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@brnndstudio" },
       { name: "twitter:creator", content: "@brnndstudio" },
-      { name: "twitter:title", content: "BRNND — Brand Transformation Partner for Ambitious Founders" },
+      { name: "twitter:title", content: "BRNND: Brand Transformation Partner for Ambitious Founders" },
       {
         name: "twitter:description",
         content:
-          "Complete brand systems — strategy, identity, websites, and growth — for founders ready to scale.",
+          "Complete brand systems across strategy, identity, websites, and growth for founders ready to scale.",
       },
       { name: "twitter:image", content: "https://brnnd.com/og-image.jpg" },
-      { name: "twitter:image:alt", content: "BRNND — Brand Transformations That Grow The Business" },
+      { name: "twitter:image:alt", content: "BRNND: Brand Transformations That Grow The Business" },
       // Theme & Mobile
       { name: "theme-color", content: "#051610" },
     ],
@@ -101,7 +101,7 @@ function Home() {
     <>
       <HeroCinematic />
 
-      {/* SOCIAL PROOF — Trusted brands */}
+      {/* SOCIAL PROOF : Trusted brands */}
       <section className="border-y border-border">
         <div className="container-edge py-20 md:py-28">
           <h2 className="text-center text-base md:text-lg text-foreground/80 mb-14 md:mb-16">
@@ -110,7 +110,7 @@ function Home() {
           <LogoMarquee />
         </div>
 
-        {/* Editorial split — Beyond traditional agencies (Superside style) */}
+        {/* Editorial split : Beyond traditional agencies (Superside style) */}
         <div className="container-edge py-20 md:py-32 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="max-w-xl">
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-t border-border pt-4">About BRNND</p>
@@ -135,14 +135,14 @@ function Home() {
             </div>
           </div>
           <div className="relative aspect-[4/3] lg:aspect-[5/4] overflow-hidden rounded-xl bg-stone-100 border border-border/40 shadow-none">
-            <img src={aboutSplit} srcSet={aboutSplitSet} sizes="(min-width: 768px) 50vw, 100vw" alt="Brand transformation in motion — BRNND identity sketches, Pantone swatches and brand book in studio" className="w-full h-full object-cover" loading="lazy" />
+            <img src={aboutSplit} srcSet={aboutSplitSet} sizes="(min-width: 768px) 50vw, 100vw" alt="Brand transformation in motion: BRNND identity sketches, Pantone swatches and brand book in studio" className="w-full h-full object-cover" loading="lazy" />
           </div>
         </div>
 
-        {/* Editorial split — Brand operating partner */}
+        {/* Editorial split : Brand operating partner */}
         <div className="container-edge pb-20 md:pb-32 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="relative aspect-[4/3] lg:aspect-[5/4] overflow-hidden rounded-xl bg-stone-100 border border-border/40 shadow-none order-2 lg:order-1">
-            <img src={editorialSplit} srcSet={editorialSplitSet} sizes="(min-width: 768px) 50vw, 100vw" alt="Brand operating partner — BRNND guidelines, website and social system across print, web and mobile" className="w-full h-full object-cover" loading="lazy" />
+            <img src={editorialSplit} srcSet={editorialSplitSet} sizes="(min-width: 768px) 50vw, 100vw" alt="Brand operating partner: BRNND guidelines, website and social system across print, web and mobile" className="w-full h-full object-cover" loading="lazy" />
           </div>
           <div className="max-w-xl order-1 lg:order-2">
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-t border-border pt-4">Brand operating partner</p>
@@ -153,7 +153,7 @@ function Home() {
               Strategy → Identity → Digital → Growth.
             </p>
             <p className="mt-3 text-base text-foreground/70 leading-relaxed">
-              BRNND works the way a founding team would want their brand built — strategy-led, design-strong, shipped end-to-end, and handed over as an operational system you can keep running without dependencies.
+              BRNND works the way a founding team would want their brand built: strategy-led, design-strong, shipped end-to-end, and handed over as an operational system you can keep running without dependencies.
             </p>
             <div className="mt-8">
               <Link
@@ -182,7 +182,7 @@ function Home() {
         </div>
       </section>
 
-      {/* DARK FEATURE BAND — World-class talent */}
+      {/* DARK FEATURE BAND : World-class talent */}
       <section
         style={{ background: "#061812", color: "#F2EEE3" }}
         className="theme-dark"
@@ -213,7 +213,7 @@ function Home() {
           </div>
         </div>
 
-        {/* STATS — best return on your investment */}
+        {/* STATS : best return on your investment */}
         <div className="container-edge pb-28 md:pb-36">
           <div className="text-center mb-20">
             <p className="text-xs font-semibold uppercase tracking-wider text-white/60 mb-4">Why founders choose BRNND</p>
@@ -226,7 +226,7 @@ function Home() {
             {[
               { to: 60, suffix: "+", v: "Founders, startups and modern businesses have launched brands with BRNND." },
               { to: 184, suffix: "%", v: "Average revenue lift in the first six months after a brand transformation." },
-              { to: 6, suffix: " wks", v: "Average launch sprint — from blank page to a live brand system." },
+              { to: 6, suffix: " wks", v: "Average launch sprint from blank page to a live brand system." },
               { to: 97, suffix: "%", v: "Founder NPS. The partner founders stay with after the first project." },
             ].map((s, i) => (
               <div key={i} className="grid grid-cols-12 gap-6 items-start">
@@ -241,7 +241,7 @@ function Home() {
       </section>
 
 
-      {/* OUR WORK — top brand showcase grid */}
+      {/* OUR WORK : top brand showcase grid */}
       <section className="container-edge pt-24 md:pt-36 pb-24 md:pb-36">
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-12">
           <div>
@@ -298,7 +298,7 @@ function Home() {
         </div>
       </section>
 
-      {/* COMPARISON — Hiring or traditional outsourcing? */}
+      {/* COMPARISON : Hiring or traditional outsourcing? */}
       <section
         style={{ background: "#051610", color: "oklch(0.97 0.015 100)" }}
         className="theme-dark"
@@ -315,10 +315,10 @@ function Home() {
         </div>
       </section>
 
-      {/* TESTIMONIALS — Sliding loop rows */}
+      {/* TESTIMONIALS : Sliding loop rows */}
       <TestimonialsMarquee />
 
-      {/* OUR DIFFERENCE — Pillars */}
+      {/* OUR DIFFERENCE : Pillars */}
       <OurDifference />
 
       {/* TALENT + BURNOUT */}
@@ -361,7 +361,7 @@ function HeroCinematic() {
         background: "radial-gradient(120% 80% at 80% 10%, #0f2a22 0%, #07140f 55%, #050b08 100%)",
         color: "#F2EEE3",
       }}
-      className="theme-dark relative overflow-hidden pt-20 sm:pt-24 lg:pt-28 pb-8 lg:pb-16"
+      className="theme-dark relative min-h-[100svh] lg:min-h-screen flex flex-col justify-between overflow-hidden pt-20 sm:pt-24 lg:pt-28 pb-4 lg:pb-16"
     >
       {/* Soft vignette */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10" style={{
@@ -377,7 +377,7 @@ function HeroCinematic() {
       />
 
 
-      <div className="container-edge grid grid-cols-1 lg:grid-cols-[minmax(0,5.2fr)_minmax(0,6.8fr)] gap-6 sm:gap-8 lg:gap-14 items-center">
+      <div className="container-edge flex-1 flex flex-col justify-between lg:grid lg:grid-cols-[minmax(0,5.2fr)_minmax(0,6.8fr)] gap-4 sm:gap-6 lg:gap-14 lg:items-center">
         {/* LEFT */}
         <motion.div
           initial="hidden"
@@ -400,7 +400,7 @@ function HeroCinematic() {
             variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } }}
             className="mt-4 sm:mt-6 text-white/75 text-base sm:text-lg max-w-lg leading-relaxed font-normal mx-auto lg:mx-0"
           >
-            Scale your brand with senior strategists and designers. Complete brand systems — strategy, identity, websites and growth — delivered fast.
+            Scale your brand with senior strategists and designers. Complete brand systems across strategy, identity, websites and growth, delivered fast.
           </motion.p>
 
           <motion.div
@@ -423,12 +423,12 @@ function HeroCinematic() {
           </motion.div>
         </motion.div>
 
-        {/* RIGHT — Infinite scrolling masonry (desktop: columns, mobile: rows) */}
+        {/* RIGHT : Infinite scrolling masonry (desktop: columns, mobile: rows) */}
         <motion.div
           style={{ x: parX, y: parY }}
           className="relative h-auto lg:h-[88vh] overflow-hidden -mx-4 sm:mx-0 mt-1 lg:mt-0"
         >
-          {/* Desktop — vertical scrolling columns */}
+          {/* Desktop : vertical scrolling columns */}
           <motion.div style={{ x: parX2 }} className="hidden lg:grid grid-cols-3 gap-3 md:gap-4 h-full">
             <LoopColumn direction="up" duration={42} tiles={[
               { src: heroTypeSystem, srcset: heroTypeSystemSet, brand: "Grubhub", ratio: "3/4" },
@@ -450,7 +450,7 @@ function HeroCinematic() {
             ]} />
           </motion.div>
 
-          {/* Mobile — horizontal scrolling rows tight beneath the button */}
+          {/* Mobile : horizontal scrolling rows tight beneath the button */}
           <div className="lg:hidden flex flex-col gap-3 py-1">
             <LoopRow direction="left" duration={36} tiles={[
               { src: heroPackagingTote, srcset: heroPackagingToteSet, brand: "otto", ratio: "4/5" },
@@ -656,7 +656,7 @@ function LoopRow({
 function RowTile({ src, srcset, brand, ratio }: Tile) {
   const aspect = ratio === "3/4" ? "aspect-[3/4]" : ratio === "4/5" ? "aspect-[4/5]" : "aspect-square";
   return (
-    <div className={`group relative h-40 sm:h-48 ${aspect} shrink-0 overflow-hidden rounded-2xl bg-white/5 ring-1 ring-white/10 shadow-md hover:ring-white/25 transition-all duration-300`}>
+    <div className={`group relative h-48 sm:h-56 ${aspect} shrink-0 overflow-hidden rounded-2xl bg-white/5 ring-1 ring-white/10 shadow-md hover:ring-white/25 transition-all duration-300`}>
       <img
         src={src}
         srcSet={srcset || undefined}
@@ -751,17 +751,17 @@ const compareRows: {
 }[] = [
   {
     name: "BRNND",
-    desc: "A senior brand operating partner. Strategy, identity, digital and growth — built as one system, shipped end-to-end.",
+    desc: "A senior brand operating partner. Strategy, identity, digital and growth built as one system, shipped end-to-end.",
     values: [true, true, true, true, true, true],
   },
   {
     name: "In-house team",
-    desc: "Founders rarely have a senior brand team in-house — hiring one before scale is slow, risky, and expensive.",
+    desc: "Founders rarely have a senior brand team in-house. Hiring one before scale is slow, risky, and expensive.",
     values: [false, true, true, false, false, false],
   },
   {
     name: "Big agencies",
-    desc: "Six-figure retainers, six-month timelines, six rounds of revisions — built for enterprise committees, not founders.",
+    desc: "Six-figure retainers, six-month timelines, six rounds of revisions built for enterprise committees, not founders.",
     values: [false, false, true, false, false, false],
   },
   {
@@ -861,7 +861,7 @@ const testimonials = [
   { name: "Sofia Ahmed", role: "Head of Brand, Linear", brand: "Linear", body: "The creative quality is exceptional, the turnaround is fast, and the team adapts to our brand voice better than anyone we've worked with. Genuinely a force multiplier for our small team." },
   { name: "Daniel Cho", role: "Growth Lead, Pacrium", brand: "Pacrium", body: "We've cut our creative production time in half and our campaign performance has only improved. North is the partner we wish we'd found two years ago." },
   { name: "Priya Raman", role: "CMO, Maison Orre", brand: "Maison Orre", body: "From identity to digital to packaging, they treat every touchpoint with the same level of care. Our brand has never felt more cohesive." },
-  { name: "Tom Larsen", role: "Founder, Verdant", brand: "Verdant", body: "We launched a full rebrand in 4 weeks. Site, packaging, social system — all of it. It would have taken us 6 months internally. The results speak for themselves." },
+  { name: "Tom Larsen", role: "Founder, Verdant", brand: "Verdant", body: "We launched a full rebrand in 4 weeks. Site, packaging, social system, all of it. It would have taken us 6 months internally. The results speak for themselves." },
 ];
 
 const cardGradients = [
@@ -938,7 +938,7 @@ const pillars = [
   {
     eyebrow: "Strategy",
     title: "Position before you build",
-    body: "Audience, narrative, messaging and the promise the brand will keep. Strategy comes first — design defends it.",
+    body: "Audience, narrative, messaging and the promise the brand will keep. Strategy comes first, design defends it.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><circle cx="12" cy="12" r="9"/><path d="M15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg>
     ),
@@ -946,7 +946,7 @@ const pillars = [
   {
     eyebrow: "Identity",
     title: "Systems, not stickers",
-    body: "Logo systems, typography, color, motion and brand guidelines — built as one connected language your team can run.",
+    body: "Logo systems, typography, color, motion and brand guidelines built as one connected language your team can run.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
     ),
@@ -954,7 +954,7 @@ const pillars = [
   {
     eyebrow: "Digital",
     title: "Sites that earn trust",
-    body: "Websites and UI/UX designed and built to turn brand into action — fast to load, easy to maintain, designed to convert.",
+    body: "Websites and UI/UX designed and built to turn brand into action: fast to load, easy to maintain, designed to convert.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M8 21h8M12 17v4"/></svg>
     ),
@@ -1007,7 +1007,7 @@ function OurDifference() {
 function TalentAndBurnout() {
   return (
     <>
-      {/* Burnout — green split */}
+      {/* Burnout : green split */}
       <section
         className="theme-dark"
         style={{
@@ -1026,10 +1026,10 @@ function TalentAndBurnout() {
                 Stop stitching freelancers. <em className="italic font-serif">Build a brand on purpose.</em>
               </h2>
               <p className="text-base md:text-lg text-foreground/85 leading-relaxed mb-4 max-w-md">
-                Most founders end up with a logo from one person, a site from another, and a social feed from somewhere else — and a brand that doesn't quite hold together.
+                Most founders end up with a logo from one person, a site from another, and a social feed from somewhere else, leaving a brand that doesn't quite hold together.
               </p>
               <p className="text-sm text-foreground/70 leading-relaxed mb-7 max-w-md">
-                BRNND ships the whole system as one — so every touchpoint earns the same trust.
+                BRNND ships the whole system as one, so every touchpoint earns the same trust.
               </p>
               <BookRoute.Link className="inline-flex items-center rounded-full bg-[oklch(0.88_0.16_125)] text-[oklch(0.2_0.04_160)] px-6 py-3 text-sm font-medium hover:opacity-90 transition-opacity">Book Strategy Call</BookRoute.Link>
             </div>
