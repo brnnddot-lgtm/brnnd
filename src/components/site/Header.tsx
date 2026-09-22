@@ -230,12 +230,12 @@ export function Header() {
   return (
     <header
       onMouseLeave={() => setHovered(null)}
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 shadow-none ${
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 shadow-none border-none ${
         open
-          ? "bg-[#061812] border-b border-white/10"
+          ? "bg-[#061812]"
           : scrolled || hovered
-          ? "bg-[#061812]/95 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-black/20"
-          : "bg-[#061812]/90 backdrop-blur-md border-b border-white/10"
+          ? "bg-[#061812]/95 backdrop-blur-xl shadow-lg shadow-black/20"
+          : "bg-transparent"
       }`}
     >
       <div className="container-edge flex h-16 md:h-20 items-center justify-between relative">
