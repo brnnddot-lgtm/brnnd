@@ -202,7 +202,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
-  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>("Services");
 
   const location = useLocation();
   const isDarkHeroPage =
@@ -237,7 +237,9 @@ export function Header() {
     <header
       onMouseLeave={() => setHovered(null)}
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 shadow-none ${
-        scrolled || hovered || open
+        open
+          ? "bg-[#0b1f17] border-b border-white/10"
+          : scrolled || hovered
           ? isDarkHero
             ? "bg-[#14100d]/95 backdrop-blur-xl border-b border-white/10"
             : "bg-background/90 backdrop-blur-xl border-b border-foreground/10"
@@ -249,43 +251,37 @@ export function Header() {
         <div className="flex items-center gap-9 lg:gap-12 xl:gap-14">
           <Link
             to="/"
-            className="flex items-center group shrink-0"
-            aria-label="BRNND home"
+            className="flex items-center gap-2.5 focus:outline-none transition-transform duration-200 hover:scale-[1.02]"
           >
             <img
-              src={isDarkHero ? logoWhite : logoBlack}
-              alt="BRNND"
-              width={1920}
-              height={733}
-              fetchPriority="high"
-              decoding="async"
-              className="h-9 md:h-11 lg:h-12 w-auto transition-opacity duration-300 group-hover:opacity-90 object-contain"
+              src={open || isDarkHero ? logoWhite : logoBlack}
+              alt="BRNND Logo"
+              className="h-7 md:h-8 w-auto object-contain transition-opacity duration-300"
             />
           </Link>
 
-          {/* Desktop Nav Links — Superside style */}
-          <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
+          {/* Desktop Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8 font-sans">
             {nav.map((n) => {
+              const isActive = location.pathname === n.to;
               const isHover = hovered === n.label;
-              const isActive = location.pathname === n.to || (n.to !== "/" && location.pathname.startsWith(n.to));
               return (
                 <div
                   key={n.label}
-                  id={`nav-item-${n.label.toLowerCase().replace(/\s+/g, "-")}`}
-                  onMouseEnter={() => setHovered(n.menu ? n.label : null)}
-                  className="relative py-4"
+                  className="relative py-2"
+                  onMouseEnter={() => setHovered(n.label)}
                 >
                   <Link
                     to={n.to}
-                    className={`text-[14px] font-normal tracking-normal whitespace-nowrap flex items-center gap-1.5 transition-colors duration-200 ${
+                    className={`text-[14.5px] font-sans font-medium tracking-normal whitespace-nowrap flex items-center gap-1.5 transition-colors duration-200 ${
                       isHover
                         ? isDarkHero
                           ? "text-white"
                           : "text-accent"
                         : isActive
                         ? isDarkHero
-                          ? "text-brand-lime font-medium"
-                          : "text-accent font-medium"
+                          ? "text-brand-lime font-semibold"
+                          : "text-accent font-semibold"
                         : isDarkHero
                         ? "text-white/85 hover:text-white"
                         : "text-foreground/75 hover:text-foreground"
@@ -344,28 +340,35 @@ export function Header() {
           </button>
           <button
             className={`p-2 rounded-full transition-colors ${
-              isDarkHero ? "text-white hover:bg-white/10" : "text-foreground hover:bg-foreground/5"
+              open ? "text-brand-lime hover:bg-white/10" : isDarkHero ? "text-white hover:bg-white/10" : "text-foreground hover:bg-foreground/5"
             }`}
             onClick={() => setOpen(!open)}
             aria-label="Toggle navigation menu"
           >
-            <div className="w-5 h-4 relative flex flex-col justify-between">
-              <span
-                className={`block h-0.5 w-5 rounded-full transition-all duration-300 ${
-                  isDarkHero ? "bg-white" : "bg-foreground"
-                } ${open ? "translate-y-1.5 rotate-45" : ""}`}
-              />
-              <span
-                className={`block h-0.5 w-5 rounded-full transition-all duration-300 ${
-                  isDarkHero ? "bg-white" : "bg-foreground"
-                } ${open ? "opacity-0" : ""}`}
-              />
-              <span
-                className={`block h-0.5 w-5 rounded-full transition-all duration-300 ${
-                  isDarkHero ? "bg-white" : "bg-foreground"
-                } ${open ? "-translate-y-2 -rotate-45" : ""}`}
-              />
-            </div>
+            {open ? (
+              <svg className="w-6 h-6 text-brand-lime" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            ) : (
+              <div className="w-5 h-4 relative flex flex-col justify-between">
+                <span
+                  className={`block h-0.5 w-5 rounded-full transition-all duration-300 ${
+                    isDarkHero ? "bg-white" : "bg-foreground"
+                  }`}
+                />
+                <span
+                  className={`block h-0.5 w-5 rounded-full transition-all duration-300 ${
+                    isDarkHero ? "bg-white" : "bg-foreground"
+                  }`}
+                />
+                <span
+                  className={`block h-0.5 w-5 rounded-full transition-all duration-300 ${
+                    isDarkHero ? "bg-white" : "bg-foreground"
+                  }`}
+                />
+              </div>
+            )}
           </button>
         </div>
 
@@ -560,103 +563,117 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer (Superside light canvas style) */}
       {open && (
-        <div
-          className={`lg:hidden px-4 pb-6 pt-2 transition-all ${
-            isDarkHero
-              ? "bg-stone-950/98 backdrop-blur-2xl border-b border-white/15 text-white"
-              : "bg-background/98 backdrop-blur-2xl border-b border-foreground/10 text-foreground"
-          }`}
-        >
-          <div className="container-edge flex flex-col gap-2">
+        <div className="lg:hidden fixed inset-x-0 top-16 md:top-20 bottom-0 bg-[#FAF8F5] text-stone-900 overflow-y-auto px-5 py-6 z-50 shadow-2xl">
+          <div className="flex flex-col gap-6 max-w-lg mx-auto pb-16">
             {nav.map((n) => {
               const isExpanded = mobileExpanded === n.label;
               return (
-                <div
-                  key={n.label}
-                  className={`border-b last:border-0 pb-2 ${
-                    isDarkHero ? "border-white/10" : "border-foreground/10"
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <Link
-                      to={n.to}
-                      className={`text-lg font-serif py-2 flex-1 ${
-                        isDarkHero ? "text-white" : "text-foreground"
-                      }`}
-                      onClick={() => setOpen(false)}
-                    >
-                      {n.label}
-                    </Link>
+                <div key={n.label} className="border-b border-stone-200/80 pb-5 last:border-b-0">
+                  {/* Category Header */}
+                  <div
+                    onClick={() => {
+                      if (n.menu) {
+                        setMobileExpanded(isExpanded ? null : n.label);
+                      } else {
+                        setOpen(false);
+                      }
+                    }}
+                    className="flex items-center justify-between cursor-pointer py-1"
+                  >
+                    {n.menu ? (
+                      <span className="text-2xl font-sans font-bold text-stone-900 tracking-tight">
+                        {n.label}
+                      </span>
+                    ) : (
+                      <Link
+                        to={n.to}
+                        onClick={() => setOpen(false)}
+                        className="text-2xl font-sans font-bold text-stone-900 tracking-tight flex-1 hover:text-accent transition-colors"
+                      >
+                        {n.label}
+                      </Link>
+                    )}
+
                     {n.menu && (
                       <button
                         type="button"
                         aria-label={isExpanded ? "Collapse" : "Expand"}
-                        onClick={() => setMobileExpanded(isExpanded ? null : n.label)}
-                        className={`p-2 ${
-                          isDarkHero
-                            ? "text-white/60 hover:text-white"
-                            : "text-foreground/60 hover:text-foreground"
-                        }`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setMobileExpanded(isExpanded ? null : n.label);
+                        }}
+                        className="p-1.5 text-stone-600 hover:text-stone-900"
                       >
                         <svg
-                          className={`h-4 w-4 transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`}
-                          viewBox="0 0 12 12"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
+                          className={`h-5 w-5 transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
                         >
-                          <path d="M3 4.5l3 3 3-3" strokeLinecap="round" strokeLinejoin="round" />
+                          <path
+                            fillRule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          />
                         </svg>
                       </button>
                     )}
                   </div>
+
+                  {/* Sub-menu if expanded */}
                   {n.menu && isExpanded && (
-                    <div className="pt-2 pb-3 pl-3 flex flex-col gap-3">
-                      {n.menu.flatMap((col) =>
-                        col.sections.map((section) => (
-                          <div key={section.title} className="space-y-1.5">
-                            <div
-                              className={`text-[10px] uppercase font-mono tracking-widest ${
-                                isDarkHero ? "text-white/40" : "text-foreground/50"
-                              }`}
-                            >
-                              {section.title}
-                            </div>
-                            {section.items.map((it) => {
-                              const target = it.to ?? n.to;
-                              return (
-                                <Link
-                                  key={it.label}
-                                  to={target}
-                                  onClick={() => setOpen(false)}
-                                  className={`flex items-center gap-2.5 py-1.5 text-[14px] ${
-                                    isDarkHero
-                                      ? "text-white/80 hover:text-brand-lime"
-                                      : "text-foreground/80 hover:text-accent"
-                                  }`}
+                    <div className="mt-4 flex flex-col gap-6">
+                      {n.menu.flatMap((col, colIdx) =>
+                        col.sections.map((section) => {
+                          const pillStyle =
+                            colIdx === 0
+                              ? "bg-[#d5fa68] text-stone-950"
+                              : colIdx === 1
+                              ? "bg-[#143d2c] text-white"
+                              : "bg-[#25221d] text-white";
+
+                          return (
+                            <div key={section.title} className="flex flex-col">
+                              {/* Category Pill Button (Superside style) */}
+                              <div className="mb-2">
+                                <span
+                                  className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-serif text-[17px] font-normal tracking-normal shadow-sm ${pillStyle}`}
                                 >
-                                  <span className={isDarkHero ? "text-white/40" : "text-foreground/40"}>
-                                    <MenuIcon name={it.icon} />
-                                  </span>
-                                  <span>{it.label}</span>
-                                  {it.badge && (
-                                    <span
-                                      className={`text-[9px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded ${
-                                        isDarkHero
-                                          ? "bg-brand-lime/20 text-brand-lime"
-                                          : "bg-accent/15 text-accent"
-                                      }`}
+                                  <span className="italic">{section.title}</span>{" "}
+                                  <span className="font-sans font-bold text-xs opacity-80">↗</span>
+                                </span>
+                              </div>
+
+                              {/* Sub-items list with titles, descriptions and outline icons */}
+                              <div className="flex flex-col">
+                                {section.items.map((it) => {
+                                  const target = it.to ?? n.to;
+                                  return (
+                                    <Link
+                                      key={it.label}
+                                      to={target}
+                                      onClick={() => setOpen(false)}
+                                      className="group flex items-center justify-between py-3.5 border-b border-stone-200/70 last:border-b-0 transition-colors"
                                     >
-                                      {it.badge}
-                                    </span>
-                                  )}
-                                </Link>
-                              );
-                            })}
-                          </div>
-                        ))
+                                      <div className="flex-1 pr-3">
+                                        <div className="text-[15.5px] font-sans font-semibold text-stone-900 group-hover:text-accent transition-colors">
+                                          {it.label}
+                                        </div>
+                                        <div className="text-[13px] font-sans font-normal text-stone-500 mt-0.5">
+                                          {it.desc}
+                                        </div>
+                                      </div>
+                                      <div className="w-8 h-8 rounded-full border border-stone-200 flex items-center justify-center shrink-0 text-stone-400 group-hover:text-stone-700 group-hover:border-stone-400 transition-colors">
+                                        <MenuIcon name={it.icon} />
+                                      </div>
+                                    </Link>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          );
+                        })
                       )}
                     </div>
                   )}
@@ -664,27 +681,19 @@ export function Header() {
               );
             })}
 
-            <div className="pt-4 flex flex-col gap-2.5">
+            {/* Bottom Actions */}
+            <div className="pt-2 flex flex-col gap-3">
               <button
                 type="button"
                 onClick={() => { setOpen(false); openBookDemo(); }}
-                className={`w-full rounded-full py-3 text-sm font-semibold tracking-tight flex items-center justify-center gap-2 ${
-                  isDarkHero
-                    ? "bg-brand-lime text-stone-950 hover:bg-[#bef264]"
-                    : "bg-accent text-accent-foreground"
-                }`}
+                className="w-full rounded-full bg-brand-lime hover:bg-[#bef264] text-stone-950 py-3.5 text-base font-semibold tracking-tight text-center shadow-sm transition-all"
               >
-                <span>Book a demo</span>
-                <span>→</span>
+                Book a demo
               </button>
               <Link
                 to="/contact"
                 onClick={() => setOpen(false)}
-                className={`w-full text-center rounded-full border py-2.5 text-sm font-medium ${
-                  isDarkHero
-                    ? "border-white/20 text-white hover:bg-white/10"
-                    : "border-foreground/20 text-foreground hover:bg-foreground/5"
-                }`}
+                className="w-full text-center rounded-full border border-stone-300 hover:bg-stone-100 text-stone-900 py-3 text-sm font-medium transition-all"
               >
                 Talk to us
               </Link>
