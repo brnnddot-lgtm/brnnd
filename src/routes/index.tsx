@@ -361,7 +361,7 @@ function HeroCinematic() {
         background: "radial-gradient(120% 80% at 80% 10%, #0f2a22 0%, #07140f 55%, #050b08 100%)",
         color: "#F2EEE3",
       }}
-      className="theme-dark relative min-h-[100svh] lg:min-h-screen flex flex-col justify-between overflow-hidden pt-20 sm:pt-24 lg:pt-28 pb-4 lg:pb-16"
+      className="theme-dark relative overflow-hidden pt-16 sm:pt-20 lg:pt-28 pb-6 sm:pb-8 lg:pb-16"
     >
       {/* Soft vignette */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10" style={{
@@ -377,7 +377,7 @@ function HeroCinematic() {
       />
 
 
-      <div className="container-edge flex-1 flex flex-col justify-between lg:grid lg:grid-cols-[minmax(0,5.2fr)_minmax(0,6.8fr)] gap-4 sm:gap-6 lg:gap-14 lg:items-center">
+      <div className="container-edge flex flex-col lg:grid lg:grid-cols-[minmax(0,5.2fr)_minmax(0,6.8fr)] gap-4 sm:gap-6 lg:gap-14 lg:items-center">
         {/* LEFT */}
         <motion.div
           initial="hidden"
@@ -386,7 +386,7 @@ function HeroCinematic() {
             hidden: {},
             show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
           }}
-          className="relative pt-4 pb-2 lg:py-14 text-center lg:text-left"
+          className="relative pt-2 pb-0 lg:py-14 text-center lg:text-left"
         >
           <motion.h1
             variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } }}
@@ -398,14 +398,14 @@ function HeroCinematic() {
 
           <motion.p
             variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } }}
-            className="mt-4 sm:mt-6 text-white/75 text-base sm:text-lg max-w-lg leading-relaxed font-normal mx-auto lg:mx-0"
+            className="mt-3 sm:mt-5 text-white/75 text-base sm:text-lg max-w-lg leading-relaxed font-normal mx-auto lg:mx-0"
           >
             Scale your brand with senior strategists and designers. Complete brand systems across strategy, identity, websites and growth, delivered fast.
           </motion.p>
 
           <motion.div
             variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } }}
-            className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4"
+            className="mt-5 sm:mt-7 flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4"
           >
             <button
               type="button"
@@ -426,7 +426,7 @@ function HeroCinematic() {
         {/* RIGHT : Infinite scrolling masonry (desktop: columns, mobile: rows) */}
         <motion.div
           style={{ x: parX, y: parY }}
-          className="relative h-auto lg:h-[88vh] overflow-hidden -mx-4 sm:mx-0 mt-1 lg:mt-0"
+          className="relative h-auto lg:h-[88vh] overflow-hidden -mx-4 sm:mx-0 mt-3 sm:mt-4 lg:mt-0"
         >
           {/* Desktop : vertical scrolling columns */}
           <motion.div style={{ x: parX2 }} className="hidden lg:grid grid-cols-3 gap-3 md:gap-4 h-full">
