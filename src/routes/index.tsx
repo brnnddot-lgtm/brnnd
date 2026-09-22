@@ -110,55 +110,61 @@ function Home() {
           <LogoMarquee />
         </div>
 
-        {/* Editorial split : Beyond traditional agencies (Superside style) */}
-        <div className="container-edge py-20 md:py-32 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          <div className="max-w-xl">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-t border-border pt-4">About BRNND</p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-semibold tracking-tight text-foreground mt-6 leading-[1.15]">
+        {/* Editorial split : Beyond traditional agencies (Superside style: Image first on mobile, text underneath) */}
+        <div className="container-edge py-16 sm:py-20 md:py-32 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-16 items-center">
+          {/* Image first on mobile */}
+          <div className="relative aspect-[4/5] sm:aspect-[4/3] lg:aspect-[5/4] overflow-hidden rounded-2xl bg-stone-100 border border-border/40 shadow-sm order-1 lg:order-2">
+            <img src={aboutSplit} srcSet={aboutSplitSet} sizes="(min-width: 768px) 50vw, 100vw" alt="Brand transformation in motion: BRNND identity sketches, Pantone swatches and brand book in studio" className="w-full h-full object-cover" loading="lazy" />
+          </div>
+
+          {/* Text underneath image on mobile */}
+          <div className="max-w-xl order-2 lg:order-1">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-t border-border pt-5 sm:pt-6">About BRNND</p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-semibold tracking-tight text-foreground mt-5 sm:mt-6 leading-[1.15]">
               Beyond traditional agencies.<br />
               <span className="font-serif italic text-accent">Complete brand systems,</span> built to scale.
             </h2>
-            <p className="mt-6 text-lg font-medium text-foreground/90">
+            <p className="mt-5 sm:mt-6 text-base sm:text-lg font-medium text-foreground/90 leading-snug">
               What happens when strategy and senior execution meet?
             </p>
-            <p className="mt-3 text-base text-foreground/70 leading-relaxed">
+            <p className="mt-3 text-sm sm:text-base text-foreground/70 leading-relaxed">
               By uniting senior brand strategists, digital designers, and growth specialists into a dedicated operating partner, founders get sharper positioning, faster sprint delivery, stronger consistency, and complete brand systems that actually perform.
             </p>
-            <div className="mt-8">
+            <div className="mt-7 sm:mt-8">
               <button
                 type="button"
                 onClick={openBookDemo}
-                className="rounded-full bg-foreground hover:bg-foreground/90 text-background px-7 py-3 text-sm font-semibold tracking-tight transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                className="w-full sm:w-auto rounded-full bg-foreground hover:bg-foreground/90 text-background px-8 py-3.5 text-sm font-semibold tracking-tight transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] text-center shadow-sm"
               >
                 Book a demo
               </button>
             </div>
           </div>
-          <div className="relative aspect-[4/3] lg:aspect-[5/4] overflow-hidden rounded-xl bg-stone-100 border border-border/40 shadow-none">
-            <img src={aboutSplit} srcSet={aboutSplitSet} sizes="(min-width: 768px) 50vw, 100vw" alt="Brand transformation in motion: BRNND identity sketches, Pantone swatches and brand book in studio" className="w-full h-full object-cover" loading="lazy" />
-          </div>
         </div>
 
-        {/* Editorial split : Brand operating partner */}
-        <div className="container-edge pb-20 md:pb-32 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          <div className="relative aspect-[4/3] lg:aspect-[5/4] overflow-hidden rounded-xl bg-stone-100 border border-border/40 shadow-none order-2 lg:order-1">
+        {/* Editorial split : Brand operating partner (Image first on mobile) */}
+        <div className="container-edge pb-16 sm:pb-20 md:pb-32 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-16 items-center">
+          {/* Image first on mobile */}
+          <div className="relative aspect-[4/5] sm:aspect-[4/3] lg:aspect-[5/4] overflow-hidden rounded-2xl bg-stone-100 border border-border/40 shadow-sm order-1">
             <img src={editorialSplit} srcSet={editorialSplitSet} sizes="(min-width: 768px) 50vw, 100vw" alt="Brand operating partner: BRNND guidelines, website and social system across print, web and mobile" className="w-full h-full object-cover" loading="lazy" />
           </div>
-          <div className="max-w-xl order-1 lg:order-2">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-t border-border pt-4">Brand operating partner</p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-semibold tracking-tight text-foreground mt-6 leading-[1.15]">
+
+          {/* Text underneath image on mobile */}
+          <div className="max-w-xl order-2">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-t border-border pt-5 sm:pt-6">Brand operating partner</p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-semibold tracking-tight text-foreground mt-5 sm:mt-6 leading-[1.15]">
               The brand partner founders <em className="italic font-serif text-accent">stay with.</em>
             </h2>
-            <p className="mt-6 text-lg font-medium text-foreground/90">
+            <p className="mt-5 sm:mt-6 text-base sm:text-lg font-medium text-foreground/90 leading-snug">
               Strategy → Identity → Digital → Growth.
             </p>
-            <p className="mt-3 text-base text-foreground/70 leading-relaxed">
+            <p className="mt-3 text-sm sm:text-base text-foreground/70 leading-relaxed">
               BRNND works the way a founding team would want their brand built: strategy-led, design-strong, shipped end-to-end, and handed over as an operational system you can keep running without dependencies.
             </p>
-            <div className="mt-8">
+            <div className="mt-7 sm:mt-8">
               <Link
                 to="/contact"
-                className="rounded-full border border-border hover:border-foreground/40 text-foreground hover:bg-foreground/5 px-7 py-3 text-sm font-medium transition-all duration-200 inline-block"
+                className="w-full sm:w-auto text-center rounded-full border border-border hover:border-foreground/40 text-foreground hover:bg-foreground/5 px-8 py-3.5 text-sm font-medium transition-all duration-200 inline-block"
               >
                 Talk to us
               </Link>
@@ -361,7 +367,7 @@ function HeroCinematic() {
         background: "radial-gradient(120% 80% at 80% 10%, #0f2a22 0%, #07140f 55%, #050b08 100%)",
         color: "#F2EEE3",
       }}
-      className="theme-dark relative overflow-hidden pt-16 sm:pt-20 lg:pt-28 pb-6 sm:pb-8 lg:pb-16"
+      className="theme-dark relative overflow-hidden pt-20 sm:pt-24 lg:pt-28 pb-6 sm:pb-8 lg:pb-16"
     >
       {/* Soft vignette */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10" style={{
@@ -386,7 +392,7 @@ function HeroCinematic() {
             hidden: {},
             show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
           }}
-          className="relative pt-2 pb-0 lg:py-14 text-center lg:text-left"
+          className="relative pt-6 sm:pt-8 lg:py-14 text-center lg:text-left"
         >
           <motion.h1
             variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } }}
