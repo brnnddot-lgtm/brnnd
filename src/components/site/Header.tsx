@@ -256,7 +256,7 @@ export function Header() {
             <img
               src={open || isDarkHero ? logoWhite : logoBlack}
               alt="BRNND Logo"
-              className="h-7 md:h-8 w-auto object-contain transition-opacity duration-300"
+              className="h-9 sm:h-10 md:h-11 w-auto object-contain transition-opacity duration-300"
             />
           </Link>
 
@@ -351,19 +351,14 @@ export function Header() {
                 <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
             ) : (
-              <div className="w-5 h-4 relative flex flex-col justify-between">
+              <div className="w-6 h-3 relative flex flex-col justify-between">
                 <span
-                  className={`block h-0.5 w-5 rounded-full transition-all duration-300 ${
+                  className={`block h-[2px] w-6 rounded-full transition-all duration-300 ${
                     isDarkHero ? "bg-white" : "bg-foreground"
                   }`}
                 />
                 <span
-                  className={`block h-0.5 w-5 rounded-full transition-all duration-300 ${
-                    isDarkHero ? "bg-white" : "bg-foreground"
-                  }`}
-                />
-                <span
-                  className={`block h-0.5 w-5 rounded-full transition-all duration-300 ${
+                  className={`block h-[2px] w-6 rounded-full transition-all duration-300 ${
                     isDarkHero ? "bg-white" : "bg-foreground"
                   }`}
                 />

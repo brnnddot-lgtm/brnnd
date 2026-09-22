@@ -103,8 +103,8 @@ function Home() {
 
       {/* SOCIAL PROOF : Trusted brands */}
       <section className="border-y border-border">
-        <div className="container-edge py-20 md:py-28">
-          <h2 className="text-center text-base md:text-lg text-foreground/80 mb-14 md:mb-16">
+        <div className="container-edge pt-10 pb-12 sm:pt-14 sm:pb-16 md:py-20">
+          <h2 className="text-center text-lg sm:text-xl md:text-2xl font-sans font-bold text-foreground tracking-tight max-w-3xl mx-auto mb-8 sm:mb-10 leading-snug">
             Trusted by founders, startups and modern businesses to build the brands they grow on.
           </h2>
           <LogoMarquee />
