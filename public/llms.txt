@@ -1,0 +1,43 @@
+# Brnnd
+
+> Brnnd is an independent branding studio building visual identity, websites, and growth systems for ambitious founders. We operate as an embedded creative department — strategy, design, and production rolling against a single backlog at a flat monthly rate.
+
+## Pages
+
+- [Home](/): Brnnd overview, services, and approach.
+- [Work](/work): Selected client engagements and outcomes.
+- [Case studies](/case-studies): In-depth project breakdowns.
+- [About](/about): Who we are and how we operate.
+- [Process](/process): How a Brnnd engagement runs end to end.
+- [How we work](/how-we-work): Operating model, cadence, and team structure.
+- [Pricing](/pricing): Flat monthly retainers and what is included.
+- [Insights](/insights): Essays on brand, creative ops, and design systems.
+- [Testimonials](/testimonials): What founders and operators say about working with us.
+- [Talent network](/talent-network): Vetted specialists we plug into engagements.
+- [Speed to market](/speed-to-market): How we ship faster than traditional agencies.
+- [Conversion lift](/conversion-lift): Creative work measured against revenue metrics.
+- [Contact](/contact): Start a project — partners read every inquiry.
+- [Book a demo](/book): Book a 30-minute intro call with a partner.
+
+## Services
+
+- [Ad creative](/services/ad-creative): Performance creative for paid social, display, and video.
+- [AI consulting](/services/ai-consulting): Embedding AI into creative and marketing workflows.
+- [AI marketing](/services/ai-marketing): AI-augmented campaign production at scale.
+- [AI-powered creative](/services/ai-powered-creative): Generative tooling inside the studio pipeline.
+- [Automation](/services/automation): Workflow automation for creative and marketing ops.
+- [Branding services](/services/branding-services): Identity systems, naming, and brand architecture.
+- [Campaign strategy](/services/campaign-strategy): Integrated campaign planning and creative direction.
+- [Creative design](/services/creative-design): Editorial and brand design across surfaces.
+- [Email creation](/services/email-creation): Lifecycle and campaign email design and build.
+- [Illustration design](/services/illustration-design): Custom illustration systems.
+- [Production](/services/production): Photo, video, and motion production.
+- [Social media creative](/services/social-media-creative): Always-on social creative production.
+- [Video production](/services/video-production): Short-form and long-form video.
+- [Web design](/services/web-design): Marketing site design and build.
+
+## Optional
+
+- [Privacy policy](/privacy)
+- [Terms of service](/terms)
+- [Cookie policy](/cookies)
