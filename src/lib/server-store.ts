@@ -1,12 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import { Invoice } from "./invoice-pdf";
-import { Lead, INITIAL_INVOICES, INITIAL_LEADS } from "@/data/admin-data";
+import { Lead, Project } from "@/data/admin-data";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
 interface StoreData {
   invoices: Invoice[];
   leads: Lead[];
+  projects: Project[];
   lastUpdated: string;
 }
 
@@ -16,15 +17,22 @@ function ensureStoreFile(): StoreData {
   try {
     if (fs.existsSync(STORE_PATH)) {
       const content = fs.readFileSync(STORE_PATH, "utf-8");
-      return JSON.parse(content) as StoreData;
+      const parsed = JSON.parse(content) as StoreData;
+      // Ensure all arrays exist (never seed fake data)
+      if (!parsed.projects) parsed.projects = [];
+      if (!parsed.invoices) parsed.invoices = [];
+      if (!parsed.leads) parsed.leads = [];
+      return parsed;
     }
   } catch (err) {
     console.error("Error reading live store, reinitializing", err);
   }
 
+  // Production: always start empty — no seed data
   const initialData: StoreData = {
-    invoices: INITIAL_INVOICES,
-    leads: INITIAL_LEADS,
+    invoices: [],
+    leads: [],
+    projects: [],
     lastUpdated: new Date().toISOString(),
   };
 
@@ -53,7 +61,7 @@ function writeStoreFile(data: StoreData) {
 export async function getRealInvoices(): Promise<Invoice[]> {
   // First attempt to query Supabase
   try {
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await (supabaseAdmin as any)
       .from("invoices")
       .select("*")
       .order("created_at", { ascending: false });
@@ -83,7 +91,7 @@ export async function saveRealInvoice(invoice: Invoice): Promise<Invoice> {
 
   // Sync with Supabase in background if table exists
   try {
-    await supabaseAdmin.from("invoices").upsert({
+    await (supabaseAdmin as any).from("invoices").upsert({
       id: invoice.id.startsWith("inv-") ? undefined : invoice.id,
       invoice_number: invoice.invoice_number,
       client_name: invoice.client_name,
@@ -117,7 +125,7 @@ export async function deleteRealInvoice(invoiceId: string): Promise<boolean> {
   writeStoreFile(store);
 
   try {
-    await supabaseAdmin.from("invoices").delete().eq("id", invoiceId);
+    await (supabaseAdmin as any).from("invoices").delete().eq("id", invoiceId);
   } catch {
     // Ignore Supabase error
   }
@@ -127,7 +135,7 @@ export async function deleteRealInvoice(invoiceId: string): Promise<boolean> {
 
 export async function getRealLeads(): Promise<Lead[]> {
   try {
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await (supabaseAdmin as any)
       .from("demo_leads")
       .select("*")
       .order("created_at", { ascending: false });
@@ -175,10 +183,52 @@ export async function updateRealLeadStatus(leadId: string, status: Lead["status"
   }
 
   try {
-    await supabaseAdmin.from("demo_leads").update({ status }).eq("id", leadId);
+    await (supabaseAdmin as any).from("demo_leads").update({ status }).eq("id", leadId);
   } catch {
     // Ignore Supabase error
   }
 
   return true;
+}
+
+export async function getRealProjects(): Promise<Project[]> {
+  const store = ensureStoreFile();
+  return store.projects || [];
+}
+
+export async function saveRealProject(project: Project): Promise<Project> {
+  const store = ensureStoreFile();
+  if (!store.projects) store.projects = [];
+  const index = store.projects.findIndex((p) => p.id === project.id);
+  if (index >= 0) {
+    store.projects[index] = { ...project, updated_at: new Date().toISOString() };
+  } else {
+    store.projects.unshift({ ...project, created_at: project.created_at || new Date().toISOString() });
+  }
+  writeStoreFile(store);
+  return project;
+}
+
+export async function deleteRealProject(projectId: string): Promise<boolean> {
+  const store = ensureStoreFile();
+  if (!store.projects) return true;
+  store.projects = store.projects.filter((p) => p.id !== projectId);
+  writeStoreFile(store);
+  return true;
+}
+
+export async function updateRealProjectStatus(
+  projectId: string,
+  status: Project["status"]
+): Promise<boolean> {
+  const store = ensureStoreFile();
+  if (!store.projects) return false;
+  const target = store.projects.find((p) => p.id === projectId);
+  if (target) {
+    target.status = status;
+    target.updated_at = new Date().toISOString();
+    writeStoreFile(store);
+    return true;
+  }
+  return false;
 }

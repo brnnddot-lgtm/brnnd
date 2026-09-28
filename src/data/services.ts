@@ -46,22 +46,6 @@ const mk = (s: Partial<Service> & Pick<Service, "slug"|"title"|"category"|"tagli
 
 export const services: Service[] = [
   mk({
-    slug: "ad-creative",
-    title: "Ad creative",
-    category: "creative",
-    tagline: "Eye-catching designs that perform",
-    hook: "Tired of ad fatigue?",
-    description: "It's time to refresh your ad production. Ad creative that breaks through the scroll, gets clicked, and gets remembered — built for the platforms you actually run.",
-    subServices: [
-      { title: "Display design", body: "On-brand display creative for any size, any network, any campaign." },
-      { title: "Animated ads", body: "Looping HTML5, GIF and Lottie ads that earn attention." },
-      { title: "Performance design", body: "Iterative creative built to test, scale and learn." },
-      { title: "Storyboards", body: "Pre-production frames to align stakeholders fast." },
-      { title: "Landing pages", body: "Conversion-built pages that match every ad concept." },
-      { title: "Visual systems", body: "Modular ad systems for global, multi-market campaigns." },
-    ],
-  }),
-  mk({
     slug: "social-media-creative",
     title: "Social media creative",
     category: "creative",
@@ -75,22 +59,6 @@ export const services: Service[] = [
       { title: "Stories & frames", body: "Disposable formats with disposable production cost." },
       { title: "Templates", body: "Reusable systems so your team can ship daily." },
       { title: "Community kits", body: "Reaction packs, comment cards, drop assets." },
-    ],
-  }),
-  mk({
-    slug: "illustration-design",
-    title: "Illustration design",
-    category: "creative",
-    tagline: "Visual storytelling for your brand",
-    hook: "Illustration with a point of view.",
-    description: "Custom illustration systems — characters, scenes, spot icons — built as part of your brand language, not bolted on top.",
-    subServices: [
-      { title: "Spot illustration", body: "Editorial spots for blogs, products and decks." },
-      { title: "Character systems", body: "Recurring brand characters with rules." },
-      { title: "Scene illustration", body: "Full-bleed scenes for hero moments." },
-      { title: "Icon sets", body: "Pixel-perfect icon families at any size." },
-      { title: "Editorial spots", body: "Long-form spots that sit beside writing." },
-      { title: "Brand patterns", body: "Repeating motifs and surface design." },
     ],
   }),
   mk({
@@ -188,23 +156,6 @@ export const services: Service[] = [
       { title: "DAM integration", body: "Hooked into Frontify, Bynder, Brandfolder." },
       { title: "Reporting", body: "Throughput and quality dashboards." },
       { title: "Custom agents", body: "Bespoke agents for your team's workflow." },
-    ],
-  }),
-  mk({
-    slug: "campaign-strategy",
-    title: "Campaign strategy",
-    category: "marketing",
-    tagline: "Strategy, messaging, and concept for multi-market campaigns",
-    badge: "New",
-    hook: "Campaigns with a strategy underneath.",
-    description: "Integrated campaign strategy — audience, message, channel and concept — built with senior planners and ready to produce.",
-    subServices: [
-      { title: "Audience strategy", body: "Segmentation, JTBD and audience maps." },
-      { title: "Messaging frameworks", body: "Hierarchy, proof points and copy systems." },
-      { title: "Channel planning", body: "Where to show up and in what order." },
-      { title: "Creative briefs", body: "Briefs that produce great work." },
-      { title: "Multi-market rollouts", body: "Global plays adapted per market." },
-      { title: "Measurement plans", body: "KPIs and reporting before launch." },
     ],
   }),
 ];

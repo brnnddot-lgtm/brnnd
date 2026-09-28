@@ -84,9 +84,9 @@ export function LeadsTab({
           type="button"
           onClick={handleSyncSupabase}
           disabled={syncing}
-          className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-xs font-medium transition-colors cursor-pointer"
+          className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#091f17] hover:bg-[#0e2c21] text-neutral-200 border border-[#143326] text-xs font-medium transition-colors cursor-pointer"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${syncing ? "animate-spin text-orange-400" : ""}`} />
+          <RefreshCw className={`w-3.5 h-3.5 ${syncing ? "animate-spin text-brand-lime" : ""}`} />
           {syncing ? "Syncing Supabase..." : "Sync from Supabase"}
         </button>
       </div>
@@ -99,12 +99,12 @@ export function LeadsTab({
           placeholder="Filter leads by name, email, or company..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-9 pr-4 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-xs text-white placeholder-neutral-500 focus:border-orange-500 focus:outline-none"
+          className="w-full pl-9 pr-4 py-2 bg-[#040e0a] border border-[#143326]/80 rounded-lg text-xs text-white placeholder-neutral-500 focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none"
         />
       </div>
 
       {/* Table */}
-      <div className="rounded-xl border border-neutral-800 bg-neutral-900/80 overflow-hidden">
+      <div className="rounded-xl border border-[#143326]/80 bg-[#081a13]/80 overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="bg-neutral-950/80 border-b border-neutral-800 text-neutral-400 font-mono uppercase text-[11px]">
@@ -162,7 +162,7 @@ export function LeadsTab({
                         onChange={(e) =>
                           onUpdateLeadStatus(lead.id, e.target.value as Lead["status"])
                         }
-                        className="px-2 py-1 bg-neutral-950 border border-neutral-800 rounded text-[11px] font-mono capitalize text-neutral-300 focus:border-orange-500 focus:outline-none"
+                        className="px-2 py-1 bg-neutral-950 border border-neutral-800 rounded text-[11px] font-mono capitalize text-neutral-300 focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none"
                       >
                         <option value="new">New</option>
                         <option value="contacted">Contacted</option>
@@ -185,7 +185,7 @@ export function LeadsTab({
                       <button
                         type="button"
                         onClick={() => onConvertLeadToInvoice(lead)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orange-600/90 hover:bg-orange-500 text-white font-medium text-[11px] transition-colors cursor-pointer shadow-sm shadow-orange-950"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-brand-lime hover:bg-[#bef264] text-stone-950 font-semibold text-[11px] transition-colors cursor-pointer shadow-sm"
                       >
                         <FilePlus2 className="w-3.5 h-3.5" />
                         Create Invoice

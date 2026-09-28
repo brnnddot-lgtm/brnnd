@@ -3,5 +3,8 @@
   "name": "tanstack-start-app",
   "compatibility_date": "2025-09-24",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "src/server.ts",
+  "main": "src/server.ts"
+  // NOTE: Set secrets via Vercel/Cloudflare dashboard, not here.
+  // Required env vars: RESEND_API_KEY, RESEND_SENDER, ADMIN_EMAIL,
+  //                    ADMIN_HASH, SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY
 }

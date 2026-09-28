@@ -9,17 +9,11 @@ import { caseStudies } from "@/data/caseStudies";
 
 import hero from "@/assets/hero-showcase.jpg";
 import heroTypeSystem from "@/assets/hero-type-system.webp";
-import heroTypeSystemSet from "@/assets/hero-type-system.webp?w=480;800;1200;1600&format=webp&as=srcset";
 import heroBusinessCard from "@/assets/hero-business-card.webp";
-import heroBusinessCardSet from "@/assets/hero-business-card.webp?w=480;800;1200;1600&format=webp&as=srcset";
 import heroLaptopVault from "@/assets/hero-laptop-vault.webp";
-import heroLaptopVaultSet from "@/assets/hero-laptop-vault.webp?w=480;800;1200;1600&format=webp&as=srcset";
 import heroPackagingTote from "@/assets/hero-packaging-tote.webp";
-import heroPackagingToteSet from "@/assets/hero-packaging-tote.webp?w=480;800;1200;1600&format=webp&as=srcset";
 import heroPitchDeck from "@/assets/hero-pitch-deck.webp";
-import heroPitchDeckSet from "@/assets/hero-pitch-deck.webp?w=480;800;1200;1600&format=webp&as=srcset";
 import heroEmboss from "@/assets/hero-emboss.webp";
-import heroEmbossSet from "@/assets/hero-emboss.webp?w=480;800;1200;1600&format=webp&as=srcset";
 import case01 from "@/assets/case-01.jpg";
 import case02 from "@/assets/case-02.jpg";
 import case03 from "@/assets/case-03.jpg";
@@ -29,22 +23,14 @@ import work3foods from "@/assets/work-3foods.webp";
 import workBaggy from "@/assets/work-baggy.webp";
 import workMinthost from "@/assets/work-minthost.webp";
 import burnoutDesk from "@/assets/burnout-desk.webp";
-import burnoutDeskSet from "@/assets/burnout-desk.webp?w=480;800;1200;1600&format=webp&as=srcset";
 import storySoothe from "@/assets/story-soothe.webp";
-import storySootheSet from "@/assets/story-soothe.webp?w=480;800;1200;1600&format=webp&as=srcset";
 import storyKape from "@/assets/story-kape.webp";
-import storyKapeSet from "@/assets/story-kape.webp?w=480;800;1200;1600&format=webp&as=srcset";
 import logoBlack from "@/assets/brnnd-logomark-orange.png";
 import aboutSplit from "@/assets/about-split.webp";
-import aboutSplitSet from "@/assets/about-split.webp?w=480;800;1200;1600&format=webp&as=srcset";
 import editorialSplit from "@/assets/editorial-split.webp";
-import editorialSplitSet from "@/assets/editorial-split.webp?w=480;800;1200;1600&format=webp&as=srcset";
 import serviceBrand from "@/assets/service-brand.jpg";
-import serviceBrandSet from "@/assets/service-brand.jpg?w=480;800;1200;1600&format=webp&as=srcset";
 import serviceDigital from "@/assets/service-digital.jpg";
-import serviceDigitalSet from "@/assets/service-digital.jpg?w=480;800;1200;1600&format=webp&as=srcset";
 import serviceGrowth from "@/assets/service-growth.jpg";
-import serviceGrowthSet from "@/assets/service-growth.jpg?w=480;800;1200;1600&format=webp&as=srcset";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -114,7 +100,7 @@ function Home() {
         <div className="container-edge py-16 sm:py-20 md:py-32 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-16 items-center">
           {/* Image first on mobile */}
           <div className="relative aspect-[4/5] sm:aspect-[4/3] lg:aspect-[5/4] overflow-hidden rounded-2xl bg-stone-100 border border-border/40 shadow-sm order-1 lg:order-2">
-            <img src={aboutSplit} srcSet={aboutSplitSet} sizes="(min-width: 768px) 50vw, 100vw" alt="Brand transformation in motion: BRNND identity sketches, Pantone swatches and brand book in studio" className="w-full h-full object-cover" loading="lazy" />
+            <img src={aboutSplit} alt="Brand transformation in motion: BRNND identity sketches, Pantone swatches and brand book in studio" className="w-full h-full object-cover" loading="lazy" />
           </div>
 
           {/* Text underneath image on mobile */}
@@ -146,7 +132,7 @@ function Home() {
         <div className="container-edge pb-16 sm:pb-20 md:pb-32 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-16 items-center">
           {/* Image first on mobile */}
           <div className="relative aspect-[4/5] sm:aspect-[4/3] lg:aspect-[5/4] overflow-hidden rounded-2xl bg-stone-100 border border-border/40 shadow-sm order-1">
-            <img src={editorialSplit} srcSet={editorialSplitSet} sizes="(min-width: 768px) 50vw, 100vw" alt="Brand operating partner: BRNND guidelines, website and social system across print, web and mobile" className="w-full h-full object-cover" loading="lazy" />
+            <img src={editorialSplit} alt="Brand operating partner: BRNND guidelines, website and social system across print, web and mobile" className="w-full h-full object-cover" loading="lazy" />
           </div>
 
           {/* Text underneath image on mobile */}
@@ -203,12 +189,12 @@ function Home() {
 
           <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             {[
-              { tag: "Brand", rest: "Strategy & Identity", img: serviceBrand, srcset: serviceBrandSet, solid: true },
-              { tag: "Digital", rest: "Websites & UI/UX", img: serviceDigital, srcset: serviceDigitalSet },
-              { tag: "Growth", rest: "Social, Launch, Campaigns", img: serviceGrowth, srcset: serviceGrowthSet },
+              { tag: "Brand", rest: "Strategy & Identity", img: serviceBrand, solid: true },
+              { tag: "Digital", rest: "Websites & UI/UX", img: serviceDigital },
+              { tag: "Growth", rest: "Social, Launch, Campaigns", img: serviceGrowth },
             ].map((f) => (
               <div key={f.tag} className="group relative aspect-[4/5] overflow-hidden rounded-xl bg-white/5 ring-1 ring-white/10 hover:ring-white/20 transition-all duration-300 shadow-none">
-                <img src={f.img} srcSet={f.srcset} sizes="(min-width: 768px) 33vw, 100vw" alt={`${f.tag} ${f.rest}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
+                <img src={f.img} alt={`${f.tag} ${f.rest}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
                 <div className="absolute inset-x-0 bottom-0 p-5 md:p-6">
                   <div className={`rounded-xl px-4 py-3 text-sm md:text-base font-sans font-medium ${f.solid ? "bg-brand-lime text-stone-950 font-semibold" : "bg-black/50 backdrop-blur-md text-white border border-white/15"}`}>
                     <em className="italic font-serif">{f.tag}</em> {f.rest}
@@ -437,40 +423,40 @@ function HeroCinematic() {
           {/* Desktop : vertical scrolling columns */}
           <motion.div style={{ x: parX2 }} className="hidden lg:grid grid-cols-3 gap-3 md:gap-4 h-full">
             <LoopColumn direction="up" duration={42} tiles={[
-              { src: heroTypeSystem, srcset: heroTypeSystemSet, brand: "Grubhub", ratio: "3/4" },
-              { src: workBaggy, srcset: "", brand: "Baggy", ratio: "4/5" },
-              { src: case01, srcset: "", brand: "Antler", ratio: "3/4" },
-              { src: heroEmboss, srcset: heroEmbossSet, brand: "Roland", ratio: "1/1" },
+              { src: heroTypeSystem, brand: "Grubhub", ratio: "3/4" },
+              { src: workBaggy, brand: "Baggy", ratio: "4/5" },
+              { src: case01, brand: "Antler", ratio: "3/4" },
+              { src: heroEmboss, brand: "Roland", ratio: "1/1" },
             ]} />
             <LoopColumn direction="down" duration={56} offset="14%" tiles={[
-              { src: heroPackagingTote, srcset: heroPackagingToteSet, brand: "otto", ratio: "4/5" },
-              { src: work3foods, srcset: "", brand: "3Foods", ratio: "3/4" },
-              { src: case03, srcset: "", brand: "Collabera", ratio: "1/1" },
-              { src: storySoothe, srcset: storySootheSet, brand: "Soothe", ratio: "3/4" },
+              { src: heroPackagingTote, brand: "otto", ratio: "4/5" },
+              { src: work3foods, brand: "3Foods", ratio: "3/4" },
+              { src: case03, brand: "Collabera", ratio: "1/1" },
+              { src: storySoothe, brand: "Soothe", ratio: "3/4" },
             ]} />
             <LoopColumn direction="up" duration={48} tiles={[
-              { src: heroLaptopVault, srcset: heroLaptopVaultSet, brand: "Nasdaq", ratio: "4/5" },
-              { src: workMinthost, srcset: "", brand: "Minthost", ratio: "1/1" },
-              { src: storyKape, srcset: storyKapeSet, brand: "Kape", ratio: "3/4" },
-              { src: case04, srcset: "", brand: "Microsoft", ratio: "4/5" },
+              { src: heroLaptopVault, brand: "Nasdaq", ratio: "4/5" },
+              { src: workMinthost, brand: "Minthost", ratio: "1/1" },
+              { src: storyKape, brand: "Kape", ratio: "3/4" },
+              { src: case04, brand: "Microsoft", ratio: "4/5" },
             ]} />
           </motion.div>
 
           {/* Mobile : horizontal scrolling rows tight beneath the button */}
           <div className="lg:hidden flex flex-col gap-3 py-1">
             <LoopRow direction="left" duration={36} tiles={[
-              { src: heroPackagingTote, srcset: heroPackagingToteSet, brand: "otto", ratio: "4/5" },
-              { src: case03, srcset: "", brand: "Collabera", ratio: "1/1" },
-              { src: workBaggy, srcset: "", brand: "Baggy", ratio: "4/5" },
-              { src: heroTypeSystem, srcset: heroTypeSystemSet, brand: "Grubhub", ratio: "3/4" },
-              { src: case01, srcset: "", brand: "Antler", ratio: "3/4" },
+              { src: heroPackagingTote, brand: "otto", ratio: "4/5" },
+              { src: case03, brand: "Collabera", ratio: "1/1" },
+              { src: workBaggy, brand: "Baggy", ratio: "4/5" },
+              { src: heroTypeSystem, brand: "Grubhub", ratio: "3/4" },
+              { src: case01, brand: "Antler", ratio: "3/4" },
             ]} />
             <LoopRow direction="right" duration={42} tiles={[
-              { src: heroLaptopVault, srcset: heroLaptopVaultSet, brand: "Nasdaq", ratio: "4/5" },
-              { src: storySoothe, srcset: storySootheSet, brand: "Soothe", ratio: "3/4" },
-              { src: heroEmboss, srcset: heroEmbossSet, brand: "Roland", ratio: "1/1" },
-              { src: storyKape, srcset: storyKapeSet, brand: "Kape", ratio: "3/4" },
-              { src: workMinthost, srcset: "", brand: "Minthost", ratio: "1/1" },
+              { src: heroLaptopVault, brand: "Nasdaq", ratio: "4/5" },
+              { src: storySoothe, brand: "Soothe", ratio: "3/4" },
+              { src: heroEmboss, brand: "Roland", ratio: "1/1" },
+              { src: storyKape, brand: "Kape", ratio: "3/4" },
+              { src: workMinthost, brand: "Minthost", ratio: "1/1" },
             ]} />
           </div>
 
@@ -480,7 +466,7 @@ function HeroCinematic() {
   );
 }
 
-type Tile = { src: string; srcset: string; brand: string; ratio: "3/4" | "4/5" | "1/1" };
+type Tile = { src: string; brand: string; ratio: "3/4" | "4/5" | "1/1" };
 
 function BrandLogo({ brand }: { brand: string }) {
   const b = brand.toLowerCase();
@@ -659,14 +645,12 @@ function LoopRow({
   );
 }
 
-function RowTile({ src, srcset, brand, ratio }: Tile) {
+function RowTile({ src, brand, ratio }: Tile) {
   const aspect = ratio === "3/4" ? "aspect-[3/4]" : ratio === "4/5" ? "aspect-[4/5]" : "aspect-square";
   return (
     <div className={`group relative h-48 sm:h-56 ${aspect} shrink-0 overflow-hidden rounded-2xl bg-white/5 ring-1 ring-white/10 shadow-md hover:ring-white/25 transition-all duration-300`}>
       <img
         src={src}
-        srcSet={srcset || undefined}
-        sizes="50vw"
         alt={brand}
         loading="lazy"
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -680,14 +664,12 @@ function RowTile({ src, srcset, brand, ratio }: Tile) {
 }
 
 
-function GalleryTile({ src, srcset, brand, ratio }: Tile) {
+function GalleryTile({ src, brand, ratio }: Tile) {
   const aspect = ratio === "3/4" ? "aspect-[3/4]" : ratio === "4/5" ? "aspect-[4/5]" : "aspect-square";
   return (
     <div className={`group relative ${aspect} overflow-hidden rounded-2xl bg-white/5 ring-1 ring-white/10 hover:ring-white/30 transition-all duration-300 shadow-none`}>
       <img
         src={src}
-        srcSet={srcset || undefined}
-        sizes="(min-width: 1024px) 20vw, (min-width: 640px) 30vw, 33vw"
         alt={brand}
         loading="lazy"
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -1024,7 +1006,7 @@ function TalentAndBurnout() {
         <div className="bg-background text-foreground">
           <div className="container-edge py-24 md:py-32 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div className="rounded-xl overflow-hidden aspect-[4/3] order-2 lg:order-1 shadow-none">
-              <img src={burnoutDesk} srcSet={burnoutDeskSet} sizes="(min-width: 768px) 50vw, 100vw" alt="Overworked creative team" loading="lazy" width={1280} height={960} className="w-full h-full object-cover" />
+              <img src={burnoutDesk} alt="Overworked creative team" loading="lazy" width={1280} height={960} className="w-full h-full object-cover" />
             </div>
             <div className="max-w-xl order-1 lg:order-2">
               <p className="text-xs font-semibold uppercase tracking-wider text-foreground/75 mb-6 pb-6 border-b border-foreground/15">For founders who are tired of half-built brands</p>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Invoice, getInvoicePdfBlobUrl, downloadInvoicePdf } from "@/lib/invoice-pdf";
-import { X, Download, Printer, ExternalLink, Loader2 } from "lucide-react";
+import { X, Download, Printer, ExternalLink, Loader2, Receipt, Send } from "lucide-react";
 
 interface InvoicePdfModalProps {
   invoice: Invoice | null;
@@ -53,9 +53,23 @@ export function InvoicePdfModal({ invoice, onClose, onSendEmail }: InvoicePdfMod
                   onClose();
                   onSendEmail(invoice);
                 }}
-                className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded-lg bg-orange-600 hover:bg-orange-500 text-white transition-colors cursor-pointer"
+                className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg transition-colors cursor-pointer ${
+                  invoice.status === "paid"
+                    ? "bg-emerald-500 hover:bg-emerald-400 text-stone-950"
+                    : "bg-brand-lime hover:bg-[#bef264] text-stone-950"
+                }`}
               >
-                Send via Email
+                {invoice.status === "paid" ? (
+                  <>
+                    <Receipt className="w-3.5 h-3.5" />
+                    <span>Send Paid Receipt</span>
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-3.5 h-3.5" />
+                    <span>Send via Email</span>
+                  </>
+                )}
               </button>
             )}
             <button
@@ -91,7 +105,7 @@ export function InvoicePdfModal({ invoice, onClose, onSendEmail }: InvoicePdfMod
         <div className="flex-1 bg-neutral-950 relative flex items-center justify-center p-2">
           {loading ? (
             <div className="flex flex-col items-center gap-3 text-neutral-400">
-              <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
+              <Loader2 className="w-8 h-8 animate-spin text-brand-lime" />
               <p className="text-sm font-mono">Generating high-fidelity PDF...</p>
             </div>
           ) : blobUrl ? (

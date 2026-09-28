@@ -11,205 +11,47 @@ export interface Lead {
   created_at: string;
 }
 
-export const INITIAL_INVOICES: Invoice[] = [
-  {
-    id: "inv-1",
-    invoice_number: "INV-2026-001",
-    client_name: "Dr. Marcus Vance",
-    client_company: "Lumina AI Systems",
-    client_email: "marcus@lumina.ai",
-    client_address: "548 Market St, Suite 78000, San Francisco, CA 94104",
-    issue_date: "2026-09-15",
-    due_date: "2026-09-30",
-    status: "paid",
-    currency: "USD",
-    items: [
-      {
-        id: "item-1",
-        description: "Tier-1 Brand Transformation & Visual Language System",
-        quantity: 1,
-        rate: 22500,
-        amount: 22500,
-      },
-    ],
-    subtotal: 22500,
-    tax_percent: 0,
-    tax_amount: 0,
-    discount_amount: 0,
-    total: 22500,
-    notes: "Payment received via wire transfer on Sept 18, 2026. Thank you for your partnership.",
-    payment_instructions: "Wire instructions provided in PDF. Net 15.",
-    last_sent_at: "2026-09-15T14:30:00.000Z",
-    sent_to_email: "marcus@lumina.ai",
-    created_at: "2026-09-15T12:00:00.000Z",
-  },
-  {
-    id: "inv-2",
-    invoice_number: "INV-2026-002",
-    client_name: "Elena Rostova",
-    client_company: "HyperScale Cloud",
-    client_email: "elena@hyperscale.io",
-    client_address: "100 Montgomery St, San Francisco, CA 94104",
-    issue_date: "2026-09-20",
-    due_date: "2026-10-05",
-    status: "sent",
-    currency: "USD",
-    items: [
-      {
-        id: "item-1",
-        description: "Design Engineering, Design System & High-Conversion Web Architecture",
-        quantity: 1,
-        rate: 18000,
-        amount: 18000,
-      },
-      {
-        id: "item-2",
-        description: "Custom Motion Assets & High-Impact Interactive Graphics",
-        quantity: 1,
-        rate: 4500,
-        amount: 4500,
-      },
-    ],
-    subtotal: 22500,
-    tax_percent: 0,
-    tax_amount: 0,
-    discount_amount: 0,
-    total: 22500,
-    notes: "Milestone 1 completed. Net 15 terms apply.",
-    payment_instructions: "Wire or ACH. Silicon Valley Bank / Mercury.",
-    last_sent_at: "2026-09-20T10:15:00.000Z",
-    sent_to_email: "elena@hyperscale.io",
-    created_at: "2026-09-20T09:00:00.000Z",
-  },
-  {
-    id: "inv-3",
-    invoice_number: "INV-2026-003",
-    client_name: "Chloe Dupont",
-    client_company: "Vespera Atelier",
-    client_email: "chloe@vespera.luxury",
-    client_address: "450 Avenue Montaigne, 75008 Paris, France",
-    issue_date: "2026-09-22",
-    due_date: "2026-10-07",
-    status: "sent",
-    currency: "USD",
-    items: [
-      {
-        id: "item-1",
-        description: "Global E-Commerce Replatforming & Luxury Visual Narrative",
-        quantity: 1,
-        rate: 34000,
-        amount: 34000,
-      },
-    ],
-    subtotal: 34000,
-    tax_percent: 0,
-    tax_amount: 0,
-    discount_amount: 0,
-    total: 34000,
-    notes: "Phase 1: Brand Strategy and UI/UX Architecture complete.",
-    last_sent_at: "2026-09-22T16:20:00.000Z",
-    sent_to_email: "chloe@vespera.luxury",
-    created_at: "2026-09-22T15:00:00.000Z",
-  },
-  {
-    id: "inv-4",
-    invoice_number: "INV-2026-004",
-    client_name: "Liam Henderson",
-    client_company: "Sora Robotics",
-    client_email: "liam@sorarobotics.tech",
-    client_address: "1 Kendall Sq, Cambridge, MA 02139",
-    issue_date: "2026-09-25",
-    due_date: "2026-10-10",
-    status: "draft",
-    currency: "USD",
-    items: [
-      {
-        id: "item-1",
-        description: "Naming Strategy, Deck Design & Series-A Launch Suite",
-        quantity: 1,
-        rate: 16500,
-        amount: 16500,
-      },
-    ],
-    subtotal: 16500,
-    tax_percent: 0,
-    tax_amount: 0,
-    discount_amount: 0,
-    total: 16500,
-    notes: "Draft prepared for review ahead of pitch deck handoff.",
-    created_at: "2026-09-25T11:00:00.000Z",
-  },
-  {
-    id: "inv-5",
-    invoice_number: "INV-2026-005",
-    client_name: "Julian Thorne",
-    client_company: "Apex Capital Partners",
-    client_email: "j.thorne@apexcap.com",
-    client_address: "375 Park Avenue, 28th Floor, New York, NY 10152",
-    issue_date: "2026-08-20",
-    due_date: "2026-09-05",
-    status: "overdue",
-    currency: "USD",
-    items: [
-      {
-        id: "item-1",
-        description: "Digital Presence, Executive Investor Portal & Identity Guidelines",
-        quantity: 1,
-        rate: 28000,
-        amount: 28000,
-      },
-    ],
-    subtotal: 28000,
-    tax_percent: 0,
-    tax_amount: 0,
-    discount_amount: 0,
-    total: 28000,
-    notes: "Second reminder sent on Sept 10. Due upon receipt.",
-    last_sent_at: "2026-09-10T11:00:00.000Z",
-    sent_to_email: "j.thorne@apexcap.com",
-    created_at: "2026-08-20T09:00:00.000Z",
-  },
-];
+export interface ProjectMediaFile {
+  id: string;
+  name: string;
+  type: "figma" | "drive" | "image" | "video" | "zip" | "doc" | "link";
+  url: string;
+  size_or_note?: string;
+  added_at: string;
+}
 
-export const INITIAL_LEADS: Lead[] = [
-  {
-    id: "lead-1",
-    full_name: "Sarah Lin",
-    email: "sarah@novafinance.io",
-    company: "Nova Financial",
-    company_size: "20-50",
-    source: "Book a Demo",
-    status: "new",
-    created_at: "2026-09-26T18:42:00.000Z",
-  },
-  {
-    id: "lead-2",
-    full_name: "David Kross",
-    email: "d.kross@axonhealth.com",
-    company: "Axon Health",
-    company_size: "50-100",
-    source: "Contact Form",
-    status: "contacted",
-    created_at: "2026-09-25T14:20:00.000Z",
-  },
-  {
-    id: "lead-3",
-    full_name: "Amira Patel",
-    email: "amira@solaraudio.com",
-    company: "Solar Sound Technologies",
-    company_size: "10-20",
-    source: "Pricing / Conversion Lift",
-    status: "qualified",
-    created_at: "2026-09-24T09:15:00.000Z",
-  },
-  {
-    id: "lead-4",
-    full_name: "Kenji Sato",
-    email: "sato@nexus-ai.jp",
-    company: "Nexus AI Tokyo",
-    company_size: "100+",
-    source: "Branding Services Page",
-    status: "converted",
-    created_at: "2026-09-22T11:00:00.000Z",
-  },
-];
+export interface ProjectMilestone {
+  id: string;
+  title: string;
+  completed: boolean;
+  due_date?: string;
+}
+
+export interface Project {
+  id: string;
+  title: string;
+  client_name: string;
+  client_company: string;
+  client_email: string;
+  client_phone?: string;
+  client_whatsapp?: string;
+  services: string[];
+  status: "discovery" | "in_progress" | "in_review" | "completed" | "on_hold";
+  priority: "low" | "medium" | "high" | "urgent";
+  start_date: string;
+  target_launch_date: string;
+  budget: number;
+  currency: string;
+  description: string;
+  requirements: string[];
+  milestones: ProjectMilestone[];
+  media_files: ProjectMediaFile[];
+  notes?: string;
+  created_at: string;
+  updated_at?: string;
+}
+
+// Production — no seed/demo data. All data is created via the admin UI.
+export const INITIAL_INVOICES: Invoice[] = [];
+export const INITIAL_LEADS: Lead[] = [];
+export const INITIAL_PROJECTS: Project[] = [];

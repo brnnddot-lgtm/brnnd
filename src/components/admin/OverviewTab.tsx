@@ -1,6 +1,6 @@
 import React from "react";
 import { Invoice } from "@/lib/invoice-pdf";
-import { Lead } from "@/data/admin-data";
+import { Lead, Project } from "@/data/admin-data";
 import {
   DollarSign,
   TrendingUp,
@@ -12,6 +12,9 @@ import {
   Download,
   ArrowUpRight,
   ShieldCheck,
+  FolderArchive,
+  Plus,
+  Receipt,
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -26,17 +29,21 @@ import {
 interface OverviewTabProps {
   invoices: Invoice[];
   leads: Lead[];
+  projects?: Project[];
   onCreateInvoice: () => void;
+  onCreateProject?: () => void;
   onPreviewInvoice: (invoice: Invoice) => void;
   onSendInvoice: (invoice: Invoice) => void;
   onDownloadInvoice: (invoice: Invoice) => void;
-  onNavigateTab: (tab: "invoices" | "leads" | "settings") => void;
+  onNavigateTab: (tab: "projects" | "invoices" | "leads" | "settings") => void;
 }
 
 export function OverviewTab({
   invoices,
   leads,
+  projects = [],
   onCreateInvoice,
+  onCreateProject,
   onPreviewInvoice,
   onSendInvoice,
   onDownloadInvoice,
@@ -67,15 +74,15 @@ export function OverviewTab({
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
       {/* Resend & Supabase integration status banner */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 rounded-xl bg-gradient-to-r from-neutral-900 to-neutral-950 border border-neutral-800 gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 rounded-xl bg-gradient-to-r from-[#081a13] to-[#040e0a] border border-[#143326]/80 gap-4">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-orange-600/10 border border-orange-500/20 text-orange-400">
+          <div className="p-2 rounded-lg bg-brand-lime/10 border border-brand-lime/25 text-brand-lime">
             <ShieldCheck className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
               <span className="text-sm font-semibold text-white">BRNND Executive Command Center</span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-950 border border-emerald-500/30 text-emerald-400">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#0c271e] border border-emerald-500/30 text-emerald-400">
                 Resend Active: hello@brnnd.com
               </span>
             </div>
@@ -86,10 +93,20 @@ export function OverviewTab({
         </div>
 
         <div className="flex items-center gap-2.5">
+          {onCreateProject && (
+            <button
+              type="button"
+              onClick={onCreateProject}
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#091f17] hover:bg-[#0e2c21] text-brand-lime border border-brand-lime/30 text-xs font-semibold tracking-wide transition-all cursor-pointer"
+            >
+              <FolderArchive className="w-3.5 h-3.5" />
+              + New Project
+            </button>
+          )}
           <button
             type="button"
             onClick={onCreateInvoice}
-            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-orange-600 hover:bg-orange-500 text-white text-xs font-semibold tracking-wide transition-colors cursor-pointer shadow-lg shadow-orange-950/40"
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-brand-lime hover:bg-[#bef264] text-stone-950 text-xs font-bold tracking-wide transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-md shadow-brand-lime/10"
           >
             <FileText className="w-3.5 h-3.5" />
             + New Invoice
@@ -98,11 +115,31 @@ export function OverviewTab({
       </div>
 
       {/* KPI Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-5 rounded-xl bg-neutral-900/80 border border-neutral-800">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div
+          onClick={() => onNavigateTab("projects")}
+          className="p-5 rounded-xl bg-[#081a13]/80 border border-[#143326]/80 hover:border-brand-lime/40 cursor-pointer transition-colors group"
+        >
+          <div className="flex items-center justify-between text-neutral-400 mb-3">
+            <span className="text-xs font-mono uppercase tracking-wider group-hover:text-brand-lime transition-colors">
+              Active Projects
+            </span>
+            <div className="p-1.5 rounded-lg bg-[#0c271e] text-brand-lime">
+              <FolderArchive className="w-4 h-4" />
+            </div>
+          </div>
+          <div className="text-2xl font-bold font-mono text-white tracking-tight">
+            {projects.length}
+          </div>
+          <p className="text-xs text-neutral-500 mt-1 flex items-center gap-1">
+            <span className="text-brand-lime font-medium">Deliverables Hub</span> &bull; Track
+          </p>
+        </div>
+
+        <div className="p-5 rounded-xl bg-[#081a13]/80 border border-[#143326]/80">
           <div className="flex items-center justify-between text-neutral-400 mb-3">
             <span className="text-xs font-mono uppercase tracking-wider">Total Billed</span>
-            <div className="p-1.5 rounded-lg bg-neutral-800 text-neutral-300">
+            <div className="p-1.5 rounded-lg bg-[#0c271e] text-neutral-300">
               <DollarSign className="w-4 h-4" />
             </div>
           </div>
@@ -114,10 +151,10 @@ export function OverviewTab({
           </p>
         </div>
 
-        <div className="p-5 rounded-xl bg-neutral-900/80 border border-neutral-800">
+        <div className="p-5 rounded-xl bg-[#081a13]/80 border border-[#143326]/80">
           <div className="flex items-center justify-between text-neutral-400 mb-3">
             <span className="text-xs font-mono uppercase tracking-wider">Cash Collected</span>
-            <div className="p-1.5 rounded-lg bg-emerald-950 text-emerald-400">
+            <div className="p-1.5 rounded-lg bg-emerald-950/80 border border-emerald-500/30 text-emerald-400">
               <TrendingUp className="w-4 h-4" />
             </div>
           </div>
@@ -127,14 +164,14 @@ export function OverviewTab({
           <p className="text-xs text-neutral-500 mt-1">Paid invoices settled in full</p>
         </div>
 
-        <div className="p-5 rounded-xl bg-neutral-900/80 border border-neutral-800">
+        <div className="p-5 rounded-xl bg-[#081a13]/80 border border-[#143326]/80">
           <div className="flex items-center justify-between text-neutral-400 mb-3">
             <span className="text-xs font-mono uppercase tracking-wider">Outstanding</span>
-            <div className="p-1.5 rounded-lg bg-amber-950 text-amber-400">
+            <div className="p-1.5 rounded-lg bg-violet-950/70 border border-violet-500/30 text-violet-400">
               <Clock className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-bold font-mono text-amber-300 tracking-tight">
+          <div className="text-2xl font-bold font-mono text-violet-300 tracking-tight">
             ${(totalPending + totalOverdue).toLocaleString()}
           </div>
           <p className="text-xs text-neutral-500 mt-1">
@@ -146,22 +183,22 @@ export function OverviewTab({
           </p>
         </div>
 
-        <div className="p-5 rounded-xl bg-neutral-900/80 border border-neutral-800">
+        <div className="p-5 rounded-xl bg-[#081a13]/80 border border-[#143326]/80">
           <div className="flex items-center justify-between text-neutral-400 mb-3">
             <span className="text-xs font-mono uppercase tracking-wider">Active Leads</span>
-            <div className="p-1.5 rounded-lg bg-neutral-800 text-neutral-300">
+            <div className="p-1.5 rounded-lg bg-[#0c271e] text-neutral-300">
               <Users className="w-4 h-4" />
             </div>
           </div>
           <div className="text-2xl font-bold font-mono text-white tracking-tight">
             {leads.length}
           </div>
-          <p className="text-xs text-neutral-500 mt-1">Inquiries from Book Demo & Site</p>
+          <p className="text-xs text-neutral-500 mt-1">Inquiries from Book Demo &amp; Site</p>
         </div>
       </div>
 
       {/* Chart Section */}
-      <div className="p-6 rounded-xl bg-neutral-900/80 border border-neutral-800 space-y-4">
+      <div className="p-6 rounded-xl bg-[#081a13]/80 border border-[#143326]/80 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h3 className="text-sm font-semibold text-white tracking-tight">
@@ -173,8 +210,8 @@ export function OverviewTab({
             <span className="inline-flex items-center gap-1.5 text-neutral-400">
               <span className="w-2.5 h-2.5 rounded-full bg-neutral-600" /> Billed
             </span>
-            <span className="inline-flex items-center gap-1.5 text-orange-400">
-              <span className="w-2.5 h-2.5 rounded-full bg-orange-500" /> Collected
+            <span className="inline-flex items-center gap-1.5 text-brand-lime">
+              <span className="w-2.5 h-2.5 rounded-full bg-brand-lime" /> Collected
             </span>
           </div>
         </div>
@@ -182,7 +219,7 @@ export function OverviewTab({
         <div className="h-64 w-full pt-4">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#262626" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#133829" vertical={false} />
               <XAxis dataKey="month" stroke="#737373" fontSize={11} tickLine={false} />
               <YAxis
                 stroke="#737373"
@@ -192,8 +229,8 @@ export function OverviewTab({
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#171717",
-                  border: "1px solid #333333",
+                  backgroundColor: "#051610",
+                  border: "1px solid #143326",
                   borderRadius: "8px",
                   fontSize: "12px",
                 }}
@@ -202,8 +239,8 @@ export function OverviewTab({
                   "",
                 ]}
               />
-              <Bar dataKey="billed" fill="#383838" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="collected" fill="#ea580c" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="billed" fill="#1b4233" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="collected" fill="#bef264" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -212,7 +249,7 @@ export function OverviewTab({
       {/* Two Column Section: Recent Invoices & Recent Leads */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Recent Invoices */}
-        <div className="lg:col-span-7 p-6 rounded-xl bg-neutral-900/80 border border-neutral-800 space-y-4">
+        <div className="lg:col-span-7 p-6 rounded-xl bg-[#081a13]/80 border border-[#143326]/80 space-y-4">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-sm font-semibold text-white">Recent Invoices</h3>
@@ -221,13 +258,13 @@ export function OverviewTab({
             <button
               type="button"
               onClick={() => onNavigateTab("invoices")}
-              className="text-xs font-mono text-orange-400 hover:text-orange-300 inline-flex items-center gap-1 transition-colors cursor-pointer"
+              className="text-xs font-mono text-brand-lime hover:underline inline-flex items-center gap-1 transition-colors cursor-pointer"
             >
               View all ({invoices.length}) <ArrowUpRight className="w-3.5 h-3.5" />
             </button>
           </div>
 
-          <div className="divide-y divide-neutral-800">
+          <div className="divide-y divide-[#143326]/80">
             {invoices.slice(0, 4).map((inv) => (
               <div
                 key={inv.id}
@@ -280,11 +317,19 @@ export function OverviewTab({
                     </button>
                     <button
                       type="button"
-                      title="Send via Resend"
+                      title={inv.status === "paid" ? "Send Paid Receipt via Resend" : "Send Invoice via Resend"}
                       onClick={() => onSendInvoice(inv)}
-                      className="p-1.5 rounded-lg text-orange-400 hover:text-white hover:bg-orange-600 transition-colors cursor-pointer"
+                      className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                        inv.status === "paid"
+                          ? "text-emerald-400 hover:text-stone-950 hover:bg-emerald-400"
+                          : "text-brand-lime hover:text-stone-950 hover:bg-brand-lime"
+                      }`}
                     >
-                      <Send className="w-3.5 h-3.5" />
+                      {inv.status === "paid" ? (
+                        <Receipt className="w-3.5 h-3.5" />
+                      ) : (
+                        <Send className="w-3.5 h-3.5" />
+                      )}
                     </button>
                   </div>
                 </div>
@@ -294,7 +339,7 @@ export function OverviewTab({
         </div>
 
         {/* Recent Inquiries */}
-        <div className="lg:col-span-5 p-6 rounded-xl bg-neutral-900/80 border border-neutral-800 space-y-4">
+        <div className="lg:col-span-5 p-6 rounded-xl bg-[#081a13]/80 border border-[#143326]/80 space-y-4">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-sm font-semibold text-white">Incoming Leads</h3>
@@ -303,18 +348,18 @@ export function OverviewTab({
             <button
               type="button"
               onClick={() => onNavigateTab("leads")}
-              className="text-xs font-mono text-orange-400 hover:text-orange-300 inline-flex items-center gap-1 transition-colors cursor-pointer"
+              className="text-xs font-mono text-brand-lime hover:underline inline-flex items-center gap-1 transition-colors cursor-pointer"
             >
               Manage leads <ArrowUpRight className="w-3.5 h-3.5" />
             </button>
           </div>
 
-          <div className="divide-y divide-neutral-800">
+          <div className="divide-y divide-[#143326]/80">
             {leads.slice(0, 4).map((ld) => (
               <div key={ld.id} className="py-3 space-y-1">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-white">{ld.full_name}</span>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-neutral-800 text-neutral-300 capitalize">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#0c271e] text-neutral-300 capitalize">
                     {ld.status}
                   </span>
                 </div>

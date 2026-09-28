@@ -108,7 +108,7 @@ CREATE POLICY "Allow all on invoices" ON public.invoices FOR ALL TO anon, authen
       <div className="p-6 rounded-xl bg-neutral-900/80 border border-neutral-800 space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-orange-600/10 border border-orange-500/20 text-orange-400">
+            <div className="p-2 rounded-lg bg-brand-lime/10 border border-brand-lime/25 text-brand-lime">
               <Send className="w-5 h-5" />
             </div>
             <div>
@@ -149,7 +149,7 @@ CREATE POLICY "Allow all on invoices" ON public.invoices FOR ALL TO anon, authen
               value={testEmailTarget}
               onChange={(e) => setTestEmailTarget(e.target.value)}
               placeholder="hello@brnnd.com"
-              className="flex-1 px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-lg text-xs text-white placeholder-neutral-500 focus:border-orange-500 focus:outline-none"
+              className="flex-1 px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-lg text-xs text-white placeholder-neutral-500 focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none"
             />
             <button
               type="submit"
@@ -163,7 +163,7 @@ CREATE POLICY "Allow all on invoices" ON public.invoices FOR ALL TO anon, authen
                 </>
               ) : (
                 <>
-                  <Send className="w-3.5 h-3.5 text-orange-400" />
+                  <Send className="w-3.5 h-3.5 text-brand-lime" />
                   Dispatch Test Email
                 </>
               )}
@@ -212,7 +212,7 @@ CREATE POLICY "Allow all on invoices" ON public.invoices FOR ALL TO anon, authen
             <button
               type="button"
               onClick={handleCopySql}
-              className="inline-flex items-center gap-1 text-xs font-mono text-orange-400 hover:text-orange-300 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1 text-xs font-mono text-brand-lime hover:underline transition-colors cursor-pointer"
             >
               {copiedSql ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
               {copiedSql ? "Copied!" : "Copy SQL"}

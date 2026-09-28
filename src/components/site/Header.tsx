@@ -43,10 +43,7 @@ const nav: NavItem[] = [
             title: "Creative design services",
             variant: "solid",
             items: [
-              { label: "Ad creative", desc: "Eye-catching designs that perform", icon: "target", to: "/services/ad-creative" },
               { label: "Social media creative", desc: "Engaging assets for all platforms", icon: "share", to: "/services/social-media-creative" },
-              { label: "Presentation design", desc: "Captivating slides that tell your story", icon: "slides", to: "/services/campaign-strategy" },
-              { label: "Illustration design", desc: "Visual storytelling for your brand", icon: "pencil", to: "/services/illustration-design" },
               { label: "Branding services", desc: "Expertise & custom design services", icon: "grid", to: "/services/branding-services" },
               { label: "eBooks & report design", desc: "Your digital content supercharged", icon: "doc", to: "/services/brand-guidelines" },
               { label: "Concept creation", desc: "Big ideas crafted for maximum impact", icon: "bulb", to: "/services/creative-design" },
@@ -62,10 +59,8 @@ const nav: NavItem[] = [
             title: "Specialized production services",
             variant: "accent",
             items: [
-              { label: "Video production", desc: "Effortless video production at scale", icon: "play", to: "/services/production" },
               { label: "Motion design", desc: "For websites, ads, and presentations", icon: "spark", to: "/services/web-design" },
               { label: "Email creation", desc: "High-converting email design and templates", icon: "at", to: "/services/email-creation" },
-              { label: "Digital advertising", desc: "Scale performance across all paid channels", icon: "trend", to: "/services/ad-creative" },
             ],
           },
         ],

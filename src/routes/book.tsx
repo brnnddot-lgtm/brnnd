@@ -13,7 +13,7 @@ export const Route = createFileRoute("/book")({
     ],
   links: [{ rel: "canonical", href: "https://brnnd.com/book" }],
   }),
-  validateSearch: (search: Record<string, unknown>) => ({
+  validateSearch: (search: Record<string, unknown>): { service?: string } => ({
     service: typeof search.service === "string" ? search.service : undefined,
   }),
   component: BookPage,

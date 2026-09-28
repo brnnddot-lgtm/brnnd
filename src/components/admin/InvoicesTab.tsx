@@ -12,6 +12,7 @@ import {
   FileText,
   Clock,
   MailCheck,
+  Receipt,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -55,9 +56,19 @@ export function InvoicesTab({
   }, [invoices, statusFilter, search]);
 
   const togglePaid = (inv: Invoice) => {
-    const nextStatus = inv.status === "paid" ? "sent" : "paid";
-    onUpdateInvoice({ ...inv, status: nextStatus });
-    toast.success(`Invoice ${inv.invoice_number} marked as ${nextStatus}`);
+    const nextStatus: Invoice["status"] = inv.status === "paid" ? "sent" : "paid";
+    const updated = { ...inv, status: nextStatus };
+    onUpdateInvoice(updated);
+    if (nextStatus === "paid") {
+      toast.success(`Invoice ${inv.invoice_number} marked as Paid`, {
+        action: {
+          label: "Email Receipt",
+          onClick: () => onSendInvoice(updated),
+        },
+      });
+    } else {
+      toast.success(`Invoice ${inv.invoice_number} marked as ${nextStatus}`);
+    }
   };
 
   return (
@@ -74,7 +85,7 @@ export function InvoicesTab({
         <button
           type="button"
           onClick={onCreateInvoice}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-orange-600 hover:bg-orange-500 text-white text-xs font-semibold tracking-wide transition-colors cursor-pointer shadow-lg shadow-orange-950/40"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-brand-lime hover:bg-[#bef264] text-stone-950 text-xs font-bold tracking-wide transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-md shadow-brand-lime/10"
         >
           <Plus className="w-4 h-4" />
           Create Invoice
@@ -82,7 +93,7 @@ export function InvoicesTab({
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 p-3 bg-neutral-900/80 rounded-xl border border-neutral-800">
+      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 p-3 bg-[#081a13]/80 rounded-xl border border-[#143326]/80">
         {/* Search */}
         <div className="relative flex-1 max-w-md">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500" />
@@ -91,7 +102,7 @@ export function InvoicesTab({
             placeholder="Search by client, company, invoice # or email..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-1.5 bg-neutral-950 border border-neutral-800 rounded-lg text-xs text-white placeholder-neutral-500 focus:border-orange-500 focus:outline-none"
+            className="w-full pl-9 pr-4 py-1.5 bg-[#040e0a] border border-[#143326]/80 rounded-lg text-xs text-white placeholder-neutral-500 focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none"
           />
         </div>
 
@@ -110,8 +121,8 @@ export function InvoicesTab({
               onClick={() => setStatusFilter(tab.id)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer shrink-0 ${
                 statusFilter === tab.id
-                  ? "bg-neutral-800 text-white font-semibold shadow-sm"
-                  : "text-neutral-400 hover:text-white hover:bg-neutral-800/50"
+                  ? "bg-[#0c271e] text-white font-semibold border border-[#143326] shadow-sm"
+                  : "text-neutral-400 hover:text-white hover:bg-[#0c271e]/40"
               }`}
             >
               {tab.label}
@@ -121,10 +132,10 @@ export function InvoicesTab({
       </div>
 
       {/* Table */}
-      <div className="rounded-xl border border-neutral-800 bg-neutral-900/80 overflow-hidden">
+      <div className="rounded-xl border border-[#143326]/80 bg-[#081a13]/80 overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-neutral-950/80 border-b border-neutral-800 text-neutral-400 font-mono uppercase text-[11px]">
+            <thead className="bg-[#040e0a] border-b border-[#143326]/80 text-neutral-400 font-mono uppercase text-[11px]">
               <tr>
                 <th className="py-3.5 px-4 font-medium">Invoice #</th>
                 <th className="py-3.5 px-4 font-medium">Client / Company</th>
@@ -135,7 +146,7 @@ export function InvoicesTab({
                 <th className="py-3.5 px-4 font-medium text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-neutral-800/80 text-neutral-300">
+            <tbody className="divide-y divide-[#143326]/80 text-neutral-300">
               {filteredInvoices.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="py-12 text-center text-neutral-500">
@@ -231,12 +242,25 @@ export function InvoicesTab({
                         </button>
                         <button
                           type="button"
-                          title="Send PDF to Email via Resend"
+                          title={inv.status === "paid" ? "Send Paid Invoice / Receipt via Resend" : "Send Invoice via Resend"}
                           onClick={() => onSendInvoice(inv)}
-                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-orange-600/90 hover:bg-orange-500 text-white font-medium text-[11px] transition-colors cursor-pointer shadow-sm shadow-orange-950"
+                          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg font-semibold text-[11px] transition-colors cursor-pointer shadow-sm ${
+                            inv.status === "paid"
+                              ? "bg-emerald-500 hover:bg-emerald-400 text-stone-950"
+                              : "bg-brand-lime hover:bg-[#bef264] text-stone-950"
+                          }`}
                         >
-                          <Send className="w-3 h-3" />
-                          <span>Send</span>
+                          {inv.status === "paid" ? (
+                            <>
+                              <Receipt className="w-3 h-3" />
+                              <span>Receipt</span>
+                            </>
+                          ) : (
+                            <>
+                              <Send className="w-3 h-3" />
+                              <span>Send</span>
+                            </>
+                          )}
                         </button>
                         <button
                           type="button"

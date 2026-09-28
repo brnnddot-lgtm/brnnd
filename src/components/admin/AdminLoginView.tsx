@@ -47,15 +47,21 @@ export function AdminLoginView({ onSuccess }: AdminLoginViewProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[#070707] text-neutral-100 flex flex-col justify-center items-center px-4 py-12 relative overflow-hidden font-sans">
-      {/* Background ambient lighting */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-orange-600/10 rounded-full blur-[120px] pointer-events-none" />
+    <div
+      className="min-h-screen bg-[#051610] text-neutral-100 flex flex-col justify-center items-center px-4 py-12 relative overflow-hidden font-sans"
+      style={{
+        background: "radial-gradient(120% 80% at 80% 10%, #0f2a22 0%, #051610 55%, #030b08 100%)",
+      }}
+    >
+      {/* Background ambient lighting — Brand Lime & Brand Violet companion glows */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-brand-lime/10 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/3 w-80 h-80 bg-violet-600/10 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="w-full max-w-md relative z-10 space-y-8 animate-in fade-in zoom-in-95 duration-300">
         {/* Header Branding */}
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-900 border border-neutral-800 text-[11px] font-mono uppercase tracking-widest text-neutral-400 mb-2">
-            <Lock className="w-3 h-3 text-orange-400" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#081a13] border border-emerald-950/80 text-[11px] font-mono uppercase tracking-widest text-neutral-400 mb-2">
+            <Lock className="w-3 h-3 text-brand-lime" />
             <span>Executive Studio Portal</span>
           </div>
           <div className="py-2">
@@ -71,7 +77,7 @@ export function AdminLoginView({ onSuccess }: AdminLoginViewProps) {
         </div>
 
         {/* Card */}
-        <div className="bg-neutral-900/90 border border-neutral-800 rounded-2xl p-7 shadow-2xl backdrop-blur-xl space-y-6">
+        <div className="bg-[#081a13]/90 border border-emerald-950/70 rounded-2xl p-7 shadow-2xl backdrop-blur-xl space-y-6">
           {errorMsg && (
             <div className="flex items-start gap-2.5 p-3 rounded-lg bg-red-950/50 border border-red-800/60 text-red-300 text-xs">
               <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-400" />
@@ -92,7 +98,7 @@ export function AdminLoginView({ onSuccess }: AdminLoginViewProps) {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="admin@brnnd.com"
-                  className="w-full pl-10 pr-3.5 py-2.5 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-orange-500 font-mono transition-colors"
+                  className="w-full pl-10 pr-3.5 py-2.5 bg-[#030d09] border border-emerald-950/80 rounded-xl text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 font-mono transition-colors"
                 />
               </div>
             </div>
@@ -109,7 +115,7 @@ export function AdminLoginView({ onSuccess }: AdminLoginViewProps) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="w-full pl-10 pr-3.5 py-2.5 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-orange-500 transition-colors"
+                  className="w-full pl-10 pr-3.5 py-2.5 bg-[#030d09] border border-emerald-950/80 rounded-xl text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 transition-colors"
                 />
               </div>
             </div>
@@ -118,7 +124,7 @@ export function AdminLoginView({ onSuccess }: AdminLoginViewProps) {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-orange-600 hover:bg-orange-500 disabled:opacity-50 text-white text-xs font-semibold tracking-wider uppercase transition-all cursor-pointer shadow-lg shadow-orange-950/60"
+                className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-brand-lime hover:bg-[#bef264] disabled:opacity-50 text-stone-950 text-xs font-bold tracking-wider uppercase transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] cursor-pointer shadow-md shadow-brand-lime/10"
               >
                 {loading ? (
                   <>
@@ -136,7 +142,7 @@ export function AdminLoginView({ onSuccess }: AdminLoginViewProps) {
           </form>
 
           {/* Security badge footer */}
-          <div className="pt-4 border-t border-neutral-800/80 flex items-center justify-between text-[11px] text-neutral-400 font-mono">
+          <div className="pt-4 border-t border-emerald-950/80 flex items-center justify-between text-[11px] text-neutral-400 font-mono">
             <span className="flex items-center gap-1.5 text-emerald-400">
               <ShieldCheck className="w-3.5 h-3.5" /> Bcrypt Cost Round 12
             </span>

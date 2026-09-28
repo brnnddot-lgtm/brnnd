@@ -71,7 +71,7 @@
   --muted-foreground: oklch(0.45 0.01 270);
   --accent: var(--brand-violet);
   --accent-foreground: var(--paper);
-  --destructive: var(--brand-orange);
+  --destructive: oklch(0.63 0.22 25);
   --destructive-foreground: var(--paper);
   --border: oklch(0.215 0.008 270 / 12%);
   --input: oklch(0.215 0.008 270 / 14%);

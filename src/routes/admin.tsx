@@ -1,20 +1,31 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { Invoice, downloadInvoicePdf } from "@/lib/invoice-pdf";
-import { Lead, INITIAL_INVOICES, INITIAL_LEADS } from "@/data/admin-data";
+import {
+  Lead,
+  Project,
+  INITIAL_INVOICES,
+  INITIAL_LEADS,
+  INITIAL_PROJECTS,
+} from "@/data/admin-data";
 import { OverviewTab } from "@/components/admin/OverviewTab";
+import { ProjectsTab } from "@/components/admin/ProjectsTab";
 import { InvoicesTab } from "@/components/admin/InvoicesTab";
 import { LeadsTab } from "@/components/admin/LeadsTab";
 import { SettingsTab } from "@/components/admin/SettingsTab";
 import { InvoiceModal } from "@/components/admin/InvoiceModal";
 import { InvoicePdfModal } from "@/components/admin/InvoicePdfModal";
 import { SendInvoiceDialog } from "@/components/admin/SendInvoiceDialog";
+import { ProjectModal } from "@/components/admin/ProjectModal";
+import { ProjectDetailModal } from "@/components/admin/ProjectDetailModal";
 import { AdminLoginView } from "@/components/admin/AdminLoginView";
 import {
   fetchRealDashboardDataFn,
   saveRealInvoiceFn,
   deleteRealInvoiceFn,
   updateRealLeadStatusFn,
+  saveRealProjectFn,
+  deleteRealProjectFn,
 } from "@/lib/admin.functions";
 import {
   LayoutDashboard,
@@ -27,21 +38,22 @@ import {
   LogOut,
   User,
   Loader2,
+  FolderArchive,
 } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
     meta: [
-      { title: "Admin Portal & Invoicing — BRNND Studio" },
-      { name: "description", content: "Executive studio dashboard for BRNND: billing, invoices, PDF dispatch, and lead management." },
+      { title: "Admin Portal & Studio Command — BRNND Studio" },
+      { name: "description", content: "Executive studio dashboard for BRNND: billing, deliverables, client projects, invoices, and lead management." },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
   component: AdminPage,
 });
 
-type TabType = "overview" | "invoices" | "leads" | "settings";
+type TabType = "overview" | "projects" | "invoices" | "leads" | "settings";
 
 function AdminPage() {
   const [activeTab, setActiveTab] = useState<TabType>("overview");
@@ -51,12 +63,18 @@ function AdminPage() {
   const [authEmail, setAuthEmail] = useState<string>("admin@brnnd.com");
   const [authChecking, setAuthChecking] = useState<boolean>(true);
 
-  // Real Invoices & Leads state
+  // Real Invoices, Projects & Leads state
   const [invoices, setInvoices] = useState<Invoice[]>(INITIAL_INVOICES);
   const [leads, setLeads] = useState<Lead[]>(INITIAL_LEADS);
+  const [projects, setProjects] = useState<Project[]>(INITIAL_PROJECTS);
   const [dataLoading, setDataLoading] = useState<boolean>(false);
 
-  // Modals state
+  // Project Modals state
+  const [isCreatingProject, setIsCreatingProject] = useState(false);
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+
+  // Invoices Modals state
   const [isCreatingInvoice, setIsCreatingInvoice] = useState(false);
   const [editingInvoice, setEditingInvoice] = useState<Invoice | null>(null);
   const [previewInvoice, setPreviewInvoice] = useState<Invoice | null>(null);
@@ -94,6 +112,9 @@ function AdminPage() {
         if (result.leads && result.leads.length > 0) {
           setLeads(result.leads);
         }
+        if (result.projects && result.projects.length > 0) {
+          setProjects(result.projects);
+        }
       }
     } catch (err) {
       console.warn("Could not load real data from server, falling back to local store", err);
@@ -124,6 +145,77 @@ function AdminPage() {
     localStorage.removeItem("brnnd_admin_auth");
     setIsAuthenticated(false);
     toast.info("Logged out of Admin Portal.");
+  };
+
+  // Project Handlers with Real Persistence
+  const handleSaveProject = async (proj: Project) => {
+    const exists = projects.some((p) => p.id === proj.id);
+    let next: Project[];
+    if (exists) {
+      next = projects.map((p) => (p.id === proj.id ? proj : p));
+    } else {
+      next = [proj, ...projects];
+    }
+    setProjects(next);
+    if (selectedProject?.id === proj.id) {
+      setSelectedProject(proj);
+    }
+
+    try {
+      await saveRealProjectFn({ data: proj });
+    } catch (err) {
+      console.error("Failed to persist project to database:", err);
+    }
+  };
+
+  const handleDeleteProject = async (id: string) => {
+    const next = projects.filter((p) => p.id !== id);
+    setProjects(next);
+    if (selectedProject?.id === id) {
+      setSelectedProject(null);
+    }
+
+    try {
+      await deleteRealProjectFn({ data: { id } });
+      toast.info("Project removed from studio pipeline.");
+    } catch (err) {
+      console.error("Failed to delete project:", err);
+    }
+  };
+
+  const handleCreateInvoiceForProject = (proj: Project) => {
+    const generatedInvoice: Invoice = {
+      id: `inv-${Date.now()}`,
+      invoice_number: `INV-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 900) + 100)}`,
+      client_name: proj.client_name,
+      client_company: proj.client_company,
+      client_email: proj.client_email,
+      issue_date: new Date().toISOString().split("T")[0],
+      due_date: proj.target_launch_date || (() => {
+        const d = new Date();
+        d.setDate(d.getDate() + 15);
+        return d.toISOString().split("T")[0];
+      })(),
+      status: "draft",
+      currency: proj.currency || "USD",
+      items: proj.services.map((svc, i) => ({
+        id: String(i + 1),
+        description: `${svc} for ${proj.client_company}`,
+        quantity: 1,
+        rate: Math.round(proj.budget / Math.max(1, proj.services.length)),
+        amount: Math.round(proj.budget / Math.max(1, proj.services.length)),
+      })),
+      subtotal: proj.budget,
+      tax_percent: 0,
+      tax_amount: 0,
+      discount_amount: 0,
+      total: proj.budget,
+      notes: `Invoice issued for client engagement: ${proj.title}. Direct wire/ACH terms apply.`,
+      created_at: new Date().toISOString(),
+    };
+
+    setEditingInvoice(generatedInvoice);
+    setIsCreatingInvoice(true);
   };
 
   // Invoice Handlers with Real Server Persistence
@@ -220,7 +312,7 @@ function AdminPage() {
 
   // Export & Reset
   const handleExportData = () => {
-    const data = { invoices, leads, exportedAt: new Date().toISOString() };
+    const data = { invoices, leads, projects, exportedAt: new Date().toISOString() };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -234,8 +326,12 @@ function AdminPage() {
   const handleResetData = async () => {
     setInvoices(INITIAL_INVOICES);
     setLeads(INITIAL_LEADS);
+    setProjects(INITIAL_PROJECTS);
     for (const inv of INITIAL_INVOICES) {
       await saveRealInvoiceFn({ data: inv }).catch(() => {});
+    }
+    for (const proj of INITIAL_PROJECTS) {
+      await saveRealProjectFn({ data: proj }).catch(() => {});
     }
     toast.success("Default real dataset restored.");
   };
@@ -243,8 +339,8 @@ function AdminPage() {
   // Render Loading while checking session
   if (authChecking) {
     return (
-      <div className="min-h-screen bg-[#070707] flex items-center justify-center text-neutral-400">
-        <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
+      <div className="min-h-screen bg-[#051610] flex items-center justify-center text-neutral-400">
+        <Loader2 className="w-8 h-8 animate-spin text-brand-lime" />
       </div>
     );
   }
@@ -255,9 +351,14 @@ function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-neutral-100 flex flex-col font-sans selection:bg-orange-500 selection:text-white">
+    <div
+      className="min-h-screen bg-[#051610] text-neutral-100 flex flex-col font-sans selection:bg-brand-lime selection:text-stone-950"
+      style={{
+        background: "radial-gradient(120% 80% at 80% 0%, #0c271e 0%, #051610 55%, #030b08 100%)",
+      }}
+    >
       {/* Top Studio Bar */}
-      <header className="sticky top-0 z-40 bg-[#0d0d0d]/90 backdrop-blur-md border-b border-neutral-800/80 px-4 sm:px-8 py-3.5">
+      <header className="sticky top-0 z-40 bg-[#051610]/90 backdrop-blur-md border-b border-[#143326]/80 px-4 sm:px-8 py-3.5">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
           {/* Logo & Portal Badge */}
           <div className="flex items-center gap-3">
@@ -269,7 +370,7 @@ function AdminPage() {
               />
             </Link>
             <span className="text-[11px] font-mono uppercase tracking-widest text-neutral-500">/</span>
-            <span className="text-xs font-mono uppercase tracking-widest px-2.5 py-1 rounded bg-neutral-900 border border-neutral-800 text-orange-400 font-semibold">
+            <span className="text-xs font-mono uppercase tracking-widest px-2.5 py-1 rounded bg-[#091f17] border border-[#143326] text-brand-lime font-semibold">
               Admin Portal
             </span>
           </div>
@@ -277,8 +378,8 @@ function AdminPage() {
           {/* Center / Right Status & Navigation */}
           <div className="flex items-center gap-2.5 sm:gap-3">
             {/* Authenticated User pill */}
-            <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-neutral-900 border border-neutral-800 text-xs font-mono text-neutral-300">
-              <User className="w-3.5 h-3.5 text-orange-400" />
+            <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#091f17] border border-[#143326] text-xs font-mono text-neutral-300">
+              <User className="w-3.5 h-3.5 text-brand-lime" />
               <span>{authEmail}</span>
             </div>
 
@@ -291,10 +392,22 @@ function AdminPage() {
             <button
               type="button"
               onClick={() => {
+                setEditingProject(null);
+                setIsCreatingProject(true);
+              }}
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#091f17] hover:bg-[#0e2c21] text-brand-lime border border-brand-lime/30 text-xs font-semibold tracking-wide transition-all duration-200 cursor-pointer"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">New Project</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
                 setEditingInvoice(null);
                 setIsCreatingInvoice(true);
               }}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-500 text-white text-xs font-semibold tracking-wide transition-colors cursor-pointer shadow-md shadow-orange-950/50"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-brand-lime hover:bg-[#bef264] text-stone-950 text-xs font-bold tracking-wide transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-md shadow-brand-lime/10"
             >
               <Plus className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">New Invoice</span>
@@ -302,7 +415,7 @@ function AdminPage() {
 
             <Link
               to="/"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-neutral-300 hover:text-white text-xs font-medium border border-neutral-800 transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#091f17] hover:bg-[#0e2c21] text-neutral-300 hover:text-white text-xs font-medium border border-[#143326] transition-colors"
             >
               <span>Site</span>
               <ExternalLink className="w-3 h-3 text-neutral-500" />
@@ -313,7 +426,7 @@ function AdminPage() {
               type="button"
               onClick={handleLogout}
               title="Sign out of portal"
-              className="p-1.5 rounded-lg text-neutral-400 hover:text-red-400 hover:bg-neutral-800/80 transition-colors cursor-pointer"
+              className="p-1.5 rounded-lg text-neutral-400 hover:text-red-400 hover:bg-[#0e2c21]/80 transition-colors cursor-pointer"
             >
               <LogOut className="w-4 h-4" />
             </button>
@@ -324,10 +437,11 @@ function AdminPage() {
       {/* Main Container */}
       <div className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 py-8 space-y-8">
         {/* Navigation Tabs */}
-        <div className="flex items-center justify-between border-b border-neutral-800/80 pb-px">
+        <div className="flex items-center justify-between border-b border-[#143326]/80 pb-px">
           <nav className="flex items-center gap-1 sm:gap-2 overflow-x-auto pb-2 sm:pb-0">
             {[
               { id: "overview", label: "Overview", icon: LayoutDashboard },
+              { id: "projects", label: `Projects (${projects.length})`, icon: FolderArchive },
               { id: "invoices", label: `Invoices (${invoices.length})`, icon: Receipt },
               { id: "leads", label: `Leads & Inquiries (${leads.length})`, icon: Users },
               { id: "settings", label: "Settings & Resend", icon: Settings },
@@ -341,11 +455,11 @@ function AdminPage() {
                   onClick={() => setActiveTab(tab.id as TabType)}
                   className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-medium transition-all cursor-pointer shrink-0 ${
                     isActive
-                      ? "bg-neutral-900 border border-neutral-800 text-white font-semibold shadow-sm"
-                      : "text-neutral-400 hover:text-white hover:bg-neutral-900/40"
+                      ? "bg-[#0c271e] border border-brand-lime/40 text-white font-semibold shadow-sm"
+                      : "text-neutral-400 hover:text-white hover:bg-[#0c271e]/40"
                   }`}
                 >
-                  <Icon className={`w-3.5 h-3.5 ${isActive ? "text-orange-400" : "text-neutral-500"}`} />
+                  <Icon className={`w-3.5 h-3.5 ${isActive ? "text-brand-lime" : "text-neutral-500"}`} />
                   <span>{tab.label}</span>
                 </button>
               );
@@ -359,14 +473,36 @@ function AdminPage() {
             <OverviewTab
               invoices={invoices}
               leads={leads}
+              projects={projects}
               onCreateInvoice={() => {
                 setEditingInvoice(null);
                 setIsCreatingInvoice(true);
               }}
+              onCreateProject={() => {
+                setEditingProject(null);
+                setIsCreatingProject(true);
+              }}
               onPreviewInvoice={(inv) => setPreviewInvoice(inv)}
               onSendInvoice={(inv) => setSendInvoice(inv)}
               onDownloadInvoice={(inv) => downloadInvoicePdf(inv)}
-              onNavigateTab={(tab) => setActiveTab(tab)}
+              onNavigateTab={(tab) => setActiveTab(tab as TabType)}
+            />
+          )}
+
+          {activeTab === "projects" && (
+            <ProjectsTab
+              projects={projects}
+              onCreateProject={() => {
+                setEditingProject(null);
+                setIsCreatingProject(true);
+              }}
+              onSelectProject={(proj) => setSelectedProject(proj)}
+              onEditProject={(proj) => {
+                setEditingProject(proj);
+                setIsCreatingProject(true);
+              }}
+              onCreateInvoiceForProject={handleCreateInvoiceForProject}
+              onDeleteProject={handleDeleteProject}
             />
           )}
 
@@ -417,6 +553,7 @@ function AdminPage() {
           }}
           onSave={handleSaveInvoice}
           onPreview={(inv) => setPreviewInvoice(inv)}
+          onSendEmail={(inv) => setSendInvoice(inv)}
         />
       )}
 
@@ -435,6 +572,34 @@ function AdminPage() {
           onSuccess={(updated) => {
             handleUpdateInvoice(updated);
           }}
+        />
+      )}
+
+      {/* Project Modal */}
+      {(isCreatingProject || editingProject) && (
+        <ProjectModal
+          project={editingProject}
+          onClose={() => {
+            setIsCreatingProject(false);
+            setEditingProject(null);
+          }}
+          onSave={handleSaveProject}
+        />
+      )}
+
+      {/* Project Detail Drawer */}
+      {selectedProject && (
+        <ProjectDetailModal
+          project={selectedProject}
+          onClose={() => setSelectedProject(null)}
+          onEditProject={(proj: Project) => {
+            setSelectedProject(null);
+            setEditingProject(proj);
+            setIsCreatingProject(true);
+          }}
+          onUpdateProject={handleSaveProject}
+          onCreateInvoiceForProject={(proj: Project) => handleCreateInvoiceForProject(proj)}
+          onDeleteProject={handleDeleteProject}
         />
       )}
     </div>

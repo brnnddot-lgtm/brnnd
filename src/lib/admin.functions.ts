@@ -8,8 +8,13 @@ import {
   deleteRealInvoice,
   getRealLeads,
   updateRealLeadStatus,
+  getRealProjects,
+  saveRealProject,
+  deleteRealProject,
+  updateRealProjectStatus,
 } from "./server-store";
 import type { Invoice } from "./invoice-pdf";
+import type { Project } from "@/data/admin-data";
 
 const invoiceEmailSchema = z.object({
   invoiceNumber: z.string(),
@@ -23,6 +28,7 @@ const invoiceEmailSchema = z.object({
   subject: z.string().optional(),
   message: z.string().optional(),
   pdfBase64: z.string(), // base64 string of the PDF
+  isPaid: z.boolean().optional().default(false),
 });
 
 export const sendInvoiceEmailFn = createServerFn({ method: "POST" })
@@ -37,10 +43,14 @@ export const sendInvoiceEmailFn = createServerFn({ method: "POST" })
 
     const emailSubject =
       data.subject?.trim() ||
-      `Invoice ${data.invoiceNumber} from BRNND Studio ($${data.amount.toLocaleString()} ${data.currency})`;
+      (data.isPaid
+        ? `Receipt & Paid Invoice ${data.invoiceNumber} from BRNND Studio (Paid: $${data.amount.toLocaleString()} ${data.currency})`
+        : `Invoice ${data.invoiceNumber} from BRNND Studio ($${data.amount.toLocaleString()} ${data.currency})`);
+
+    const accentColor = data.isPaid ? "#34d399" : "#bef264";
 
     const customMessage = data.message?.trim()
-      ? `<div style="margin: 20px 0; padding: 16px; background-color: #f7f7f7; border-left: 3px solid #eb4b2d; font-size: 14px; color: #333333; line-height: 1.6;">${escapeHtml(data.message).replace(/\n/g, "<br/>")}</div>`
+      ? `<div style="margin: 20px 0; padding: 16px; background-color: #171717; border-left: 3px solid ${accentColor}; font-size: 14px; color: #f0f0f0; line-height: 1.6;">${escapeHtml(data.message).replace(/\n/g, "<br/>")}</div>`
       : "";
 
     const htmlContent = `
@@ -48,13 +58,13 @@ export const sendInvoiceEmailFn = createServerFn({ method: "POST" })
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Invoice ${escapeHtml(data.invoiceNumber)}</title>
+  <title>${data.isPaid ? "Receipt & Paid Invoice" : "Invoice"} ${escapeHtml(data.invoiceNumber)}</title>
 </head>
 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #0c0c0c; color: #f0f0f0; margin: 0; padding: 32px 16px;">
   <table width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 620px; margin: 0 auto; background-color: #171717; border-radius: 8px; border: 1px solid #2a2a2a; overflow: hidden;">
     <!-- Top Accent Bar -->
     <tr>
-      <td height="4" style="background-color: #eb4b2d; font-size: 0; line-height: 0;">&nbsp;</td>
+      <td height="4" style="background-color: ${accentColor}; font-size: 0; line-height: 0;">&nbsp;</td>
     </tr>
     <!-- Header -->
     <tr>
@@ -68,9 +78,15 @@ export const sendInvoiceEmailFn = createServerFn({ method: "POST" })
               <p style="margin: 6px 0 0 0; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: #999999;">Studio &amp; Brand Architecture</p>
             </td>
             <td align="right" style="vertical-align: top;">
-              <span style="display: inline-block; padding: 6px 12px; background-color: #262626; border: 1px solid #333333; border-radius: 4px; font-size: 12px; font-weight: 600; color: #ffffff; letter-spacing: 0.5px;">
-                ${escapeHtml(data.invoiceNumber)}
-              </span>
+              ${
+                data.isPaid
+                  ? `<span style="display: inline-block; padding: 6px 12px; background-color: #064e3b; border: 1px solid #059669; border-radius: 4px; font-size: 12px; font-weight: 700; color: #34d399; letter-spacing: 0.5px;">
+                      &#10003; PAID &bull; ${escapeHtml(data.invoiceNumber)}
+                    </span>`
+                  : `<span style="display: inline-block; padding: 6px 12px; background-color: #262626; border: 1px solid #333333; border-radius: 4px; font-size: 12px; font-weight: 600; color: #ffffff; letter-spacing: 0.5px;">
+                      ${escapeHtml(data.invoiceNumber)}
+                    </span>`
+              }
             </td>
           </tr>
         </table>
@@ -84,7 +100,11 @@ export const sendInvoiceEmailFn = createServerFn({ method: "POST" })
           Hello ${escapeHtml(data.clientName || data.clientCompany)},
         </p>
         <p style="margin: 0 0 20px 0; font-size: 14px; color: #a3a3a3; line-height: 1.6;">
-          Please find attached your official invoice <strong>${escapeHtml(data.invoiceNumber)}</strong> for creative and strategic design services provided by BRNND Studio.
+          ${
+            data.isPaid
+              ? `Thank you for your payment! Please find attached your official paid invoice and receipt <strong>${escapeHtml(data.invoiceNumber)}</strong> confirming payment in full for creative and strategic design services provided by BRNND Studio.`
+              : `Please find attached your official invoice <strong>${escapeHtml(data.invoiceNumber)}</strong> for creative and strategic design services provided by BRNND Studio.`
+          }
         </p>
 
         ${customMessage}
@@ -95,15 +115,19 @@ export const sendInvoiceEmailFn = createServerFn({ method: "POST" })
             <td style="padding: 20px 24px;">
               <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
-                  <td style="font-size: 12px; color: #888888; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 6px;">Total Due</td>
-                  <td align="right" style="font-size: 12px; color: #888888; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 6px;">Payment Due</td>
+                  <td style="font-size: 12px; color: #888888; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 6px;">
+                    ${data.isPaid ? "Total Paid" : "Total Due"}
+                  </td>
+                  <td align="right" style="font-size: 12px; color: #888888; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 6px;">
+                    ${data.isPaid ? "Payment Status" : "Payment Due"}
+                  </td>
                 </tr>
                 <tr>
-                  <td style="font-size: 26px; font-weight: 700; color: #ffffff;">
+                  <td style="font-size: 26px; font-weight: 700; color: ${data.isPaid ? "#34d399" : "#ffffff"};">
                     $${data.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span style="font-size: 14px; font-weight: 400; color: #999999;">${escapeHtml(data.currency)}</span>
                   </td>
-                  <td align="right" style="font-size: 15px; font-weight: 600; color: #eb4b2d;">
-                    ${escapeHtml(data.dueDate)}
+                  <td align="right" style="font-size: 15px; font-weight: 600; color: ${data.isPaid ? "#34d399" : "#eb4b2d"};">
+                    ${data.isPaid ? "&#10003; PAID IN FULL" : escapeHtml(data.dueDate)}
                   </td>
                 </tr>
               </table>
@@ -111,7 +135,18 @@ export const sendInvoiceEmailFn = createServerFn({ method: "POST" })
           </tr>
         </table>
 
-        <!-- Wire / ACH details -->
+        ${
+          data.isPaid
+            ? `<!-- Payment Verified Notice -->
+        <div style="background-color: #052e16; border: 1px solid #166534; border-radius: 6px; padding: 18px 20px; margin-bottom: 24px;">
+          <p style="margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700; color: #34d399;">
+            &#10003; Payment Received &amp; Verified
+          </p>
+          <p style="margin: 0; font-size: 13px; color: #86efac; line-height: 1.6;">
+            This email serves as official confirmation that invoice <strong>${escapeHtml(data.invoiceNumber)}</strong> has been settled in full. No further action or payment is required.
+          </p>
+        </div>`
+            : `<!-- Wire / ACH details -->
         <div style="background-color: #141414; border: 1px solid #282828; border-radius: 6px; padding: 18px 20px; margin-bottom: 24px;">
           <p style="margin: 0 0 8px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700; color: #bbbbbb;">
             Payment & Wire Transfer Details
@@ -122,10 +157,11 @@ export const sendInvoiceEmailFn = createServerFn({ method: "POST" })
             Account: 9482-1082-9428 &nbsp;|&nbsp; Routing (ABA): 121000358<br/>
             SWIFT / BIC: SVBKUS6S &nbsp;|&nbsp; Reference: ${escapeHtml(data.invoiceNumber)}
           </p>
-        </div>
+        </div>`
+        }
 
         <p style="margin: 0 0 24px 0; font-size: 13px; color: #888888; line-height: 1.5;">
-          A full printable copy of this invoice has been attached as a PDF (<strong>${escapeHtml(data.invoiceNumber)}.pdf</strong>) to this email for your accounting records.
+          A full printable copy of this ${data.isPaid ? "paid invoice and receipt" : "invoice"} has been attached as a PDF (<strong>${escapeHtml(data.invoiceNumber)}.pdf</strong>) to this email for your accounting records.
         </p>
 
         <p style="margin: 0; font-size: 14px; color: #e0e0e0; line-height: 1.5;">
@@ -199,7 +235,7 @@ export const sendInvoiceEmailFn = createServerFn({ method: "POST" })
 
     // Attempt to log / update Supabase if table exists
     try {
-      await supabaseAdmin
+      await (supabaseAdmin as any)
         .from("invoices")
         .update({
           status: "sent",
@@ -245,7 +281,7 @@ export const sendTestEmailFn = createServerFn({ method: "POST" })
         html: `
           <div style="font-family: sans-serif; padding: 28px; background: #0c0c0c; color: #fff; border-radius: 8px; border: 1px solid #262626;">
             <img src="https://brnnd.com/brnndlogo.png" alt="BRNND" width="120" style="display: block; margin-bottom: 16px; border: 0;" />
-            <h2 style="color: #eb4b2d; margin: 0 0 10px 0; font-size: 18px;">BRNND Resend Integration Active</h2>
+            <h2 style="color: #bef264; margin: 0 0 10px 0; font-size: 18px;">BRNND Resend Integration Active</h2>
             <p style="color: #ccc; font-size: 14px; line-height: 1.5; margin: 0 0 12px 0;">Your Resend integration for <strong>hello@brnnd.com</strong> is working perfectly!</p>
             <p style="color: #777; font-size: 12px; margin: 0; font-family: monospace;">Timestamp: ${new Date().toISOString()}</p>
           </div>
@@ -298,13 +334,44 @@ export const loginAdminFn = createServerFn({ method: "POST" })
 
 // Real Dashboard Data Queries & Mutations
 export const fetchRealDashboardDataFn = createServerFn({ method: "GET" }).handler(async () => {
-  const [invoices, leads] = await Promise.all([getRealInvoices(), getRealLeads()]);
+  const [invoices, leads, projects] = await Promise.all([
+    getRealInvoices(),
+    getRealLeads(),
+    getRealProjects(),
+  ]);
   return {
     success: true,
     invoices,
     leads,
+    projects,
   };
 });
+
+export const saveRealProjectFn = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) => input as Project)
+  .handler(async ({ data }) => {
+    const saved = await saveRealProject(data);
+    return { success: true, project: saved };
+  });
+
+export const deleteRealProjectFn = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) => z.object({ id: z.string() }).parse(input))
+  .handler(async ({ data }) => {
+    await deleteRealProject(data.id);
+    return { success: true };
+  });
+
+export const updateRealProjectStatusFn = createServerFn({ method: "POST" })
+  .inputValidator(
+    z.object({
+      id: z.string(),
+      status: z.enum(["discovery", "in_progress", "in_review", "completed", "on_hold"]),
+    })
+  )
+  .handler(async ({ data }) => {
+    await updateRealProjectStatus(data.id, data.status);
+    return { success: true };
+  });
 
 export const saveRealInvoiceFn = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => input as Invoice)

@@ -33,6 +33,20 @@ export interface Invoice {
   created_at?: string;
 }
 
+/**
+ * Sanitize text for jsPDF's built-in Helvetica/Courier fonts.
+ * These fonts only support Latin-1 (ISO-8859-1) characters.
+ * Non-latin characters render as garbage glyphs, so we strip them.
+ */
+function sanitizePdfText(text: string): string {
+  return text
+    // Normalize unicode (e.g. accented letters → base + combining)
+    .normalize("NFKD")
+    // Keep only printable ASCII and basic Latin-1 range (space to ÿ)
+    .replace(/[^\x20-\xFF]/g, "")
+    .trim();
+}
+
 export function buildInvoicePdf(invoice: Invoice): jsPDF {
   const doc = new jsPDF({
     orientation: "portrait",
@@ -50,7 +64,7 @@ export function buildInvoicePdf(invoice: Invoice): jsPDF {
   doc.rect(0, 0, pageWidth, 44, "F");
 
   // Accent line
-  doc.setFillColor(235, 75, 45); // vibrant BRNND vermilion
+  doc.setFillColor(190, 242, 100); // BRNND brand lime accent
   doc.rect(0, 43, pageWidth, 1.2, "F");
 
   // Studio Header Logo
@@ -90,7 +104,7 @@ export function buildInvoicePdf(invoice: Invoice): jsPDF {
   } else if (invoice.status === "overdue") {
     doc.setTextColor(248, 113, 113); // red
   } else {
-    doc.setTextColor(251, 191, 36); // amber
+    doc.setTextColor(167, 139, 250); // violet
   }
   doc.text(`STATUS: ${statusStr}`, pageWidth - margin, 33, { align: "right" });
 
@@ -120,7 +134,7 @@ export function buildInvoicePdf(invoice: Invoice): jsPDF {
   doc.text(invoice.client_email || "billing@client.com", margin, billY);
   billY += 5;
   if (invoice.client_address) {
-    const addressLines = doc.splitTextToSize(invoice.client_address, 80);
+    const addressLines = doc.splitTextToSize(sanitizePdfText(invoice.client_address), 80);
     doc.text(addressLines, margin, billY);
     billY += addressLines.length * 4.5;
   }
@@ -213,7 +227,7 @@ export function buildInvoicePdf(invoice: Invoice): jsPDF {
   const drawTotalLine = (label: string, amountStr: string, isBold = false, isAccent = false) => {
     doc.setFont("helvetica", isBold ? "bold" : "normal");
     doc.setFontSize(isBold ? 10 : 8.5);
-    doc.setTextColor(isAccent ? 235 : isBold ? 20 : 100, isAccent ? 75 : isBold ? 20 : 100, isAccent ? 45 : isBold ? 20 : 100);
+    doc.setTextColor(isAccent ? 101 : isBold ? 20 : 100, isAccent ? 163 : isBold ? 20 : 100, isAccent ? 13 : isBold ? 20 : 100);
     doc.text(label, totalsX, currentY);
     doc.text(amountStr, pageWidth - margin - 4, currentY, { align: "right" });
     currentY += isBold ? 7 : 5.5;

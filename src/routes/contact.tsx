@@ -30,10 +30,10 @@ const studios = [
 const services = [
   { label: "Brand strategy", to: "/services/branding-services" },
   { label: "Web design", to: "/services/web-design" },
-  { label: "Ad creative", to: "/services/ad-creative" },
   { label: "Social systems", to: "/services/social-media-creative" },
   { label: "AI creative", to: "/services/ai-powered-creative" },
-  { label: "Campaign strategy", to: "/services/campaign-strategy" },
+  { label: "UI/UX design", to: "/services/ui-ux" },
+  { label: "E-commerce", to: "/services/ecommerce" },
 ];
 
 function Contact() {

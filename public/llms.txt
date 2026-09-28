@@ -21,17 +21,13 @@
 
 ## Services
 
-- [Ad creative](/services/ad-creative): Performance creative for paid social, display, and video.
 - [AI consulting](/services/ai-consulting): Embedding AI into creative and marketing workflows.
 - [AI marketing](/services/ai-marketing): AI-augmented campaign production at scale.
 - [AI-powered creative](/services/ai-powered-creative): Generative tooling inside the studio pipeline.
 - [Automation](/services/automation): Workflow automation for creative and marketing ops.
 - [Branding services](/services/branding-services): Identity systems, naming, and brand architecture.
-- [Campaign strategy](/services/campaign-strategy): Integrated campaign planning and creative direction.
 - [Creative design](/services/creative-design): Editorial and brand design across surfaces.
 - [Email creation](/services/email-creation): Lifecycle and campaign email design and build.
-- [Illustration design](/services/illustration-design): Custom illustration systems.
-- [Production](/services/production): Photo, video, and motion production.
 - [Social media creative](/services/social-media-creative): Always-on social creative production.
 - [Video production](/services/video-production): Short-form and long-form video.
 - [Web design](/services/web-design): Marketing site design and build.

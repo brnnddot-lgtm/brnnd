@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Invoice, InvoiceItem } from "@/lib/invoice-pdf";
-import { Plus, Trash2, X, Eye, Save } from "lucide-react";
+import { Plus, Trash2, X, Eye, Save, Receipt } from "lucide-react";
 import { toast } from "sonner";
 
 interface InvoiceModalProps {
@@ -8,9 +8,10 @@ interface InvoiceModalProps {
   onClose: () => void;
   onSave: (invoice: Invoice) => void;
   onPreview?: (invoice: Invoice) => void;
+  onSendEmail?: (invoice: Invoice) => void;
 }
 
-export function InvoiceModal({ invoice, onClose, onSave, onPreview }: InvoiceModalProps) {
+export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail }: InvoiceModalProps) {
   const isEditing = Boolean(invoice);
 
   const [invoiceNumber, setInvoiceNumber] = useState(
@@ -30,6 +31,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview }: InvoiceMod
     return d.toISOString().split("T")[0];
   });
   const [status, setStatus] = useState<Invoice["status"]>(invoice?.status || "draft");
+  const [sendReceiptOnSave, setSendReceiptOnSave] = useState(invoice?.status === "paid");
   const [currency, setCurrency] = useState(invoice?.currency || "USD");
 
   const [items, setItems] = useState<InvoiceItem[]>(
@@ -128,6 +130,10 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview }: InvoiceMod
     onSave(payload);
     toast.success(isEditing ? "Invoice updated successfully" : "New invoice created");
     onClose();
+
+    if (sendReceiptOnSave && status === "paid" && onSendEmail) {
+      onSendEmail(payload);
+    }
   };
 
   return (
@@ -166,7 +172,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview }: InvoiceMod
                   required
                   value={invoiceNumber}
                   onChange={(e) => setInvoiceNumber(e.target.value)}
-                  className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-white font-mono focus:border-orange-500 focus:outline-none"
+                  className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-white font-mono focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none"
                 />
               </div>
               <div>
@@ -178,7 +184,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview }: InvoiceMod
                   required
                   value={issueDate}
                   onChange={(e) => setIssueDate(e.target.value)}
-                  className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-white focus:border-orange-500 focus:outline-none"
+                  className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-white focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none"
                 />
               </div>
               <div>
@@ -190,7 +196,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview }: InvoiceMod
                   required
                   value={dueDate}
                   onChange={(e) => setDueDate(e.target.value)}
-                  className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-white focus:border-orange-500 focus:outline-none"
+                  className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-white focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none"
                 />
               </div>
               <div>
@@ -199,8 +205,14 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview }: InvoiceMod
                 </label>
                 <select
                   value={status}
-                  onChange={(e) => setStatus(e.target.value as Invoice["status"])}
-                  className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-white focus:border-orange-500 focus:outline-none capitalize"
+                  onChange={(e) => {
+                    const newStatus = e.target.value as Invoice["status"];
+                    setStatus(newStatus);
+                    if (newStatus === "paid") {
+                      setSendReceiptOnSave(true);
+                    }
+                  }}
+                  className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-white focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none capitalize"
                 >
                   <option value="draft">Draft</option>
                   <option value="sent">Sent</option>
@@ -211,6 +223,32 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview }: InvoiceMod
               </div>
             </div>
 
+            {/* Paid Receipt Option Banner */}
+            {status === "paid" && (
+              <div className="p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-500/30 flex items-center justify-between animate-in fade-in duration-200">
+                <div className="flex items-center gap-2.5">
+                  <div className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-400">
+                    <Receipt className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-semibold text-emerald-300">Invoice Marked as Paid</div>
+                    <p className="text-[11px] text-neutral-400">
+                      Send official receipt and settled PDF invoice to client via Resend
+                    </p>
+                  </div>
+                </div>
+                <label className="flex items-center gap-2 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={sendReceiptOnSave}
+                    onChange={(e) => setSendReceiptOnSave(e.target.checked)}
+                    className="w-4 h-4 rounded border-neutral-700 bg-neutral-900 text-emerald-500 focus:ring-emerald-500/30 cursor-pointer accent-emerald-500"
+                  />
+                  <span className="text-xs font-medium text-emerald-300">Send Receipt Email on Save</span>
+                </label>
+              </div>
+            )}
+
             {/* Client Details Section */}
             <div>
               <h3 className="text-xs font-mono uppercase tracking-wider text-neutral-400 mb-3">
@@ -219,7 +257,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview }: InvoiceMod
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs text-neutral-400 mb-1">
-                    Company Name <span className="text-orange-400">*</span>
+                    Company Name <span className="text-brand-lime">*</span>
                   </label>
                   <input
                     type="text"
@@ -227,7 +265,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview }: InvoiceMod
                     placeholder="e.g. Vespera Atelier"
                     value={clientCompany}
                     onChange={(e) => setClientCompany(e.target.value)}
-                    className="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-lg text-sm text-white placeholder-neutral-500 focus:border-orange-500 focus:outline-none"
+                    className="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-lg text-sm text-white placeholder-neutral-500 focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none"
                   />
                 </div>
                 <div>
@@ -237,12 +275,12 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview }: InvoiceMod
                     placeholder="e.g. Chloe Dupont"
                     value={clientName}
                     onChange={(e) => setClientName(e.target.value)}
-                    className="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-lg text-sm text-white placeholder-neutral-500 focus:border-orange-500 focus:outline-none"
+                    className="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-lg text-sm text-white placeholder-neutral-500 focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none"
                   />
                 </div>
                 <div>
                   <label className="block text-xs text-neutral-400 mb-1">
-                    Client Email <span className="text-orange-400">*</span>
+                    Client Email <span className="text-brand-lime">*</span>
                   </label>
                   <input
                     type="email"
@@ -250,7 +288,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview }: InvoiceMod
                     placeholder="billing@client.com"
                     value={clientEmail}
                     onChange={(e) => setClientEmail(e.target.value)}
-                    className="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-lg text-sm text-white placeholder-neutral-500 focus:border-orange-500 focus:outline-none"
+                    className="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-lg text-sm text-white placeholder-neutral-500 focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none"
                   />
                 </div>
                 <div>
@@ -260,7 +298,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview }: InvoiceMod
                     placeholder="e.g. 450 Avenue Montaigne, 75008 Paris"
                     value={clientAddress}
                     onChange={(e) => setClientAddress(e.target.value)}
-                    className="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-lg text-sm text-white placeholder-neutral-500 focus:border-orange-500 focus:outline-none"
+                    className="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-lg text-sm text-white placeholder-neutral-500 focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none"
                   />
                 </div>
               </div>
@@ -306,7 +344,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview }: InvoiceMod
                         placeholder="Service or deliverable description"
                         value={item.description}
                         onChange={(e) => handleItemChange(idx, "description", e.target.value)}
-                        className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-white placeholder-neutral-500 focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 focus:outline-none transition-colors"
+                        className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-white placeholder-neutral-500 focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none transition-colors"
                       />
                     </div>
 
@@ -318,7 +356,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview }: InvoiceMod
                         step="1"
                         value={item.quantity}
                         onChange={(e) => handleItemChange(idx, "quantity", Number(e.target.value))}
-                        className="w-full px-2 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-center text-white font-mono focus:border-orange-500 focus:outline-none transition-colors"
+                        className="w-full px-2 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-center text-white font-mono focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none transition-colors"
                       />
                     </div>
 
@@ -330,7 +368,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview }: InvoiceMod
                         step="100"
                         value={item.rate}
                         onChange={(e) => handleItemChange(idx, "rate", Number(e.target.value))}
-                        className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-right text-white font-mono focus:border-orange-500 focus:outline-none transition-colors"
+                        className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-right text-white font-mono focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none transition-colors"
                       />
                     </div>
 
@@ -368,7 +406,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview }: InvoiceMod
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Direct wire instructions, ACH, or late fee policies."
-                  className="w-full px-3.5 py-2.5 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 placeholder-neutral-500 focus:border-orange-500 focus:outline-none resize-none leading-relaxed"
+                  className="w-full px-3.5 py-2.5 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 placeholder-neutral-500 focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none resize-none leading-relaxed"
                 />
               </div>
 
@@ -386,7 +424,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview }: InvoiceMod
                     step="0.5"
                     value={taxPercent}
                     onChange={(e) => setTaxPercent(Number(e.target.value))}
-                    className="w-20 px-2 py-1 bg-neutral-900 border border-neutral-800 rounded text-right text-white font-mono text-xs focus:border-orange-500 focus:outline-none"
+                    className="w-20 px-2 py-1 bg-neutral-900 border border-neutral-800 rounded text-right text-white font-mono text-xs focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none"
                   />
                 </div>
                 <div className="flex items-center justify-between text-xs text-neutral-400">
@@ -397,12 +435,12 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview }: InvoiceMod
                     step="50"
                     value={discountAmount}
                     onChange={(e) => setDiscountAmount(Number(e.target.value))}
-                    className="w-20 px-2 py-1 bg-neutral-900 border border-neutral-800 rounded text-right text-white font-mono text-xs focus:border-orange-500 focus:outline-none"
+                    className="w-20 px-2 py-1 bg-neutral-900 border border-neutral-800 rounded text-right text-white font-mono text-xs focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none"
                   />
                 </div>
                 <div className="pt-2 border-t border-neutral-800 flex justify-between items-baseline">
                   <span className="text-sm font-semibold text-white">Total Due:</span>
-                  <span className="text-lg font-bold font-mono text-orange-400">
+                  <span className="text-lg font-bold font-mono text-brand-lime">
                     ${total.toLocaleString(undefined, { minimumFractionDigits: 2 })} {currency}
                   </span>
                 </div>
@@ -433,10 +471,23 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview }: InvoiceMod
               </button>
               <button
                 type="submit"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-orange-600 hover:bg-orange-500 text-white text-xs font-semibold tracking-wide transition-colors cursor-pointer shadow-lg shadow-orange-950/40"
+                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-xs font-bold tracking-wide transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-md ${
+                  status === "paid" && sendReceiptOnSave
+                    ? "bg-emerald-500 hover:bg-emerald-400 text-stone-950 shadow-emerald-500/10"
+                    : "bg-brand-lime hover:bg-[#bef264] text-stone-950 shadow-brand-lime/10"
+                }`}
               >
-                <Save className="w-3.5 h-3.5" />
-                {isEditing ? "Save Changes" : "Create Invoice"}
+                {status === "paid" && sendReceiptOnSave ? (
+                  <>
+                    <Receipt className="w-3.5 h-3.5" />
+                    <span>{isEditing ? "Save & Send Receipt" : "Create & Send Receipt"}</span>
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-3.5 h-3.5" />
+                    <span>{isEditing ? "Save Changes" : "Create Invoice"}</span>
+                  </>
+                )}
               </button>
             </div>
           </div>
