@@ -23,6 +23,7 @@ export type Database = {
           full_name: string
           id: string
           source: string | null
+          status: string
         }
         Insert: {
           company: string
@@ -32,6 +33,7 @@ export type Database = {
           full_name: string
           id?: string
           source?: string | null
+          status?: string
         }
         Update: {
           company?: string
@@ -41,6 +43,166 @@ export type Database = {
           full_name?: string
           id?: string
           source?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
+      invoices: {
+        Row: {
+          advance_amount: number
+          advance_percent: number
+          balance_due: number
+          client_address: string | null
+          client_company: string
+          client_email: string
+          client_name: string
+          created_at: string
+          currency: string
+          discount_amount: number
+          due_date: string
+          id: string
+          invoice_number: string
+          issue_date: string
+          items: Json
+          last_sent_at: string | null
+          notes: string | null
+          payment_instructions: string | null
+          payment_method: string | null
+          sent_to_email: string | null
+          status: string
+          subtotal: number
+          tax_amount: number
+          tax_percent: number
+          total: number
+          updated_at: string
+        }
+        Insert: {
+          advance_amount?: number
+          advance_percent?: number
+          balance_due?: number
+          client_address?: string | null
+          client_company: string
+          client_email: string
+          client_name: string
+          created_at?: string
+          currency?: string
+          discount_amount?: number
+          due_date: string
+          id: string
+          invoice_number: string
+          issue_date?: string
+          items?: Json
+          last_sent_at?: string | null
+          notes?: string | null
+          payment_instructions?: string | null
+          payment_method?: string | null
+          sent_to_email?: string | null
+          status?: string
+          subtotal?: number
+          tax_amount?: number
+          tax_percent?: number
+          total?: number
+          updated_at?: string
+        }
+        Update: {
+          advance_amount?: number
+          advance_percent?: number
+          balance_due?: number
+          client_address?: string | null
+          client_company?: string
+          client_email?: string
+          client_name?: string
+          created_at?: string
+          currency?: string
+          discount_amount?: number
+          due_date?: string
+          id?: string
+          invoice_number?: string
+          issue_date?: string
+          items?: Json
+          last_sent_at?: string | null
+          notes?: string | null
+          payment_instructions?: string | null
+          payment_method?: string | null
+          sent_to_email?: string | null
+          status?: string
+          subtotal?: number
+          tax_amount?: number
+          tax_percent?: number
+          total?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      projects: {
+        Row: {
+          budget: number
+          client_company: string
+          client_email: string
+          client_name: string
+          client_phone: string | null
+          client_whatsapp: string | null
+          created_at: string
+          currency: string
+          description: string | null
+          id: string
+          media_files: Json
+          milestones: Json
+          notes: string | null
+          priority: string
+          requirements: Json
+          services: Json
+          start_date: string
+          status: string
+          target_launch_date: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          budget?: number
+          client_company: string
+          client_email: string
+          client_name: string
+          client_phone?: string | null
+          client_whatsapp?: string | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id: string
+          media_files?: Json
+          milestones?: Json
+          notes?: string | null
+          priority?: string
+          requirements?: Json
+          services?: Json
+          start_date?: string
+          status?: string
+          target_launch_date?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          budget?: number
+          client_company?: string
+          client_email?: string
+          client_name?: string
+          client_phone?: string | null
+          client_whatsapp?: string | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          media_files?: Json
+          milestones?: Json
+          notes?: string | null
+          priority?: string
+          requirements?: Json
+          services?: Json
+          start_date?: string
+          status?: string
+          target_launch_date?: string | null
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Invoice, InvoiceItem, SUPPORTED_CURRENCIES, getCurrencySymbol } from "@/lib/invoice-pdf";
-import { Plus, Trash2, X, Eye, Save, Receipt } from "lucide-react";
+import { Plus, Trash2, X, Eye, Save, Receipt, Sparkles, RefreshCw, Calculator, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 
 interface InvoiceModalProps {
@@ -10,6 +10,15 @@ interface InvoiceModalProps {
   onPreview?: (invoice: Invoice) => void;
   onSendEmail?: (invoice: Invoice) => void;
 }
+
+const COMMON_DELIVERABLE_PRESETS = [
+  { label: "Brand Strategy & Positioning", defaultRate: 25000 },
+  { label: "Visual Identity System & Guidelines", defaultRate: 35000 },
+  { label: "UI/UX Architecture & Prototyping", defaultRate: 30000 },
+  { label: "High-Performance Web Development", defaultRate: 40000 },
+  { label: "3D Motion & Visual Direction", defaultRate: 20000 },
+  { label: "Packaging & Physical Merchandise", defaultRate: 15000 },
+];
 
 export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail }: InvoiceModalProps) {
   const isEditing = Boolean(invoice);
@@ -61,7 +70,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
     invoice?.notes || "Payment is due within 15 business days. Direct wire instructions included."
   );
 
-  // Auto calculate totals
+  // Auto calculate totals from items
   const subtotal = items.reduce((acc, it) => acc + (Number(it.amount) || 0), 0);
   const taxAmount = (subtotal * (Number(taxPercent) || 0)) / 100;
   const total = Math.max(0, subtotal + taxAmount - (Number(discountAmount) || 0));
@@ -92,6 +101,67 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
       ? Math.max(0, total - advanceAmount)
       : total;
 
+  // Direct Total Project Value Setter: updates line items and advance amount cleanly
+  const handleDirectTotalChange = (newTotalVal: number) => {
+    const val = Math.max(0, newTotalVal);
+    const factor = 1 + (Number(taxPercent) || 0) / 100;
+    const targetSubtotal = Math.max(0, Math.round((val + (Number(discountAmount) || 0)) / factor));
+
+    if (items.length <= 1) {
+      setItems([
+        {
+          id: items[0]?.id || "1",
+          description: items[0]?.description || "Brand Strategy & Creative Deliverables",
+          quantity: 1,
+          rate: targetSubtotal,
+          amount: targetSubtotal,
+        },
+      ]);
+    } else {
+      const currentSubtotal = items.reduce((acc, it) => acc + (Number(it.amount) || 0), 0);
+      if (currentSubtotal > 0) {
+        const ratio = targetSubtotal / currentSubtotal;
+        setItems(
+          items.map((it) => {
+            const newAmount = Math.round(Number(it.amount || 0) * ratio);
+            const qty = Number(it.quantity) || 1;
+            return {
+              ...it,
+              rate: Math.round(newAmount / qty),
+              amount: newAmount,
+            };
+          })
+        );
+      } else {
+        const splitRate = Math.round(targetSubtotal / items.length);
+        setItems(
+          items.map((it) => ({
+            ...it,
+            rate: splitRate,
+            amount: splitRate * (Number(it.quantity) || 1),
+          }))
+        );
+      }
+    }
+
+    if (status === "advance_paid" && advancePercent > 0) {
+      setAdvanceAmount(Math.round((val * advancePercent) / 100));
+    }
+  };
+
+  const handleAdvanceAmountChange = (newAdvanceVal: number) => {
+    const val = Math.max(0, Math.min(total, newAdvanceVal));
+    setAdvanceAmount(val);
+    if (total > 0) {
+      setAdvancePercent(Math.round((val / total) * 100));
+    }
+  };
+
+  const handlePresetPercent = (pct: number) => {
+    setAdvancePercent(pct);
+    setAdvanceAmount(Math.round((total * pct) / 100));
+  };
+
   const handleItemChange = (index: number, field: keyof InvoiceItem, value: unknown) => {
     setItems((prev) => {
       const next = [...prev];
@@ -104,15 +174,15 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
     });
   };
 
-  const handleAddItem = () => {
+  const handleAddItem = (preset?: { label: string; defaultRate: number }) => {
     setItems((prev) => [
       ...prev,
       {
-        id: String(Date.now()),
-        description: "",
+        id: String(Date.now() + Math.random()),
+        description: preset?.label || "",
         quantity: 1,
-        rate: 0,
-        amount: 0,
+        rate: preset?.defaultRate || 0,
+        amount: preset?.defaultRate || 0,
       },
     ]);
   };
@@ -179,7 +249,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
       data-lenis-prevent="true"
     >
       <div
-        className="relative flex flex-col w-full max-w-4xl max-h-[96vh] sm:max-h-[90vh] bg-neutral-900 border border-neutral-800 rounded-2xl shadow-2xl overflow-hidden text-neutral-100 my-auto"
+        className="relative flex flex-col w-full max-w-4xl max-h-[96vh] sm:max-h-[92vh] bg-neutral-900 border border-neutral-800 rounded-2xl shadow-2xl overflow-hidden text-neutral-100 my-auto"
         data-lenis-prevent="true"
       >
         {/* Sticky Header */}
@@ -210,7 +280,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
             data-lenis-prevent="true"
             className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 sm:py-5 pb-14 space-y-5 sm:space-y-6 custom-scrollbar outline-none focus-visible:ring-1 focus-visible:ring-brand-lime/30"
           >
-            {/* Top Row: Invoice Number, Currency, Dates, Status */}
+            {/* Top Row: Invoice Number, Currency, Dates, Status Category */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 sm:gap-4 p-3.5 sm:p-4 rounded-xl bg-neutral-950 border border-neutral-800/80">
               <div>
                 <label className="block text-xs font-mono uppercase text-neutral-400 mb-1">
@@ -224,6 +294,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                   className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-white font-mono focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none"
                 />
               </div>
+
               <div>
                 <div className="flex items-center justify-between mb-1">
                   <label className="text-xs font-mono uppercase text-neutral-400">
@@ -262,6 +333,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                   ))}
                 </div>
               </div>
+
               <div>
                 <label className="block text-xs font-mono uppercase text-neutral-400 mb-1">
                   Issue Date
@@ -274,9 +346,10 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                   className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-white focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none"
                 />
               </div>
+
               <div>
                 <label className="block text-xs font-mono uppercase text-neutral-400 mb-1">
-                  Due Date
+                  {status === "advance_paid" ? "Balance Due Date" : "Payment Due Date"}
                 </label>
                 <input
                   type="date"
@@ -286,6 +359,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                   className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-white focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none"
                 />
               </div>
+
               <div className="sm:col-span-2 lg:col-span-1">
                 <label className="block text-xs font-mono uppercase text-neutral-400 mb-1">
                   Status Category
@@ -314,14 +388,14 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
               </div>
             </div>
 
-            {/* Payment Status Segmented Selector (Due vs Advance Paid vs Paid in Full) */}
+            {/* Payment Model & Workflow Selector */}
             <div className="p-3.5 sm:p-4 rounded-xl bg-neutral-950 border border-neutral-800 space-y-3">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                 <label className="text-xs font-mono uppercase tracking-wider text-neutral-400">
-                  Payment Model &amp; Settlement Status
+                  Payment Stage &amp; Settlement Workflow
                 </label>
                 <span className="text-[11px] text-neutral-500 font-mono">
-                  Select payment stage: full due, ahead-of-time advance, or settled
+                  Select how the client is paying for this project
                 </span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
@@ -341,16 +415,16 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                   <div className="flex items-center justify-between w-full">
                     <div className="text-xs font-bold text-amber-400 flex items-center gap-1.5">
                       <span className="w-2 h-2 rounded-full bg-amber-400"></span>
-                      Payment Due (Unpaid)
+                      Full Payment Due
                     </div>
                     {status !== "paid" && status !== "advance_paid" && (
                       <span className="text-[10px] font-mono font-bold text-amber-400 bg-amber-950 px-1.5 py-0.5 rounded border border-amber-500/40 shrink-0">
-                        DUE
+                        100% DUE
                       </span>
                     )}
                   </div>
                   <p className="text-[11px] text-neutral-400 mt-2">
-                    0% paid upfront • Full balance {currSym}{total.toLocaleString()} due by {dueDate}
+                    0% advance received • Full balance of {currSym}{total.toLocaleString()} due on {dueDate}
                   </p>
                 </button>
 
@@ -372,8 +446,8 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                 >
                   <div className="flex items-center justify-between w-full">
                     <div className="text-xs font-bold text-sky-400 flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-sky-400"></span>
-                      Advance Payment (Deposit)
+                      <span className="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
+                      Advance / Deposit Paid
                     </div>
                     {status === "advance_paid" && (
                       <span className="text-[10px] font-mono font-bold text-sky-400 bg-sky-950 px-1.5 py-0.5 rounded border border-sky-500/40 shrink-0">
@@ -382,7 +456,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                     )}
                   </div>
                   <p className="text-[11px] text-neutral-400 mt-2">
-                    Ahead-of-time partial deposit received • Tracks deposit &amp; remaining balance
+                    Upfront deposit received • Enter total fee &amp; advance amount • Tracks remaining balance
                   </p>
                 </button>
 
@@ -406,42 +480,42 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                     </div>
                     {status === "paid" && (
                       <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950 px-1.5 py-0.5 rounded border border-emerald-500/40 shrink-0">
-                        PAID
+                        100% PAID
                       </span>
                     )}
                   </div>
                   <p className="text-[11px] text-neutral-400 mt-2">
-                    100% settled • Zero balance remaining • Official paid receipt confirmation
+                    100% settled • Zero balance remaining • Issues official paid receipt &amp; invoice
                   </p>
                 </button>
               </div>
 
-              {/* Advance Payment Detail Configuration Card */}
+              {/* ADVANCE PAYMENT WORKFLOW CONTROL CARD (Total Amount Owed + Advance Paid + Remaining Balance) */}
               {status === "advance_paid" && (
-                <div className="p-3.5 sm:p-4 rounded-xl bg-sky-950/20 border border-sky-500/30 space-y-3.5 animate-in fade-in duration-200">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-sky-500/20 pb-2.5">
+                <div className="p-4 sm:p-5 rounded-xl bg-[#031525] border border-sky-500/40 space-y-4 animate-in fade-in duration-200 shadow-lg shadow-sky-950/20">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-sky-500/20 pb-3">
                     <div>
-                      <div className="text-xs font-bold text-sky-300 flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
-                        Advance Payment / Ahead-of-Time Deposit Settings
+                      <div className="text-xs sm:text-sm font-bold text-sky-300 flex items-center gap-2">
+                        <Calculator className="w-4 h-4 text-sky-400" />
+                        <span>Advance Payment &amp; Balance Calculator</span>
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-sky-500/20 border border-sky-500/30 text-sky-300">
+                          Active Workflow
+                        </span>
                       </div>
                       <p className="text-[11px] text-neutral-400 mt-0.5">
-                        Specify upfront deposit received ahead of final project delivery
+                        Set the total project fee client owes, specify upfront advance received, and track remaining balance.
                       </p>
                     </div>
 
                     {/* Quick Percentage Presets */}
                     <div className="flex items-center gap-1.5">
-                      <span className="text-[10px] font-mono text-neutral-500">Quick:</span>
+                      <span className="text-[10px] font-mono text-neutral-400">Advance %:</span>
                       {[25, 33, 50, 70].map((pct) => (
                         <button
                           key={pct}
                           type="button"
-                          onClick={() => {
-                            setAdvancePercent(pct);
-                            setAdvanceAmount(Math.round((total * pct) / 100));
-                          }}
-                          className={`px-2 py-0.5 rounded text-[11px] font-mono font-semibold transition-colors cursor-pointer ${
+                          onClick={() => handlePresetPercent(pct)}
+                          className={`px-2 py-1 rounded text-[11px] font-mono font-semibold transition-colors cursor-pointer ${
                             advancePercent === pct
                               ? "bg-sky-500 text-stone-950 font-bold shadow-sm"
                               : "bg-neutral-800 text-sky-300 hover:bg-neutral-700"
@@ -453,14 +527,48 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                     </div>
                   </div>
 
+                  {/* Top Inputs: Total Amount Owed + Advance Paid Amount */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {/* Advance Amount Numeric Input */}
-                    <div>
-                      <label className="block text-xs font-mono uppercase text-neutral-400 mb-1">
-                        Advance Paid Amount ({currSym})
-                      </label>
+                    {/* 1. TOTAL PROJECT AMOUNT (HOW MUCH THEY OWE) */}
+                    <div className="p-3.5 rounded-xl bg-neutral-950/80 border border-neutral-800 focus-within:border-brand-lime/60 transition-colors">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="text-xs font-mono uppercase font-bold text-white flex items-center gap-1.5">
+                          <span>Total Amount of Payment</span>
+                          <span className="text-brand-lime text-[10px] font-normal">(How much they owe overall)</span>
+                        </label>
+                        <span className="text-[10px] font-mono text-neutral-400">Contract Total</span>
+                      </div>
                       <div className="relative">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-sm">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-lime font-mono text-base font-bold">
+                          {currSym}
+                        </span>
+                        <input
+                          type="number"
+                          min="0"
+                          step="100"
+                          inputMode="decimal"
+                          value={total || 0}
+                          onChange={(e) => handleDirectTotalChange(Number(e.target.value) || 0)}
+                          placeholder="e.g. 50000"
+                          className="w-full pl-9 pr-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-base text-white font-mono font-bold focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        />
+                      </div>
+                      <p className="text-[10px] text-neutral-500 mt-1.5">
+                        Editing this automatically updates your deliverables &amp; subtotal below.
+                      </p>
+                    </div>
+
+                    {/* 2. ADVANCE PAID AMOUNT (DEPOSIT RECEIVED TODAY) */}
+                    <div className="p-3.5 rounded-xl bg-neutral-950/80 border border-sky-500/40 focus-within:border-sky-400 transition-colors">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="text-xs font-mono uppercase font-bold text-sky-300 flex items-center gap-1.5">
+                          <span>Advance Paid Amount</span>
+                          <span className="text-sky-400 text-[10px] font-normal">({advancePercent}% received)</span>
+                        </label>
+                        <span className="text-[10px] font-mono text-sky-400 font-bold">Paid Upfront</span>
+                      </div>
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sky-400 font-mono text-base font-bold">
                           {currSym}
                         </span>
                         <input
@@ -470,62 +578,55 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                           step="100"
                           inputMode="decimal"
                           value={advanceAmount}
-                          onChange={(e) => {
-                            const val = Math.max(0, Math.min(total, Number(e.target.value) || 0));
-                            setAdvanceAmount(val);
-                            setAdvancePercent(total > 0 ? Math.round((val / total) * 100) : 0);
-                          }}
-                          className="w-full pl-8 pr-3 py-2 bg-neutral-900 border border-sky-500/40 rounded-lg text-sm text-white font-mono focus:border-sky-400 focus:ring-1 focus:ring-sky-400/30 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                          onChange={(e) => handleAdvanceAmountChange(Number(e.target.value) || 0)}
+                          placeholder="e.g. 20000"
+                          className="w-full pl-9 pr-3 py-2 bg-neutral-900 border border-sky-500/50 rounded-lg text-base text-white font-mono font-bold focus:border-sky-400 focus:ring-1 focus:ring-sky-400/30 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         />
                       </div>
-                    </div>
-
-                    {/* Advance Percentage Slider */}
-                    <div className="flex flex-col justify-end">
-                      <div className="flex items-center justify-between text-xs font-mono text-neutral-400 mb-1">
-                        <span>Deposit Ratio:</span>
-                        <span className="text-sky-300 font-bold">{advancePercent}% of Project Fee</span>
-                      </div>
-                      <input
-                        type="range"
-                        min="1"
-                        max="99"
-                        step="1"
-                        value={advancePercent}
-                        onChange={(e) => {
-                          const pct = Number(e.target.value);
-                          setAdvancePercent(pct);
-                          setAdvanceAmount(Math.round((total * pct) / 100));
-                        }}
-                        className="w-full h-2 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-sky-400"
-                      />
-                      <div className="flex justify-between text-[10px] font-mono text-neutral-500 mt-1">
-                        <span>1% Min</span>
-                        <span>50% Standard Kickoff</span>
-                        <span>99% Max</span>
+                      {/* Advance slider */}
+                      <div className="mt-2.5 space-y-1">
+                        <input
+                          type="range"
+                          min="1"
+                          max="99"
+                          step="1"
+                          value={advancePercent}
+                          onChange={(e) => handlePresetPercent(Number(e.target.value))}
+                          className="w-full h-1.5 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-sky-400"
+                        />
+                        <div className="flex justify-between text-[10px] font-mono text-neutral-500">
+                          <span>1% Min</span>
+                          <span>Deposit: {advancePercent}%</span>
+                          <span>99% Max</span>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Financial Breakdown Cards */}
-                  <div className="p-3 rounded-lg bg-neutral-900/90 border border-neutral-800 grid grid-cols-1 sm:grid-cols-3 gap-2 text-center">
-                    <div className="p-2 rounded bg-neutral-950/70 border border-neutral-800/80">
-                      <div className="text-[10px] font-mono uppercase text-neutral-400">Total Project Value</div>
-                      <div className="text-sm font-bold font-mono text-white mt-0.5">
+                  {/* 3. FINANCIAL SUMMARY BANNER & BALANCE DUE */}
+                  <div className="p-3.5 rounded-xl bg-neutral-950/90 border border-neutral-800 grid grid-cols-1 sm:grid-cols-3 gap-3 text-center">
+                    <div className="p-2.5 rounded-lg bg-neutral-900/80 border border-neutral-800">
+                      <span className="text-[10px] font-mono uppercase text-neutral-400 block">Total Agreed Fee</span>
+                      <div className="text-base sm:text-lg font-bold font-mono text-white mt-0.5">
                         {currSym}{total.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                       </div>
+                      <span className="text-[10px] text-neutral-500 font-mono">100% Client Owed</span>
                     </div>
-                    <div className="p-2 rounded bg-sky-950/50 border border-sky-500/30">
-                      <div className="text-[10px] font-mono uppercase text-sky-400 font-semibold">Advance Received</div>
-                      <div className="text-sm font-bold font-mono text-sky-300 mt-0.5">
+
+                    <div className="p-2.5 rounded-lg bg-sky-950/60 border border-sky-500/40">
+                      <span className="text-[10px] font-mono uppercase text-sky-400 font-bold block">Advance Paid Now</span>
+                      <div className="text-base sm:text-lg font-bold font-mono text-sky-300 mt-0.5">
                         {currSym}{advanceAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                       </div>
+                      <span className="text-[10px] text-sky-400/80 font-mono">{advancePercent}% Received Today</span>
                     </div>
-                    <div className="p-2 rounded bg-amber-950/40 border border-amber-500/30">
-                      <div className="text-[10px] font-mono uppercase text-amber-400 font-semibold">Remaining Due</div>
-                      <div className="text-sm font-bold font-mono text-amber-300 mt-0.5">
+
+                    <div className="p-2.5 rounded-lg bg-amber-950/50 border border-amber-500/50">
+                      <span className="text-[10px] font-mono uppercase text-amber-400 font-bold block">Remaining Balance Due</span>
+                      <div className="text-base sm:text-lg font-bold font-mono text-amber-300 mt-0.5">
                         {currSym}{balanceDue.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                       </div>
+                      <span className="text-[10px] text-amber-400/80 font-mono">Due on {dueDate}</span>
                     </div>
                   </div>
                 </div>
@@ -535,8 +636,8 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
               <div className="pt-2.5 border-t border-neutral-800/80">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1.5">
                   <label className="text-xs font-mono uppercase text-neutral-300 flex items-center gap-1.5">
-                    <span>Payment Done With</span>
-                    <span className="text-[10px] text-neutral-500 font-sans normal-case">(custom payment note/source)</span>
+                    <span>Payment Method / Reference Note</span>
+                    <span className="text-[10px] text-neutral-500 font-sans normal-case">(e.g. bKash, Bank Wire, Wise)</span>
                   </label>
                   <span className="text-[10px] font-mono text-neutral-500">Default: N/A</span>
                 </div>
@@ -550,7 +651,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
               </div>
             </div>
 
-            {/* Advance Payment Receipt Banner */}
+            {/* Advance Payment Receipt Notification Banner */}
             {status === "advance_paid" && (
               <div className="p-3.5 rounded-xl bg-sky-950/40 border border-sky-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in duration-200">
                 <div className="flex items-center gap-2.5">
@@ -558,9 +659,9 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                     <Receipt className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="text-xs font-semibold text-sky-300">Advance Deposit Marked as Received</div>
+                    <div className="text-xs font-semibold text-sky-300">Advance Receipt Ready to Dispatch</div>
                     <p className="text-[11px] text-neutral-400">
-                      Send advance confirmation &amp; milestone invoice showing remaining balance ({currSym}{balanceDue.toLocaleString()}) via Resend
+                      Send advance confirmation email &amp; official PDF receipt showing remaining balance ({currSym}{balanceDue.toLocaleString()}) via Resend
                     </p>
                   </div>
                 </div>
@@ -584,9 +685,9 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                     <Receipt className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="text-xs font-semibold text-emerald-300">Invoice Marked as Paid</div>
+                    <div className="text-xs font-semibold text-emerald-300">Invoice Marked as Paid in Full</div>
                     <p className="text-[11px] text-neutral-400">
-                      Send official receipt and settled PDF invoice to client via Resend
+                      Send official receipt and settled PDF invoice confirming zero balance to client via Resend
                     </p>
                   </div>
                 </div>
@@ -602,7 +703,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
               </div>
             )}
 
-            {/* Client Details Section */}
+            {/* Client & Billing Details Section */}
             <div>
               <h3 className="text-xs font-mono uppercase tracking-wider text-neutral-400 mb-3">
                 Client &amp; Billing Details
@@ -657,25 +758,45 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
               </div>
             </div>
 
-            {/* Line Items / Deliverables */}
-            <div>
-              <div className="flex items-center justify-between mb-3">
+            {/* Line Items & Deliverables Breakdown */}
+            <div className="space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <h3 className="text-xs font-mono uppercase tracking-wider text-neutral-400">
-                    Line Items
+                    Line Items &amp; Scope of Deliverables
                   </h3>
-                  <span className="text-[11px] font-mono text-neutral-500">
-                    ({items.length} {items.length === 1 ? "deliverable" : "deliverables"})
+                  <span className="text-[11px] font-mono text-brand-lime font-bold">
+                    ({items.length} {items.length === 1 ? "item" : "items"} • Subtotal: {currSym}{subtotal.toLocaleString()})
                   </span>
                 </div>
-                <button
-                  type="button"
-                  onClick={handleAddItem}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 transition-colors cursor-pointer active:scale-95"
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                  Add Deliverable
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleAddItem()}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 transition-colors cursor-pointer active:scale-95"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Add Item</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Quick Template Presets for Deliverables */}
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
+                <span className="text-[10px] font-mono text-neutral-500 shrink-0 flex items-center gap-1">
+                  <Sparkles className="w-3 h-3 text-brand-lime" />
+                  Quick Scope:
+                </span>
+                {COMMON_DELIVERABLE_PRESETS.map((preset) => (
+                  <button
+                    key={preset.label}
+                    type="button"
+                    onClick={() => handleAddItem(preset)}
+                    className="px-2 py-0.5 rounded text-[10px] font-mono bg-neutral-950 hover:bg-neutral-800 text-neutral-300 border border-neutral-800 transition-colors cursor-pointer shrink-0"
+                  >
+                    + {preset.label.split("&")[0].trim()}
+                  </button>
+                ))}
               </div>
 
               <div className="space-y-3">
@@ -688,13 +809,13 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                   <div className="w-9" />
                 </div>
 
-                {/* Line Item Cards / Rows */}
+                {/* Line Item Rows */}
                 {items.map((item, idx) => (
                   <div
                     key={item.id || idx}
                     className="p-3 bg-neutral-950 rounded-xl border border-neutral-800/90 hover:border-neutral-700 transition-colors space-y-2.5 md:space-y-0 md:flex md:items-center md:gap-3"
                   >
-                    {/* Description / Deliverable - full width on mobile! */}
+                    {/* Description - full width on mobile */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between md:hidden mb-1">
                         <span className="text-[11px] font-mono uppercase text-neutral-400 flex items-center gap-1.5">
@@ -727,17 +848,15 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                         <label className="md:hidden block text-[10px] font-mono uppercase text-neutral-500 mb-1">
                           Qty
                         </label>
-                        <div className="relative">
-                          <input
-                            type="number"
-                            min="1"
-                            step="1"
-                            inputMode="numeric"
-                            value={item.quantity}
-                            onChange={(e) => handleItemChange(idx, "quantity", Number(e.target.value))}
-                            className="w-full px-2 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-center text-white font-mono focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                          />
-                        </div>
+                        <input
+                          type="number"
+                          min="1"
+                          step="1"
+                          inputMode="numeric"
+                          value={item.quantity}
+                          onChange={(e) => handleItemChange(idx, "quantity", Number(e.target.value))}
+                          className="w-full px-2 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-center text-white font-mono focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        />
                       </div>
 
                       {/* Rate */}
@@ -745,17 +864,15 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                         <label className="md:hidden block text-[10px] font-mono uppercase text-neutral-500 mb-1">
                           Rate ({currSym})
                         </label>
-                        <div className="relative">
-                          <input
-                            type="number"
-                            min="0"
-                            step="50"
-                            inputMode="decimal"
-                            value={item.rate}
-                            onChange={(e) => handleItemChange(idx, "rate", Number(e.target.value))}
-                            className="w-full px-2.5 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-right text-white font-mono focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                          />
-                        </div>
+                        <input
+                          type="number"
+                          min="0"
+                          step="50"
+                          inputMode="decimal"
+                          value={item.rate}
+                          onChange={(e) => handleItemChange(idx, "rate", Number(e.target.value))}
+                          className="w-full px-2.5 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-right text-white font-mono focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        />
                       </div>
 
                       {/* Amount */}
@@ -770,7 +887,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                         </div>
                       </div>
 
-                      {/* Trash Button (desktop only since mobile has it in the deliverable header) */}
+                      {/* Trash Button */}
                       <div className="hidden md:flex w-9 shrink-0 justify-end">
                         <button
                           type="button"
@@ -791,10 +908,10 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
             <div className="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6 pt-4 border-t border-neutral-800">
               <div className="md:col-span-6 space-y-2">
                 <label className="block text-xs font-mono uppercase text-neutral-400">
-                  Payment Notes / Terms
+                  Payment Notes / Terms &amp; Instructions
                 </label>
                 <textarea
-                  rows={3}
+                  rows={4}
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Direct wire instructions, ACH, or late fee policies."
@@ -804,13 +921,13 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
 
               <div className="md:col-span-6 p-4 rounded-xl bg-neutral-950 border border-neutral-800 space-y-3.5">
                 <div className="flex justify-between items-center text-xs text-neutral-400 pb-2 border-b border-neutral-800/80">
-                  <span className="font-mono uppercase">Subtotal:</span>
+                  <span className="font-mono uppercase">Deliverables Subtotal:</span>
                   <span className="font-mono text-base font-semibold text-white">
                     {currSym}{subtotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                   </span>
                 </div>
 
-                {/* Tax with interactive slider & number input */}
+                {/* Tax */}
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between text-xs text-neutral-400">
                     <span className="font-mono uppercase">Tax / VAT ({taxPercent}%):</span>
@@ -831,7 +948,6 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                       </span>
                     </div>
                   </div>
-                  {/* Slider for Tax */}
                   <div className="flex items-center gap-2 pt-0.5">
                     <input
                       type="range"
@@ -846,7 +962,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                   </div>
                 </div>
 
-                {/* Discount with interactive slider & number input */}
+                {/* Discount */}
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between text-xs text-neutral-400">
                     <span className="font-mono uppercase">Discount:</span>
@@ -863,29 +979,13 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                       />
                     </div>
                   </div>
-                  {/* Slider for Discount if subtotal > 0 */}
-                  {subtotal > 0 && (
-                    <div className="flex items-center gap-2 pt-0.5">
-                      <input
-                        type="range"
-                        min="0"
-                        max={Math.round(subtotal)}
-                        step="50"
-                        value={Math.min(discountAmount, subtotal)}
-                        onChange={(e) => setDiscountAmount(Number(e.target.value))}
-                        className="w-full h-1.5 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-brand-lime"
-                      />
-                      <span className="text-[10px] font-mono text-neutral-500 shrink-0">
-                        {subtotal > 0 ? `${Math.round((discountAmount / subtotal) * 100)}%` : "0%"}
-                      </span>
-                    </div>
-                  )}
                 </div>
 
-                <div className="pt-2.5 border-t border-neutral-800 space-y-1.5">
+                {/* Totals Breakdown */}
+                <div className="pt-2.5 border-t border-neutral-800 space-y-2">
                   <div className="flex justify-between items-baseline">
-                    <span className="text-xs font-semibold text-neutral-300">Total Invoice Fee:</span>
-                    <span className="text-sm font-bold font-mono text-white">
+                    <span className="text-xs font-semibold text-neutral-300">Total Project Value:</span>
+                    <span className="text-base font-bold font-mono text-white">
                       {currSym}{total.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                     </span>
                   </div>
@@ -898,7 +998,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                           -{currSym}{advanceAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                         </span>
                       </div>
-                      <div className="flex justify-between items-baseline pt-1.5 border-t border-neutral-800">
+                      <div className="flex justify-between items-baseline pt-2 border-t border-neutral-800">
                         <span className="text-sm font-bold text-sky-300">Remaining Balance Due:</span>
                         <span className="text-lg sm:text-xl font-bold font-mono text-sky-400">
                           {currSym}{balanceDue.toLocaleString(undefined, { minimumFractionDigits: 2 })}{" "}

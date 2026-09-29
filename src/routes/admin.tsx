@@ -19,6 +19,7 @@ import { SendInvoiceDialog } from "@/components/admin/SendInvoiceDialog";
 import { ProjectModal } from "@/components/admin/ProjectModal";
 import { ProjectDetailModal } from "@/components/admin/ProjectDetailModal";
 import { AdminLoginView } from "@/components/admin/AdminLoginView";
+import { DatabaseSetupModal } from "@/components/admin/DatabaseSetupModal";
 import {
   fetchRealDashboardDataFn,
   saveRealInvoiceFn,
@@ -26,6 +27,7 @@ import {
   updateRealLeadStatusFn,
   saveRealProjectFn,
   deleteRealProjectFn,
+  checkDatabaseHealthFn,
 } from "@/lib/admin.functions";
 import {
   LayoutDashboard,
@@ -39,6 +41,9 @@ import {
   User,
   Loader2,
   FolderArchive,
+  Database,
+  AlertTriangle,
+  CheckCircle2,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -80,6 +85,16 @@ function AdminPage() {
   const [previewInvoice, setPreviewInvoice] = useState<Invoice | null>(null);
   const [sendInvoice, setSendInvoice] = useState<Invoice | null>(null);
 
+  // Cloud Database Health state
+  const [dbHealth, setDbHealth] = useState<{
+    connected: boolean;
+    projectsTable: boolean;
+    invoicesTable: boolean;
+    leadsTable: boolean;
+    error?: string;
+  } | null>(null);
+  const [showDbModal, setShowDbModal] = useState(false);
+
   // 1. Check existing session on mount
   useEffect(() => {
     try {
@@ -104,20 +119,26 @@ function AdminPage() {
   const loadRealData = async () => {
     setDataLoading(true);
     try {
-      const result = await fetchRealDashboardDataFn();
+      const [result, health] = await Promise.all([
+        fetchRealDashboardDataFn(),
+        checkDatabaseHealthFn().catch(() => null),
+      ]);
+      if (health) {
+        setDbHealth(health);
+      }
       if (result.success) {
-        if (result.invoices && result.invoices.length > 0) {
+        if (result.invoices) {
           setInvoices(result.invoices);
         }
-        if (result.leads && result.leads.length > 0) {
+        if (result.leads) {
           setLeads(result.leads);
         }
-        if (result.projects && result.projects.length > 0) {
+        if (result.projects) {
           setProjects(result.projects);
         }
       }
     } catch (err) {
-      console.warn("Could not load real data from server, falling back to local store", err);
+      console.warn("Could not load real data from server", err);
     } finally {
       setDataLoading(false);
     }
@@ -383,6 +404,30 @@ function AdminPage() {
               <span>{authEmail}</span>
             </div>
 
+            {/* Cloud Database Sync Pill */}
+            {dbHealth?.connected ? (
+              <button
+                type="button"
+                onClick={() => setShowDbModal(true)}
+                title="Supabase cloud database is connected & in sync"
+                className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/80 border border-emerald-500/30 text-emerald-400 text-xs font-mono hover:bg-emerald-900/60 transition-colors cursor-pointer"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <Database className="w-3 h-3 text-emerald-400" />
+                <span>Cloud DB: Synced</span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setShowDbModal(true)}
+                title="Click to view Supabase SQL setup"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-950/80 border border-amber-500/40 text-amber-300 text-xs font-mono hover:bg-amber-900/60 transition-colors cursor-pointer animate-pulse"
+              >
+                <AlertTriangle className="w-3 h-3 text-amber-400" />
+                <span>Cloud DB: Setup SQL</span>
+              </button>
+            )}
+
             <div className="hidden lg:flex items-center gap-2 text-xs font-mono text-neutral-400">
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/70 border border-emerald-500/20 text-emerald-400">
                 <ShieldCheck className="w-3.5 h-3.5" /> Resend: hello@brnnd.com
@@ -602,6 +647,14 @@ function AdminPage() {
           onDeleteProject={handleDeleteProject}
         />
       )}
+
+      {/* Cloud Database Setup Modal */}
+      <DatabaseSetupModal
+        isOpen={showDbModal}
+        onClose={() => setShowDbModal(false)}
+        dbHealth={dbHealth}
+        onRecheck={loadRealData}
+      />
     </div>
   );
 }
