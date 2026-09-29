@@ -237,10 +237,10 @@ function EcommerceServicePage() {
 
   // Select authentic commerce-relevant case studies
   const sanvogueCase = caseStudies.find((c) => c.slug === "sanvogue");
-  const lunisoCase = caseStudies.find((c) => c.slug === "luniso");
+  const dressDhakaCase = caseStudies.find((c) => c.slug === "dress-dhaka");
   const muntajarCase = caseStudies.find((c) => c.slug === "muntajar");
 
-  const commerceCases = [sanvogueCase, lunisoCase, muntajarCase].filter(Boolean);
+  const commerceCases = [sanvogueCase, dressDhakaCase, muntajarCase].filter(Boolean);
 
   const currentTab = commerceModules.find((t) => t.id === activeTab) || commerceModules[0];
 
@@ -587,7 +587,7 @@ function EcommerceServicePage() {
                 return (
                   <Link
                     key={cs.slug}
-                    to="/case-studies/$slug"
+                    to="/work/$slug"
                     params={{ slug: cs.slug }}
                     className="group flex flex-col rounded-2xl overflow-hidden border border-border bg-card hover:border-foreground/40 transition-all"
                   >

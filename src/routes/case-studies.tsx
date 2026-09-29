@@ -40,8 +40,8 @@ function CaseStudies() {
             <Link key={c.slug} to="/work/$slug" params={{ slug: c.slug }} className="group block">
               <div className="aspect-[4/3] overflow-hidden rounded-2xl bg-bone">
                 <img
-                  src={c.cover}
-                  alt={c.name}
+                  src={c.hero.hero_image.src}
+                  alt={c.client}
                   loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                 />
@@ -52,13 +52,13 @@ function CaseStudies() {
                     {c.industry}
                   </p>
                   <h3 className="font-serif italic text-2xl md:text-3xl leading-snug max-w-md">
-                    {c.heroTitle}
+                    {c.hero.headline}
                   </h3>
-                  <p className="mt-3 text-sm text-muted-foreground max-w-md leading-relaxed">{c.tagline}</p>
+                  <p className="mt-3 text-sm text-muted-foreground max-w-md leading-relaxed">{c.hero.description}</p>
                 </div>
                 <div className="text-right shrink-0">
-                  <div className="text-xs uppercase tracking-widest text-muted-foreground">{c.name}</div>
-                  <div className="mt-1 text-sm font-medium text-accent">{c.outcome}</div>
+                  <div className="text-xs uppercase tracking-widest text-muted-foreground">{c.client}</div>
+                  <div className="mt-1 text-sm font-medium text-accent">{c.project_type}</div>
                 </div>
               </div>
             </Link>

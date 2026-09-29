@@ -248,11 +248,12 @@ function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {[
             caseStudies.find((c) => c.slug === "muntajar") || caseStudies[0],
-            caseStudies.find((c) => c.slug === "sanvogue") || caseStudies[4],
-            caseStudies.find((c) => c.slug === "formline") || caseStudies[8],
-            caseStudies.find((c) => c.slug === "dress-dhaka") || caseStudies[3],
-            caseStudies.find((c) => c.slug === "luniso") || caseStudies[5],
-            caseStudies.find((c) => c.slug === "edvice-uk") || caseStudies[1],
+            caseStudies.find((c) => c.slug === "esnl-group") || caseStudies[1],
+            caseStudies.find((c) => c.slug === "dress-dhaka") || caseStudies[2],
+            caseStudies.find((c) => c.slug === "sanvogue") || caseStudies[3],
+            caseStudies.find((c) => c.slug === "minthost") || caseStudies[4],
+            caseStudies.find((c) => c.slug === "zambic") || caseStudies[5],
+            caseStudies.find((c) => c.slug === "formline") || caseStudies[6],
           ].map((w) => (
             <Link
               key={w.slug}

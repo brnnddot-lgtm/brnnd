@@ -76,6 +76,30 @@ function CaseStudyPage() {
   const c = data.study;
   const t = c.theme;
 
+  // Eradicate any repeated images across the case study details page
+  const renderedImages = new Set<string>();
+  if (c.hero.hero_image?.src) {
+    renderedImages.add(c.hero.hero_image.src);
+  }
+
+  const uniqueProjectImages = (c.project.images || []).filter((img) => {
+    if (!img?.src || renderedImages.has(img.src)) return false;
+    renderedImages.add(img.src);
+    return true;
+  });
+
+  const uniqueScreens = (c.screens || []).filter((screen) => {
+    if (!screen.image?.src || renderedImages.has(screen.image.src)) return false;
+    renderedImages.add(screen.image.src);
+    return true;
+  });
+
+  const uniqueGalleryImages = (c.gallery?.images || []).filter((img) => {
+    if (!img?.src || renderedImages.has(img.src)) return false;
+    renderedImages.add(img.src);
+    return true;
+  });
+
   const themeStyle = {
     "--background": t.bg,
     "--foreground": t.ink,
@@ -218,11 +242,11 @@ function CaseStudyPage() {
           </div>
         </div>
 
-        {c.project.images && c.project.images.length > 0 && (
+        {uniqueProjectImages.length > 0 && (
           <div className="mt-12 md:mt-16 rounded-xl overflow-hidden border border-border bg-bone aspect-[16/9]">
             <img
-              src={c.project.images[0].src}
-              alt={c.project.images[0].alt}
+              src={uniqueProjectImages[0].src}
+              alt={uniqueProjectImages[0].alt}
               className="w-full h-full object-cover"
               loading="lazy"
             />
@@ -401,28 +425,30 @@ function CaseStudyPage() {
           </h2>
         </div>
 
-        <div className="space-y-12 md:space-y-16">
-          {c.screens.map((screen, idx) => (
-            <div key={idx} className="space-y-4">
-              <div className="rounded-xl overflow-hidden border border-border bg-bone aspect-[16/10] md:aspect-[16/9]">
-                <img
-                  src={screen.image.src}
-                  alt={screen.image.alt}
-                  className="w-full h-full object-cover object-top"
-                  loading="lazy"
-                />
+        {uniqueScreens.length > 0 && (
+          <div className="space-y-12 md:space-y-16">
+            {uniqueScreens.map((screen, idx) => (
+              <div key={idx} className="space-y-4">
+                <div className="rounded-xl overflow-hidden border border-border bg-bone aspect-[16/10] md:aspect-[16/9]">
+                  <img
+                    src={screen.image.src}
+                    alt={screen.image.alt}
+                    className="w-full h-full object-cover object-top"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 px-1">
+                  <p className="font-sans font-semibold text-sm sm:text-base text-foreground">
+                    {screen.title}
+                  </p>
+                  <p className="text-xs sm:text-sm font-sans text-muted-foreground">
+                    {screen.description}
+                  </p>
+                </div>
               </div>
-              <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 px-1">
-                <p className="font-sans font-semibold text-sm sm:text-base text-foreground">
-                  {screen.title}
-                </p>
-                <p className="text-xs sm:text-sm font-sans text-muted-foreground">
-                  {screen.description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* =========================================================================
@@ -487,14 +513,14 @@ function CaseStudyPage() {
       {/* =========================================================================
           PAGE 11 — PROJECT GALLERY
           ========================================================================= */}
-      {c.gallery.images && c.gallery.images.length > 0 && (
+      {uniqueGalleryImages.length > 0 && (
         <section className="container-edge py-16 sm:py-24 border-b border-border">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {c.gallery.images.map((img, i) => (
+            {uniqueGalleryImages.map((img, i) => (
               <div
                 key={i}
                 className={`rounded-xl overflow-hidden border border-border bg-bone ${
-                  i === 0 && c.gallery.images.length % 2 !== 0 ? "md:col-span-2 aspect-[21/9]" : "aspect-[16/10]"
+                  i === 0 && uniqueGalleryImages.length % 2 !== 0 ? "md:col-span-2 aspect-[21/9]" : "aspect-[16/10]"
                 }`}
               >
                 <img

@@ -16,11 +16,11 @@ export function SendInvoiceDialog({ invoice, onClose, onSuccess }: SendInvoiceDi
   const isInitiallyPaid = invoice.status === "paid";
   const [isPaidReceipt, setIsPaidReceipt] = useState(isInitiallyPaid);
 
-  const defaultUnpaidSubject = `Invoice ${invoice.invoice_number} from BRNND Studio ($${invoice.total.toLocaleString()} ${invoice.currency})`;
+  const defaultUnpaidSubject = `Payment Due: Invoice ${invoice.invoice_number} from BRNND Studio ($${invoice.total.toLocaleString()} ${invoice.currency} - Due: ${invoice.due_date})`;
   const defaultPaidSubject = `Receipt & Paid Invoice ${invoice.invoice_number} from BRNND Studio (Paid: $${invoice.total.toLocaleString()} ${invoice.currency})`;
 
-  const defaultUnpaidMessage = `Hi ${invoice.client_name || invoice.client_company},\n\nPlease find attached the official invoice for our recent brand deliverables. Let us know if you have any questions.\n\nBest regards,\nThe BRNND Studio Team`;
-  const defaultPaidMessage = `Hi ${invoice.client_name || invoice.client_company},\n\nThank you for your payment! Please find attached your official receipt and paid invoice ${invoice.invoice_number} confirming that your account has been settled in full. Let us know if you need anything else.\n\nBest regards,\nThe BRNND Studio Team`;
+  const defaultUnpaidMessage = `Hi ${invoice.client_name || invoice.client_company},\n\nPlease find attached invoice ${invoice.invoice_number} for brand design and engineering deliverables. Payment of $${invoice.total.toLocaleString()} ${invoice.currency} is due by ${invoice.due_date}.\n\nDirect wire transfer details are included on the attached PDF.\n\nBest regards,\nThe BRNND Studio Team`;
+  const defaultPaidMessage = `Hi ${invoice.client_name || invoice.client_company},\n\nThank you for your payment! Please find attached your official payment receipt and settled invoice ${invoice.invoice_number} confirming your account balance has been paid in full.\n\nBest regards,\nThe BRNND Studio Team`;
 
   const [recipientEmail, setRecipientEmail] = useState(invoice.client_email || "hello@brnnd.com");
   const [ccAdmin, setCcAdmin] = useState(true);
@@ -41,10 +41,10 @@ export function SendInvoiceDialog({ invoice, onClose, onSuccess }: SendInvoiceDi
     setErrorMsg(null);
 
     try {
-      // 1. Generate crisp PDF base64 (reflecting paid status if sending receipt)
+      // 1. Generate crisp PDF base64 (reflecting paid or due status accurately)
       const pdfInvoice: Invoice = {
         ...invoice,
-        status: isPaidReceipt ? "paid" : invoice.status,
+        status: isPaidReceipt ? "paid" : (invoice.status === "paid" ? "sent" : (invoice.status || "sent")),
       };
       const pdfBase64 = getInvoicePdfBase64(pdfInvoice);
 
@@ -76,7 +76,7 @@ export function SendInvoiceDialog({ invoice, onClose, onSuccess }: SendInvoiceDi
 
         const updatedInvoice: Invoice = {
           ...invoice,
-          status: isPaidReceipt ? "paid" : (invoice.status === "paid" ? "paid" : "sent"),
+          status: isPaidReceipt ? "paid" : (invoice.status === "paid" ? "sent" : "sent"),
           last_sent_at: result.sentAt,
           sent_to_email: recipientEmail,
         };
@@ -171,53 +171,75 @@ export function SendInvoiceDialog({ invoice, onClose, onSuccess }: SendInvoiceDi
               </span>
             </div>
 
-            {/* Paid Receipt Option Toggle */}
-            <div className={`p-3.5 rounded-lg border flex items-center justify-between transition-colors ${
-              isPaidReceipt 
-                ? "bg-emerald-950/40 border-emerald-500/30 text-emerald-200" 
-                : "bg-neutral-950/70 border-neutral-800 text-neutral-300"
-            }`}>
-              <div className="flex items-center gap-3">
-                <div className={`p-2 rounded-lg ${isPaidReceipt ? "bg-emerald-500/20 text-emerald-400" : "bg-neutral-800 text-neutral-400"}`}>
-                  <Receipt className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-semibold text-white">Send as Paid Receipt</span>
-                    <span className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-bold border ${
-                      isPaidReceipt 
-                        ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" 
-                        : "bg-neutral-800 text-neutral-400 border-neutral-700"
-                    }`}>
-                      {isPaidReceipt ? "PAID RECEIPT MODE" : "STANDARD INVOICE"}
-                    </span>
-                  </div>
-                  <p className="text-[11px] text-neutral-400 mt-0.5">
-                    {isPaidReceipt 
-                      ? "Dispatches confirmation receipt with verified PAID badge and settlement notice" 
-                      : "Dispatches standard invoice with payment due date and wire transfer instructions"}
-                  </p>
-                </div>
+            {/* Payment Status Selector (Due vs. Paid) */}
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-xs font-mono uppercase tracking-wider text-neutral-400">
+                  Select Invoice Status To Send <span className="text-brand-lime">*</span>
+                </label>
+                <span className="text-[11px] font-mono text-neutral-500">Choose whether this invoice is Due or Paid</span>
               </div>
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={isPaidReceipt}
-                  onChange={(e) => {
-                    const checked = e.target.checked;
-                    setIsPaidReceipt(checked);
-                    if (checked) {
-                      setSubject(defaultPaidSubject);
-                      setCustomMessage(defaultPaidMessage);
-                    } else {
-                      setSubject(defaultUnpaidSubject);
-                      setCustomMessage(defaultUnpaidMessage);
-                    }
+              <div className="grid grid-cols-2 gap-3">
+                {/* Due Card */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsPaidReceipt(false);
+                    setSubject(defaultUnpaidSubject);
+                    setCustomMessage(defaultUnpaidMessage);
                   }}
-                  className="sr-only peer"
-                />
-                <div className="w-9 h-5 bg-neutral-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-neutral-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
-              </label>
+                  className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer relative ${
+                    !isPaidReceipt
+                      ? "bg-amber-950/40 border-amber-500/70 ring-1 ring-amber-500/40 text-white"
+                      : "bg-neutral-950/60 border-neutral-800 text-neutral-400 hover:border-neutral-700"
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-amber-400 inline-block animate-pulse"></span>
+                      Payment Due
+                    </span>
+                    {!isPaidReceipt && (
+                      <span className="text-[10px] font-mono font-bold text-amber-400 bg-amber-950/80 px-2 py-0.5 rounded border border-amber-500/40">
+                        ACTIVE
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-neutral-300 font-sans leading-snug">
+                    Invoice is unpaid. Requests settlement by <span className="text-white font-mono">{invoice.due_date}</span> and provides wire details.
+                  </p>
+                </button>
+
+                {/* Paid Card */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsPaidReceipt(true);
+                    setSubject(defaultPaidSubject);
+                    setCustomMessage(defaultPaidMessage);
+                  }}
+                  className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer relative ${
+                    isPaidReceipt
+                      ? "bg-emerald-950/40 border-emerald-500/70 ring-1 ring-emerald-500/40 text-white"
+                      : "bg-neutral-950/60 border-neutral-800 text-neutral-400 hover:border-neutral-700"
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block"></span>
+                      Paid in Full
+                    </span>
+                    {isPaidReceipt && (
+                      <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-500/40">
+                        ACTIVE
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-neutral-300 font-sans leading-snug">
+                    Payment confirmed. Dispatches official receipt with settled <span className="text-emerald-300 font-mono">PAID IN FULL</span> badge.
+                  </p>
+                </button>
+              </div>
             </div>
 
             {errorMsg && (

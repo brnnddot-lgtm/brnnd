@@ -30,7 +30,7 @@ export function SmoothScroll() {
       const anchor = target?.closest<HTMLAnchorElement>('a[href^="#"]');
       if (!anchor || anchor.hash.length < 2) return;
 
-      const el = document.querySelector(anchor.hash);
+      const el = document.querySelector<HTMLElement>(anchor.hash);
       if (!el) return;
 
       event.preventDefault();

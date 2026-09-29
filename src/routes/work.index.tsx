@@ -42,17 +42,14 @@ export const Route = createFileRoute("/work/")({
   component: WorkPage,
 });
 
-// Color pairings matching the Superside billboard aesthetic (e.g. Colgate Cobalt Blue + Grubhub Tangerine)
 const projectStyles: Record<string, { bg: string; category: string }> = {
-  sanvogue: { bg: "#0D50E8", category: "E-Commerce" },     // Royal Cobalt Blue (Colgate style)
-  luniso: { bg: "#FF5A1F", category: "E-Commerce" },       // Vivid Tangerine Orange (Grubhub style)
   muntajar: { bg: "#0C4A47", category: "Brand Strategy" }, // Oceanic Deep Emerald / Teal
-  eventify: { bg: "#D92662", category: "UI/UX & SaaS" },   // Electric Crimson / Sunset Punch
   "esnl-group": { bg: "#143B2A", category: "Enterprise" }, // Deep Earth Forest Green
-  "edvice-uk": { bg: "#1D3557", category: "Brand Strategy" }, // Oxford Royal Navy
   "dress-dhaka": { bg: "#D97706", category: "E-Commerce" }, // Warm Amber Ochre
-  formline: { bg: "#4338CA", category: "UI/UX & SaaS" },    // Electric Purple / Indigo
+  sanvogue: { bg: "#0D50E8", category: "E-Commerce" },     // Royal Cobalt Blue
+  minthost: { bg: "#064E3B", category: "UI/UX & SaaS" },   // Deep Mint Forest Green
   zambic: { bg: "#18181B", category: "Digital Flagships" }, // Pure Nocturnal Slate
+  formline: { bg: "#4338CA", category: "UI/UX & SaaS" },    // Electric Purple / Indigo
 };
 
 const filterTabs = [
@@ -138,7 +135,7 @@ function WorkBillboardCard({ study, bg }: { study: CaseStudy; bg: string }) {
 function WorkPage() {
   const [selectedFilter, setSelectedFilter] = useState("All work");
 
-  const featuredOrder = ["sanvogue", "luniso", "muntajar", "eventify", "esnl-group", "edvice-uk", "dress-dhaka", "formline", "zambic"];
+  const featuredOrder = ["muntajar", "esnl-group", "dress-dhaka", "sanvogue", "minthost", "zambic", "formline"];
   const sortedStudies = [...caseStudies].sort((a, b) => {
     const ai = featuredOrder.indexOf(a.slug);
     const bi = featuredOrder.indexOf(b.slug);

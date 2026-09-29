@@ -431,68 +431,77 @@ function BrandGuidelinesPage() {
                     <span>Token Variable</span>
                     <span>Contrast / Usage</span>
                   </div>
-                  {currentModule.specPreview.items?.map((t, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center justify-between p-3 rounded-lg border border-border/80 bg-background hover:border-foreground/40 transition-colors"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div
-                          className="w-6 h-6 rounded-md border border-border shrink-0"
-                          style={{ backgroundColor: t.hex }}
-                        />
-                        <div>
-                          <p className="text-xs font-mono font-semibold text-foreground">
-                            {t.name}
-                          </p>
-                          <p className="text-[11px] text-muted-foreground">{t.role}</p>
+                  {currentModule.specPreview.items?.map((item, idx) => {
+                    const t = item as { name: string; hex: string; role: string; contrast: string };
+                    return (
+                      <div
+                        key={idx}
+                        className="flex items-center justify-between p-3 rounded-lg border border-border/80 bg-background hover:border-foreground/40 transition-colors"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div
+                            className="w-6 h-6 rounded-md border border-border shrink-0"
+                            style={{ backgroundColor: t.hex }}
+                          />
+                          <div>
+                            <p className="text-xs font-mono font-semibold text-foreground">
+                              {t.name}
+                            </p>
+                            <p className="text-[11px] text-muted-foreground">{t.role}</p>
+                          </div>
                         </div>
+                        <span className="text-[11px] font-mono px-2.5 py-1 rounded bg-muted text-foreground">
+                          {t.contrast}
+                        </span>
                       </div>
-                      <span className="text-[11px] font-mono px-2.5 py-1 rounded bg-muted text-foreground">
-                        {t.contrast}
-                      </span>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
 
               {currentModule.specPreview.type === "type" && (
                 <div className="space-y-4">
-                  {currentModule.specPreview.items?.map((tp, idx) => (
-                    <div key={idx} className="pb-4 border-b border-border/60 last:border-b-0">
-                      <div className="flex items-center justify-between text-xs font-mono text-muted-foreground mb-1">
-                        <span>{tp.level}</span>
-                        <span>{tp.font}</span>
+                  {currentModule.specPreview.items?.map((item, idx) => {
+                    const tp = item as { level: string; font: string; sample: string };
+                    return (
+                      <div key={idx} className="pb-4 border-b border-border/60 last:border-b-0">
+                        <div className="flex items-center justify-between text-xs font-mono text-muted-foreground mb-1">
+                          <span>{tp.level}</span>
+                          <span>{tp.font}</span>
+                        </div>
+                        <div className={`text-foreground ${idx === 0 ? "text-2xl font-bold" : idx === 1 ? "text-xl font-serif italic" : idx === 2 ? "text-lg font-semibold" : "text-sm text-muted-foreground"}`}>
+                          {tp.sample}
+                        </div>
                       </div>
-                      <div className={`text-foreground ${idx === 0 ? "text-2xl font-bold" : idx === 1 ? "text-xl font-serif italic" : idx === 2 ? "text-lg font-semibold" : "text-sm text-muted-foreground"}`}>
-                        {tp.sample}
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
 
               {currentModule.specPreview.type === "rules" && (
                 <div className="space-y-3">
-                  {currentModule.specPreview.items?.map((r, idx) => (
-                    <div
-                      key={idx}
-                      className="p-4 rounded-lg border border-border bg-background flex items-start gap-4"
-                    >
-                      <span
-                        className={`text-xs font-mono font-bold px-2 py-0.5 rounded shrink-0 ${
-                          r.status === "correct"
-                            ? "bg-[#C7F284]/20 text-[#7bb820] dark:text-[#C7F284]"
-                            : "bg-red-500/10 text-red-500"
-                        }`}
+                  {currentModule.specPreview.items?.map((item, idx) => {
+                    const r = item as { rule: string; desc: string; status: string };
+                    return (
+                      <div
+                        key={idx}
+                        className="p-4 rounded-lg border border-border bg-background flex items-start gap-4"
                       >
-                        {r.rule}
-                      </span>
-                      <p className="text-xs sm:text-sm text-foreground/90 leading-relaxed">
-                        {r.desc}
-                      </p>
-                    </div>
-                  ))}
+                        <span
+                          className={`text-xs font-mono font-bold px-2 py-0.5 rounded shrink-0 ${
+                            r.status === "correct"
+                              ? "bg-[#C7F284]/20 text-[#7bb820] dark:text-[#C7F284]"
+                              : "bg-red-500/10 text-red-500"
+                          }`}
+                        >
+                          {r.rule}
+                        </span>
+                        <p className="text-xs sm:text-sm text-foreground/90 leading-relaxed">
+                          {r.desc}
+                        </p>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
 

@@ -201,7 +201,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
               </div>
               <div>
                 <label className="block text-xs font-mono uppercase text-neutral-400 mb-1">
-                  Status
+                  Status Category
                 </label>
                 <select
                   value={status}
@@ -214,12 +214,77 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                   }}
                   className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-white focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none capitalize"
                 >
+                  <option value="sent">Payment Due (Sent)</option>
                   <option value="draft">Draft</option>
-                  <option value="sent">Sent</option>
-                  <option value="paid">Paid</option>
+                  <option value="paid">Paid in Full</option>
                   <option value="overdue">Overdue</option>
                   <option value="cancelled">Cancelled</option>
                 </select>
+              </div>
+            </div>
+
+            {/* Payment Status Segmented Selector (Due vs Paid) */}
+            <div className="p-4 rounded-xl bg-neutral-950 border border-neutral-800">
+              <div className="flex items-center justify-between mb-2.5">
+                <label className="text-xs font-mono uppercase tracking-wider text-neutral-400">
+                  Payment Status (Due or Paid)
+                </label>
+                <span className="text-[11px] text-neutral-500 font-mono">
+                  Select whether this invoice is currently Due or Paid
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setStatus("sent");
+                    setSendReceiptOnSave(false);
+                  }}
+                  className={`p-3 rounded-lg border text-left flex items-center justify-between transition-all cursor-pointer ${
+                    status !== "paid"
+                      ? "bg-amber-950/40 border-amber-500/60 ring-1 ring-amber-500/30 text-white"
+                      : "bg-neutral-900 border-neutral-800 text-neutral-400 hover:border-neutral-700"
+                  }`}
+                >
+                  <div>
+                    <div className="text-xs font-bold text-amber-400 flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-amber-400"></span>
+                      Payment Due (Unpaid)
+                    </div>
+                    <p className="text-[11px] text-neutral-400 mt-0.5">Due date: {dueDate} • PDF marked TOTAL DUE</p>
+                  </div>
+                  {status !== "paid" && (
+                    <span className="text-[10px] font-mono font-bold text-amber-400 bg-amber-950 px-2 py-0.5 rounded border border-amber-500/40">
+                      DUE
+                    </span>
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setStatus("paid");
+                    setSendReceiptOnSave(true);
+                  }}
+                  className={`p-3 rounded-lg border text-left flex items-center justify-between transition-all cursor-pointer ${
+                    status === "paid"
+                      ? "bg-emerald-950/40 border-emerald-500/60 ring-1 ring-emerald-500/30 text-white"
+                      : "bg-neutral-900 border-neutral-800 text-neutral-400 hover:border-neutral-700"
+                  }`}
+                >
+                  <div>
+                    <div className="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                      Paid in Full (Settled)
+                    </div>
+                    <p className="text-[11px] text-neutral-400 mt-0.5">Zero balance • PDF marked PAID IN FULL</p>
+                  </div>
+                  {status === "paid" && (
+                    <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-500/40">
+                      PAID
+                    </span>
+                  )}
+                </button>
               </div>
             </div>
 

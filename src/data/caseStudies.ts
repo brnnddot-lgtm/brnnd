@@ -1,6 +1,3 @@
-import workLuniso from "@/assets/work-luniso.webp";
-import lunisoCover from "@/assets/luniso-cover.png";
-
 export type ImageSource =
   | "Client website"
   | "BRNND supplied asset"
@@ -59,6 +56,13 @@ export type CaseStudy = {
   industry: string;
   project_type: string;
   year: string;
+  // Convenience aliases for service showcase components & legacy pages
+  heroImage?: string;
+  category?: string;
+  tagline?: string;
+  cover?: string;
+  name?: string;
+  heroTitle?: string;
 
   hero: {
     eyebrow: string;
@@ -160,6 +164,12 @@ export const caseStudies: CaseStudy[] = [
     industry: "Global Mobility & EdTech",
     project_type: "Platform Transformation",
     year: "2025",
+    heroImage: "/brnnd-imgs/muntajar_1.png",
+    category: "Brand Strategy",
+    tagline: "Building direct, transparent mobility pathways from Bangladesh to the world.",
+    cover: "/brnnd-imgs/muntajar_1.png",
+    name: "Muntajar",
+    heroTitle: "Building direct, transparent mobility pathways from Bangladesh to the world.",
 
     hero: {
       eyebrow: "Global Mobility & EdTech · Platform Transformation · 2025",
@@ -168,7 +178,7 @@ export const caseStudies: CaseStudy[] = [
         "Direct university admissions, verified international job matching, and statutory migration guidance structured into one institutional platform with zero broker markups.",
       services: ["Brand Strategy", "Digital Identity", "UI/UX Architecture", "Web Platform"],
       hero_image: {
-        src: "https://www.muntajar.com/muntajar-hero.png",
+        src: "/brnnd-imgs/muntajar_1.png",
         alt: "Muntajar Global Mobility Platform Interface",
         type: "cover",
         source: "Client website",
@@ -192,15 +202,7 @@ export const caseStudies: CaseStudy[] = [
         "The mission required more than a standard agency brochure: Muntajar needed an institutional-grade platform that connects Bangladeshi students, healthcare professionals, and skilled technicians directly to accredited universities and licensed international employers.",
         "BRNND designed the brand system, platform information architecture, destination hubs (UK, Germany, Canada, Australia, USA, Japan, Korea, UAE), and direct eligibility workflows to establish authoritative trust from the first interaction.",
       ],
-      images: [
-        {
-          src: "https://www.muntajar.com/muntajar-hero.png",
-          alt: "Muntajar global platform overview",
-          type: "screen",
-          source: "Client website",
-          verified: true,
-        },
-      ],
+      images: [],
     },
 
     challenge: {
@@ -278,7 +280,7 @@ export const caseStudies: CaseStudy[] = [
         title: "01 — Destination Navigator",
         description: "Explore pathways by country, qualification type, and statutory sponsor.",
         image: {
-          src: "https://www.muntajar.com/muntajar-hero.png",
+          src: "/brnnd-imgs/muntajar_2.jpg",
           alt: "Muntajar interactive destination navigator",
           type: "screen",
           source: "Client website",
@@ -286,11 +288,11 @@ export const caseStudies: CaseStudy[] = [
         },
       },
       {
-        title: "02 — Pathway Breakdown",
+        title: "02 — Pathway Breakdown & Direct Eligibility",
         description: "Clear breakdown of direct university application stages and zero broker markups.",
         image: {
-          src: "https://www.muntajar.com/muntajar-hero.png",
-          alt: "Muntajar verified pathways",
+          src: "/brnnd-imgs/muntajar_3.jpg",
+          alt: "Muntajar verified pathways and statutory checklist",
           type: "screen",
           source: "Client website",
           verified: true,
@@ -325,15 +327,7 @@ export const caseStudies: CaseStudy[] = [
     },
 
     gallery: {
-      images: [
-        {
-          src: "https://www.muntajar.com/muntajar-hero.png",
-          alt: "Muntajar digital design presentation",
-          type: "gallery",
-          source: "Client website",
-          verified: true,
-        },
-      ],
+      images: [],
     },
 
     closing: {
@@ -343,10 +337,10 @@ export const caseStudies: CaseStudy[] = [
     },
 
     next_project: {
-      client: "Edvice UK",
-      slug: "edvice-uk",
-      industry: "Higher Education Advisory",
-      image: "https://edviceuk.com/assets/favicon-BTbYZnZ3.png",
+      client: "ESNL Group",
+      slug: "esnl-group",
+      industry: "Agro-Export & Corporate",
+      image: "/brnnd-imgs/esnlgroup_1.png",
     },
 
     theme: {
@@ -361,204 +355,7 @@ export const caseStudies: CaseStudy[] = [
   },
 
   /* =====================================================================
-     02 — EDVICE UK
-     ===================================================================== */
-  {
-    slug: "edvice-uk",
-    client: "Edvice UK",
-    industry: "Higher Education Advisory",
-    project_type: "Consultancy Brand & Web",
-    year: "2024",
-
-    hero: {
-      eyebrow: "Higher Education Advisory · Digital Platform · 2024",
-      headline: "Simplifying UK higher education admissions for international students.",
-      description:
-        "A focused student advisory platform combining Trustpilot-verified guidance, course matching, and seamless booking for UK university candidates.",
-      services: ["Brand Identity", "UI/UX Design", "Web Development", "Student Portal"],
-      hero_image: {
-        src: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1600&auto=format&fit=crop&q=80",
-        alt: "Edvice UK higher education consultation platform",
-        type: "cover",
-        source: "BRNND project screenshot",
-        verified: true,
-      },
-    },
-
-    overview: {
-      client: "Edvice UK",
-      industry: "International Education Advisory",
-      year: "2024",
-      services: ["Brand Identity", "UI/UX", "Web Development", "Inquiry Funnel"],
-      scope:
-        "Designed and engineered a high-trust digital advisory experience connecting students from Bangladesh and South Asia to British universities.",
-    },
-
-    project: {
-      headline: "Modernizing education consulting into a seamless digital journey.",
-      description: [
-        "Edvice UK assists international students through the complete UK university admission cycle—from course discovery and personal statement reviews to CAS issuance and Tier 4 student visa applications.",
-        "Their previous web presence relied on static PDF lists and generic inquiry forms that failed to capture student intent or convey the consultancy's direct university partnerships.",
-        "BRNND designed a modern web experience integrating verified Trustpilot reviews, university destination guides, and an automated consultation booking workflow.",
-      ],
-      images: [
-        {
-          src: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1600&auto=format&fit=crop&q=80",
-          alt: "Edvice UK university advisory screens",
-          type: "screen",
-          source: "BRNND project screenshot",
-          verified: true,
-        },
-      ],
-    },
-
-    challenge: {
-      headline: "Overcoming decision fatigue in UK university applications.",
-      description: [
-        "Prospective students frequently struggle to identify suitable universities based on their academic scores, IELTS/MOI eligibility, and budget constraints.",
-        "Consultancy websites often overwhelm applicants with generic marketing language without answering direct questions regarding fees, scholarships, and post-study work visas.",
-      ],
-      opportunity:
-        "The opportunity was to build a structured advisory portal that demystifies entry requirements and guides students directly to verified options.",
-    },
-
-    approach: {
-      headline: "Trust-first architecture with frictionless inquiry pathways.",
-      sections: [
-        {
-          title: "Destination Categorization",
-          description:
-            "Segmented universities by region, entry criteria, and foundation routes to accelerate student exploration.",
-        },
-        {
-          title: "Social Proof Integration",
-          description:
-            "Seamlessly integrated live Trustpilot verification and student case studies directly onto course landing pages.",
-        },
-        {
-          title: "Consultation Onboarding",
-          description:
-            "Replaced long contact forms with a tailored multi-step appointment scheduler that gathers academic background before the initial call.",
-        },
-        {
-          title: "Mobile Accessibility",
-          description:
-            "Optimized every touchpoint for smartphones, recognizing that over 80% of student research happens on mobile devices.",
-        },
-      ],
-    },
-
-    identity: {
-      enabled: true,
-      headline: "The Edvice UK aesthetic: Academic prestige with contemporary warmth.",
-      description:
-        "A palette centered around British Oxford navy, warm study amber, and clean slate surfaces, paired with Bricolage Grotesque and Inter.",
-      typography: {
-        headlineFont: "Bricolage Grotesque",
-        bodyFont: "Inter & Nunito",
-        sample: "Advising tomorrow's UK scholars.",
-      },
-      palette: [
-        { name: "Oxford Navy", hex: "#0F172A", usage: "Primary dark surfaces and hero headers" },
-        { name: "Advisory Amber", hex: "#F59E0B", usage: "Call-to-action highlights and ratings" },
-        { name: "Academic Slate", hex: "#1E293B", usage: "Secondary card surfaces and footers" },
-        { name: "Clean Parchment", hex: "#F8FAFC", usage: "Page background and card containers" },
-        { name: "Muted Steel", hex: "#64748B", usage: "Supporting metadata and descriptors" },
-      ],
-    },
-
-    digital: {
-      enabled: true,
-      headline: "An effortless gateway from initial research to university offer.",
-      description: [
-        "Designed to reduce student hesitation through clear academic criteria, scholarship breakdowns, and direct booking with UK-certified education advisors.",
-      ],
-      features: [
-        "Interactive course & university exploration directory",
-        "Direct advisor booking integration with calendar scheduling",
-        "Verified student success case studies with visa timeline breakdowns",
-        "Mobile-first responsive architecture built with modern front-end tooling",
-      ],
-    },
-
-    screens: [
-      {
-        title: "01 — Advisory Homepage",
-        description: "Clear presentation of UK admission pathways, accredited partners, and student reviews.",
-        image: {
-          src: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1600&auto=format&fit=crop&q=80",
-          alt: "Edvice UK homepage experience",
-          type: "screen",
-          source: "BRNND project screenshot",
-          verified: true,
-        },
-      },
-    ],
-
-    details: {
-      headline: "Focused on high-trust interactions.",
-      description: "Refined components that reassure prospective applicants and their families.",
-      items: [
-        {
-          title: "Trustpilot Embed",
-          description: "Dynamic review carousel directly displaying authenticated student feedback.",
-        },
-        {
-          title: "Eligibility Filter",
-          description: "Rapid qualification tags indicating IELTS waivers, intake months, and scholarships.",
-        },
-        {
-          title: "Advisor Modal",
-          description: "Direct advisor bio cards showcasing certifications and university specialisms.",
-        },
-      ],
-    },
-
-    outcome: {
-      headline: "A clearer, more structured student consultation journey.",
-      description:
-        "The digital experience provides Edvice UK with a credible platform that elevates student trust and significantly clarifies the admission process from first visit to enrollment.",
-      metrics: [],
-    },
-
-    gallery: {
-      images: [
-        {
-          src: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1600&auto=format&fit=crop&q=80",
-          alt: "Edvice UK platform showcase",
-          type: "gallery",
-          source: "BRNND project screenshot",
-          verified: true,
-        },
-      ],
-    },
-
-    closing: {
-      headline: "Confidence in every consultation.",
-      description:
-        "BRNND designed a platform where prospective students feel informed, supported, and ready to take their next academic step.",
-    },
-
-    next_project: {
-      client: "ESNL Group",
-      slug: "esnl-group",
-      industry: "Corporate Conglomerate",
-      image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600&auto=format&fit=crop&q=80",
-    },
-
-    theme: {
-      bg: "#F8FAFC",
-      surface: "#FFFFFF",
-      ink: "#0F172A",
-      muted: "#64748B",
-      border: "rgba(15,23,42,0.1)",
-      accent: "#F59E0B",
-      accentInk: "#0F172A",
-    },
-  },
-
-  /* =====================================================================
-     03 — ESNL GROUP
+     02 — ESNL GROUP
      ===================================================================== */
   {
     slug: "esnl-group",
@@ -566,6 +363,12 @@ export const caseStudies: CaseStudy[] = [
     industry: "Agro-Export & Corporate",
     project_type: "Enterprise Digital Flagship",
     year: "2025",
+    heroImage: "/brnnd-imgs/esnlgroup_1.png",
+    category: "Enterprise",
+    tagline: "Bridging local Bangladeshi farms to international global markets.",
+    cover: "/brnnd-imgs/esnlgroup_1.png",
+    name: "ESNL Group",
+    heroTitle: "Bridging local Bangladeshi farms to international global markets.",
 
     hero: {
       eyebrow: "Agro-Export & Corporate Conglomerate · Enterprise Flagship · 2025",
@@ -574,7 +377,7 @@ export const caseStudies: CaseStudy[] = [
         "A corporate digital flagship for a multi-sector conglomerate spanning Agriculture, Food Export, Textiles, Power, Eco-Resorts, and Global Logistics.",
       services: ["Brand Positioning", "Corporate Identity", "Information Architecture", "Web Engineering"],
       hero_image: {
-        src: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600&auto=format&fit=crop&q=80",
+        src: "/brnnd-imgs/esnlgroup_1.png",
         alt: "ESNL Group corporate flagship interface",
         type: "cover",
         source: "Client website",
@@ -598,15 +401,7 @@ export const caseStudies: CaseStudy[] = [
         "Operating across disparate sectors, the group required an overarching corporate digital presence that projected enterprise solidity to foreign buyers, international banking partners, and institutional investors.",
         "BRNND developed the brand positioning, corporate narrative, editorial typography system, and responsive flagship web platform to communicate ESNL's farm-to-globe value chain.",
       ],
-      images: [
-        {
-          src: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600&auto=format&fit=crop&q=80",
-          alt: "ESNL Group farm-to-market operations",
-          type: "screen",
-          source: "Client website",
-          verified: true,
-        },
-      ],
+      images: [],
     },
 
     challenge: {
@@ -683,8 +478,19 @@ export const caseStudies: CaseStudy[] = [
         title: "01 — Corporate Overview",
         description: "Editorial presentation of group mission, operational footprint, and core divisions.",
         image: {
-          src: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600&auto=format&fit=crop&q=80",
+          src: "/brnnd-imgs/esnlgroup_2.jpg",
           alt: "ESNL Group flagship desktop layout",
+          type: "screen",
+          source: "Client website",
+          verified: true,
+        },
+      },
+      {
+        title: "02 — Supply Chain & Sustainability",
+        description: "Direct tracking of farm partnerships, processing facilities, and international logistics.",
+        image: {
+          src: "/brnnd-imgs/esnlgroup_3.jpg",
+          alt: "ESNL Group farm-to-export operations showcase",
           type: "screen",
           source: "Client website",
           verified: true,
@@ -719,15 +525,7 @@ export const caseStudies: CaseStudy[] = [
     },
 
     gallery: {
-      images: [
-        {
-          src: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600&auto=format&fit=crop&q=80",
-          alt: "ESNL Group digital system showcase",
-          type: "gallery",
-          source: "Client website",
-          verified: true,
-        },
-      ],
+      images: [],
     },
 
     closing: {
@@ -740,7 +538,7 @@ export const caseStudies: CaseStudy[] = [
       client: "Dress Dhaka",
       slug: "dress-dhaka",
       industry: "Fashion & Apparel DTC",
-      image: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=1600&auto=format&fit=crop&q=80",
+      image: "/brnnd-imgs/dressdhaka_1.png",
     },
 
     theme: {
@@ -755,7 +553,7 @@ export const caseStudies: CaseStudy[] = [
   },
 
   /* =====================================================================
-     04 — DRESS DHAKA
+     03 — DRESS DHAKA
      ===================================================================== */
   {
     slug: "dress-dhaka",
@@ -763,6 +561,12 @@ export const caseStudies: CaseStudy[] = [
     industry: "Fashion & Apparel DTC",
     project_type: "E-Commerce Experience",
     year: "2025",
+    heroImage: "/brnnd-imgs/dressdhaka_1.png",
+    category: "E-Commerce",
+    tagline: "Contemporary silhouettes crafted for the modern Bangladeshi wardrobe.",
+    cover: "/brnnd-imgs/dressdhaka_1.png",
+    name: "Dress Dhaka",
+    heroTitle: "Contemporary silhouettes crafted for the modern Bangladeshi wardrobe.",
 
     hero: {
       eyebrow: "Fashion & Apparel DTC · E-Commerce Experience · 2025",
@@ -771,7 +575,7 @@ export const caseStudies: CaseStudy[] = [
         "A premium fashion storefront featuring relaxed boyfriend fits, 220 GSM combed cotton essentials, linen blend trousers, and seamless nationwide checkout.",
       services: ["Brand Strategy", "Storefront UI/UX", "E-Commerce Architecture", "Mobile Shopping"],
       hero_image: {
-        src: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=1600&auto=format&fit=crop&q=80",
+        src: "/brnnd-imgs/dressdhaka_1.png",
         alt: "Dress Dhaka modern fashion campaign visual",
         type: "cover",
         source: "Client website",
@@ -795,15 +599,7 @@ export const caseStudies: CaseStudy[] = [
         "Their collections span women's relaxed silhouettes, 220 GSM cotton t-shirts, kids' essentials, outerwear, and curated multi-packs.",
         "BRNND designed a clean editorial storefront centered around tactile product imagery, clear fabric specifications, and a frictionless checkout system built for Bangladeshi shoppers.",
       ],
-      images: [
-        {
-          src: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=1600&auto=format&fit=crop&q=80",
-          alt: "Dress Dhaka editorial campaign",
-          type: "screen",
-          source: "Client website",
-          verified: true,
-        },
-      ],
+      images: [],
     },
 
     challenge: {
@@ -880,8 +676,19 @@ export const caseStudies: CaseStudy[] = [
         title: "01 — Storefront Hero",
         description: "Editorial seasonal campaign presentation with quick shop navigation.",
         image: {
-          src: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=1600&auto=format&fit=crop&q=80",
+          src: "/brnnd-imgs/dressdhaka_2.jpg",
           alt: "Dress Dhaka storefront hero section",
+          type: "screen",
+          source: "Client website",
+          verified: true,
+        },
+      },
+      {
+        title: "02 — Mobile Experience & Sizing Matrix",
+        description: "Thumb-first garment discovery with instant stretch specifications and seamless cash-on-delivery order flow.",
+        image: {
+          src: "/brnnd-imgs/dressdhaka_3.jpg",
+          alt: "Dress Dhaka mobile experience showcase",
           type: "screen",
           source: "Client website",
           verified: true,
@@ -916,15 +723,7 @@ export const caseStudies: CaseStudy[] = [
     },
 
     gallery: {
-      images: [
-        {
-          src: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=1600&auto=format&fit=crop&q=80",
-          alt: "Dress Dhaka lookbook gallery",
-          type: "gallery",
-          source: "Client website",
-          verified: true,
-        },
-      ],
+      images: [],
     },
 
     closing: {
@@ -937,7 +736,7 @@ export const caseStudies: CaseStudy[] = [
       client: "Sanvogue",
       slug: "sanvogue",
       industry: "Luxury Fragrance & Care DTC",
-      image: "https://www.sanvogue.store/hero.webp",
+      image: "/brnnd-imgs/sanvogue_1.png",
     },
 
     theme: {
@@ -952,7 +751,7 @@ export const caseStudies: CaseStudy[] = [
   },
 
   /* =====================================================================
-     05 — SANVOGUE
+     04 — SANVOGUE
      ===================================================================== */
   {
     slug: "sanvogue",
@@ -960,6 +759,12 @@ export const caseStudies: CaseStudy[] = [
     industry: "Luxury Fragrance & Care DTC",
     project_type: "E-Commerce Experience",
     year: "2025",
+    heroImage: "/brnnd-imgs/sanvogue_1.png",
+    category: "E-Commerce",
+    tagline: "Confidence starts with care. An impression that lingers.",
+    cover: "/brnnd-imgs/sanvogue_1.png",
+    name: "Sanvogue",
+    heroTitle: "Confidence starts with care. An impression that lingers.",
 
     hero: {
       eyebrow: "Luxury Fragrance & Personal Care · E-Commerce · 2025",
@@ -968,7 +773,7 @@ export const caseStudies: CaseStudy[] = [
         "A sensory e-commerce storefront for curated designer fragrances, specialized hair styling rituals, skin restoration, and natural personal care.",
       services: ["Brand Strategy", "Digital Identity", "Storefront UI/UX", "Full-Stack Development"],
       hero_image: {
-        src: "https://www.sanvogue.store/hero.webp",
+        src: "/brnnd-imgs/sanvogue_1.png",
         alt: "Sanvogue curated fragrance and personal care collection",
         type: "cover",
         source: "Client website",
@@ -992,15 +797,7 @@ export const caseStudies: CaseStudy[] = [
         "In a market plagued by counterfeit cosmetics and informal resellers, Sanvogue needed a storefront that exuded uncompromising authenticity, premium sophistication, and ritual-driven discovery.",
         "BRNND crafted an immersive dark-luxe digital experience organizing products into sensory routines: Cleanse, Nourish, Style, and Scent.",
       ],
-      images: [
-        {
-          src: "https://www.sanvogue.store/hero.webp",
-          alt: "Sanvogue luxury storefront hero",
-          type: "screen",
-          source: "Client website",
-          verified: true,
-        },
-      ],
+      images: [],
     },
 
     challenge: {
@@ -1019,7 +816,7 @@ export const caseStudies: CaseStudy[] = [
         {
           title: "Sensory Art Direction",
           description:
-            "Implemented a deep noir aesthetic (`oklch(0.12 0.005 240)`) with warm atmospheric lighting that elevates grooming bottles into luxury art objects.",
+            "Implemented a deep noir aesthetic with warm atmospheric lighting that elevates grooming bottles into luxury art objects.",
         },
         {
           title: "Ritual Categorization",
@@ -1034,7 +831,7 @@ export const caseStudies: CaseStudy[] = [
         {
           title: "Transparent Order Tracking",
           description:
-            "Built a direct tracking portal (`/track`) allowing customers to monitor their order fulfillment status nationwide.",
+            "Built a direct tracking portal allowing customers to monitor their order fulfillment status nationwide.",
         },
       ],
     },
@@ -1077,8 +874,19 @@ export const caseStudies: CaseStudy[] = [
         title: "01 — Luxury Boutique Hero",
         description: "Editorial entry point highlighting designer collections and seasonal arrivals.",
         image: {
-          src: "https://www.sanvogue.store/hero.webp",
+          src: "/brnnd-imgs/sanvogue_2.jpg",
           alt: "Sanvogue desktop boutique showcase",
+          type: "screen",
+          source: "Client website",
+          verified: true,
+        },
+      },
+      {
+        title: "02 — Rituals & Bundle Architecture",
+        description: "Sensory curation connecting targeted personal grooming rituals with streamlined nationwide checkout.",
+        image: {
+          src: "/brnnd-imgs/sanvogue_3.jpg",
+          alt: "Sanvogue fragrance and care rituals presentation",
           type: "screen",
           source: "Client website",
           verified: true,
@@ -1113,15 +921,7 @@ export const caseStudies: CaseStudy[] = [
     },
 
     gallery: {
-      images: [
-        {
-          src: "https://www.sanvogue.store/hero.webp",
-          alt: "Sanvogue visual presentation",
-          type: "gallery",
-          source: "Client website",
-          verified: true,
-        },
-      ],
+      images: [],
     },
 
     closing: {
@@ -1131,10 +931,10 @@ export const caseStudies: CaseStudy[] = [
     },
 
     next_project: {
-      client: "Luniso",
-      slug: "luniso",
-      industry: "Korean Streetwear DTC",
-      image: lunisoCover,
+      client: "MintHost",
+      slug: "minthost",
+      industry: "Cloud & Web Hosting",
+      image: "/brnnd-imgs/minthost_1.jpg",
     },
 
     theme: {
@@ -1149,24 +949,30 @@ export const caseStudies: CaseStudy[] = [
   },
 
   /* =====================================================================
-     06 — LUNISO
+     05 — MINTHOST
      ===================================================================== */
   {
-    slug: "luniso",
-    client: "Luniso",
-    industry: "Korean Streetwear DTC",
-    project_type: "Brand & E-Commerce",
+    slug: "minthost",
+    client: "MintHost",
+    industry: "Cloud & Web Hosting",
+    project_type: "Brand Identity & Cloud Platform",
     year: "2025",
+    heroImage: "/brnnd-imgs/minthost_1.jpg",
+    category: "UI/UX & SaaS",
+    tagline: "High-performance cloud infrastructure with zero latency and effortless control.",
+    cover: "/brnnd-imgs/minthost_1.jpg",
+    name: "MintHost",
+    heroTitle: "High-performance cloud infrastructure with zero latency and effortless control.",
 
     hero: {
-      eyebrow: "Korean Streetwear DTC · Brand & E-Commerce · 2025",
-      headline: "A Korean-streetwear pants label built for movement and everyday ease.",
+      eyebrow: "Cloud & Web Hosting · Cloud Platform · 2025",
+      headline: "High-performance cloud infrastructure with zero latency and effortless control.",
       description:
-        "Affordable, style-forward Korean streetwear pants engineered for the climate of Bangladesh and built around cash-on-delivery nationwide delivery.",
-      services: ["Brand Identity", "Brand Strategy", "Storefront UI/UX", "E-Commerce Systems"],
+        "A developer-first cloud hosting platform featuring NVMe edge instances, sub-15ms regional latency, automated deployment, and an ultra-clean client management portal.",
+      services: ["Brand Strategy", "Visual Identity", "UI/UX Architecture", "Client Portal Design"],
       hero_image: {
-        src: lunisoCover,
-        alt: "Luniso Korean streetwear brand presentation",
+        src: "/brnnd-imgs/minthost_1.jpg",
+        alt: "MintHost high-performance rack server hardware and identity",
         type: "cover",
         source: "BRNND supplied asset",
         verified: true,
@@ -1174,421 +980,208 @@ export const caseStudies: CaseStudy[] = [
     },
 
     overview: {
-      client: "Luniso",
-      industry: "Apparel & Streetwear DTC",
+      client: "MintHost Technologies",
+      industry: "High-Performance Cloud & Web Hosting",
       year: "2025",
-      services: ["Brand Strategy", "Identity Design", "E-Commerce UI/UX", "Launch Funnel"],
+      services: ["Brand Strategy", "Visual Identity", "UI/UX Architecture", "Client Portal Design"],
       scope:
-        "Built the brand identity and conversion-focused mobile storefront for a single-hero fashion label expanding across all 64 districts of Bangladesh.",
+        "Architected the brand identity, server hardware presentation, and customer cloud management dashboard for an ultra-low latency hosting provider.",
     },
 
     project: {
-      headline: "Launching an affordable Korean streetwear label in Bangladesh.",
+      headline: "High-performance cloud infrastructure with zero latency and effortless control.",
       description: [
-        "Luniso set out to bring relaxed, Korean-inspired pants to everyday youth in Bangladesh—cut for comfort in warm weather, priced accessibly, and structured for how people buy: cash on delivery.",
-        "Rather than relying on informal Facebook pages or scattered messaging apps, Luniso needed a polished storefront that builds instant credibility, communicates fit and drape clearly, and converts paid social traffic quickly.",
-        "BRNND crafted the minimalist visual identity, lookbook art direction, and a frictionless mobile shopping experience.",
+        "MintHost was founded to eliminate the slow, congested shared-hosting experiences typical of regional web hosting providers in South Asia.",
+        "With NVMe-powered Singapore and Dhaka edge nodes, 14ms average regional response times, and redundant tier-3 datacenters, the company required a brand identity and customer portal that communicated uncompromised uptime and developer-grade precision.",
+        "BRNND developed the geometric leaf-plus-server monogram, design token system, hardware branding, and the comprehensive web management portal.",
       ],
-      images: [
-        {
-          src: workLuniso,
-          alt: "Luniso brand and product editorial",
-          type: "screen",
-          source: "BRNND supplied asset",
-          verified: true,
-        },
-      ],
+      images: [],
     },
 
     challenge: {
-      headline: "Overcoming purchase hesitation in entry-level fashion commerce.",
+      headline: "Overcoming consumer skepticism in a commoditized web hosting market.",
       description: [
-        "Shoppers in price-sensitive segments are naturally cautious about online apparel quality, fit accuracy, and upfront payments.",
-        "The brand needed to communicate design credibility without appearing prohibitively expensive, and remove every barrier between ad click and confirmed delivery address.",
+        "Web hosting in emerging markets is overcrowded with low-cost resellers utilizing overloaded servers, opaque bandwidth limits, and clunky cPanel interfaces.",
+        "MintHost needed to establish undeniable technical credibility, proving its sub-15ms edge speed, true dedicated CPU allocations, and 99.99% SLA uptime.",
       ],
       opportunity:
-        "The opportunity was to build a single-product hero storefront with prominent cash-on-delivery signals, clear sizing measurements, and hassle-free exchange policies.",
+        "The opportunity was to build a clean, transparent cloud control plane that gives founders and developers real-time resource visibility (CPU, RAM, bandwidth) with one-click deployment.",
     },
 
     approach: {
-      headline: "Minimal Korean aesthetic tuned for maximum conversion.",
+      headline: "Engineering trust through data transparency, developer ergonomics, and crisp design.",
       sections: [
         {
-          title: "Restrained Visual Identity",
+          title: "Hardware & Edge Positioning",
           description:
-            "A clean black-and-cream aesthetic with crisp editorial lookbook frames that conveys quality craftsmanship without inflating perceived price.",
+            "Branded physical datacenter rack units and Singapore node routing to prove authentic enterprise infrastructure.",
         },
         {
-          title: "Trust-First Ordering",
+          title: "Minimal Control Plane",
           description:
-            "Surfaced cash-on-delivery guarantees, nationwide flat delivery rates, and free size exchanges upfront to eliminate checkout hesitation.",
+            "Designed a calm, dark-mode client dashboard with instant VPS provisioning, one-tap reboots, and live bandwidth monitors.",
         },
         {
-          title: "Thumb-First Mobile Flow",
+          title: "Performance Metrics",
           description:
-            "Engineered the mobile journey for direct social-ad traffic, allowing users to select size, color, and enter address details in under four taps.",
+            "Surfaced real-time latency (14ms) and 99.99% uptime proof directly on marketing landing pages to convert technical decision makers.",
         },
         {
-          title: "Social Proof Engine",
+          title: "Unified Visual Identity",
           description:
-            "Integrated real customer fit reviews and fabric drape photos directly alongside the buy button.",
+            "Synthesized organic freshness with server rack geometry in the monogram, paired with emerald green and obsidian graphite.",
         },
       ],
     },
 
     identity: {
       enabled: true,
-      headline: "The Luniso aesthetic: Korean street minimalism.",
+      headline: "The MintHost aesthetic: Server-rack precision meets organic freshness.",
       description:
-        "A warm cream and off-black foundation accented by natural tan tones and generous negative space.",
+        "Deep obsidian slate surfaces accented by luminous mint emerald, crisp mono indicators, and Bagoss Standard typography.",
       typography: {
-        headlineFont: "Grotesk Sans",
-        bodyFont: "Inter & Editorial Serif",
-        sample: "Streetwear cut for movement.",
+        headlineFont: "Stack Sans Headline",
+        bodyFont: "Inter & JetBrains Mono",
+        sample: "Zero latency. 99.99% guaranteed uptime.",
       },
       palette: [
-        { name: "Warm Cream", hex: "#F1EDE6", usage: "Storefront backdrop and lookbook frame" },
-        { name: "Off-Black Ink", hex: "#121110", usage: "Logo wordmark, typography, and buttons" },
-        { name: "Warm Tan", hex: "#B98A5E", usage: "Single warm accent, prices, and focus states" },
-        { name: "Sand", hex: "#D9CDBA", usage: "Dividers, size chips, and packaging stock" },
-        { name: "Soft Stone", hex: "#7C756C", usage: "Secondary captions and delivery terms" },
+        { name: "Obsidian Slate", hex: "#08120E", usage: "Primary dark canvas and terminal backdrops" },
+        { name: "Mint Emerald", hex: "#10B981", usage: "Brand monogram, uptime indicators, and active buttons" },
+        { name: "Server Steel", hex: "#1E2E27", usage: "Metric card surfaces and hardware chassis borders" },
+        { name: "Crisp Pure White", hex: "#FFFFFF", usage: "High-contrast headings and light dashboard stage" },
+        { name: "Telemetry Mint", hex: "#34D399", usage: "Live latency graphs and healthy server nodes" },
       ],
     },
 
     digital: {
       enabled: true,
-      headline: "A fast, single-hero storefront built for social traffic.",
+      headline: "A modern client portal engineered for speed and developer control.",
       description: [
-        "Designed to accept cold traffic from Instagram and TikTok and convert it into confirmed nationwide orders with minimal cognitive friction.",
+        "Featuring instant VPS reboot and rebuild toggles, live bandwidth usage trackers, domain DNS managers, and automated billing invoicing.",
+        "The interface eliminates legacy control panel clutter in favor of focused, thumb-friendly actions and responsive cross-device telemetry.",
       ],
       features: [
-        "Single-page product narrative with direct size and color toggles",
-        "Streamlined Cash on Delivery (COD) order form",
-        "Visual fit calculator with height and waist guidance",
-        "Instant WhatsApp and phone support direct integration",
+        "Live VPS resource telemetry with CPU, RAM, and bandwidth meters",
+        "One-click deployment for Singapore and Dhaka edge instances",
+        "Domain DNS record editor with sub-second propagation",
+        "Automated bKash, Nagad, and international card billing integration",
       ],
     },
 
     screens: [
       {
-        title: "01 — Mobile Hero & Fit Selector",
-        description: "Thumb-friendly mobile interface with instant color and size selection.",
+        title: "01 — Client Portal & VPS Overview",
+        description: "MacBook interface showing Singapore active VPS, CPU utilization, bandwidth counters, and instant reboot controls.",
         image: {
-          src: lunisoCover,
-          alt: "Luniso mobile product interface",
+          src: "/brnnd-imgs/minthost_2.jpg",
+          alt: "MintHost client portal on MacBook",
           type: "screen",
-          source: "BRNND supplied asset",
+          source: "BRNND project screenshot",
           verified: true,
         },
       },
       {
-        title: "02 — Lookbook & Details",
-        description: "Editorial photography highlighting stitch detail, fabric weight, and drape.",
+        title: "02 — Real-Time Telemetry & Performance Dashboard",
+        description: "Desktop monitoring suite displaying 14ms response time, 99.8% performance score, and 12,408 live concurrent visitors.",
         image: {
-          src: workLuniso,
-          alt: "Luniso product lookbook editorial",
+          src: "/brnnd-imgs/minthost_3.jpg",
+          alt: "MintHost desktop telemetry dashboard",
           type: "screen",
-          source: "BRNND supplied asset",
+          source: "BRNND project screenshot",
           verified: true,
         },
       },
     ],
 
     details: {
-      headline: "Focused on conversion craft.",
-      description: "Deliberate UI decisions tailored for local fashion e-commerce habits.",
+      headline: "Crafted for high-uptime reliability.",
+      description: "Interface components designed to deliver peace of mind to mission-critical business applications.",
       items: [
         {
-          title: "COD Confirmation Chip",
-          description: "Clear badge reassuring buyers that payment is only made upon package inspection.",
+          title: "Sub-Second Telemetry",
+          description: "Real-time WebSocket connection streaming active server bandwidth and CPU spikes without page reloads.",
         },
         {
-          title: "Size Matrix",
-          description: "Visual sizing charts showing waist stretch tolerance and inseam lengths.",
+          title: "One-Click Deploy",
+          description: "Standardized container and OS image templates launching in under 45 seconds.",
         },
         {
-          title: "Minimal Form Fields",
-          description: "Simplified address input tailored to all 64 districts in Bangladesh.",
+          title: "Hardware Branding",
+          description: "Custom laser-cut server chassis faceplates reinforcing institutional enterprise caliber.",
         },
       ],
     },
 
     outcome: {
-      headline: "A credible fashion brand with a scalable digital foundation.",
+      headline: "A high-trust hosting platform built for rapid market expansion.",
       description:
-        "Luniso established an authentic brand presence that turned social-media interest into reliable nationwide sales, backed by a cohesive visual identity and a trustworthy shopping flow.",
+        "MintHost established a commanding presence in the regional cloud infrastructure space, transforming from a boutique provider into a preferred host for ambitious founders and high-traffic e-commerce stores.",
       metrics: [],
     },
 
     gallery: {
-      images: [
-        {
-          src: lunisoCover,
-          alt: "Luniso cover visual",
-          type: "gallery",
-          source: "BRNND supplied asset",
-          verified: true,
-        },
-        {
-          src: workLuniso,
-          alt: "Luniso campaign visual",
-          type: "gallery",
-          source: "BRNND supplied asset",
-          verified: true,
-        },
-      ],
+      images: [],
     },
 
     closing: {
-      headline: "One system, every touchpoint.",
+      headline: "Precision from hardware to pixel.",
       description:
-        "From label packaging to mobile checkout, BRNND gave Luniso a cohesive streetwear identity built to scale nationwide.",
-    },
-
-    next_project: {
-      client: "Eventify",
-      slug: "eventify",
-      industry: "Event Tech & Ticketing",
-      image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1600&auto=format&fit=crop&q=80",
-    },
-
-    theme: {
-      bg: "#F1EDE6",
-      surface: "#E6DFD3",
-      ink: "#121110",
-      muted: "#7C756C",
-      border: "rgba(18,17,16,0.12)",
-      accent: "#B98A5E",
-      accentInk: "#FFFFFF",
-    },
-  },
-
-  /* =====================================================================
-     07 — EVENTIFY
-     ===================================================================== */
-  {
-    slug: "eventify",
-    client: "Eventify",
-    industry: "Event Tech & Ticketing",
-    project_type: "Digital Experience & SaaS",
-    year: "2025",
-
-    hero: {
-      eyebrow: "Event Tech & Ticketing · Product Experience · 2025",
-      headline: "Get your event pass. Discover, register, and experience.",
-      description:
-        "A high-energy event discovery and digital ticketing platform connecting community gatherings, music concerts, tech conferences, and workshops.",
-      services: ["Product UI/UX", "Design System", "Ticketing Architecture", "Organizer Dashboard"],
-      hero_image: {
-        src: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1600&auto=format&fit=crop&q=80",
-        alt: "Eventify event pass and community platform",
-        type: "cover",
-        source: "Client website",
-        verified: true,
-      },
-    },
-
-    overview: {
-      client: "Eventify",
-      industry: "Event Management, Ticketing & Community Platform",
-      year: "2025",
-      services: ["Product UI/UX", "Design System", "Web Application", "Ticket Flow"],
-      scope:
-        "Designed the end-to-end product experience for discovering local events, booking digital passes, and managing organizer sales analytics.",
-    },
-
-    project: {
-      headline: "Reimagining local event discovery and mobile ticketing.",
-      description: [
-        "Eventify connects event creators and attendees across Music, Sports, Art, Tech, Food, Nightlife, and Wellness.",
-        "Traditional ticketing platforms in emerging markets are often cluttered, slow, and burden attendees with confusing multi-step registration forms.",
-        "BRNND designed a modern, dynamic web platform with animated pass builders ('Get Your Event Pass!'), instant QR code mobile tickets, and a streamlined checkout flow.",
-      ],
-      images: [
-        {
-          src: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1600&auto=format&fit=crop&q=80",
-          alt: "Eventify community events discovery",
-          type: "screen",
-          source: "Client website",
-          verified: true,
-        },
-      ],
-    },
-
-    challenge: {
-      headline: "Eliminating friction between event discovery and ticket entry.",
-      description: [
-        "Users frequently abandon ticketing platforms when confronted with mandatory account creation, sluggish checkout pages, and non-mobile-friendly passes.",
-        "Event organizers also lacked an intuitive dashboard to monitor real-time ticket tiers, check-in scans, and revenue distribution.",
-      ],
-      opportunity:
-        "The opportunity was to build a clean 3-step workflow (Discover → Register → Attend) with instant wallet-ready QR code passes.",
-    },
-
-    approach: {
-      headline: "Dynamic high-contrast UI paired with effortless utility.",
-      sections: [
-        {
-          title: "Category Navigation",
-          description:
-            "Implemented an instant filter bar across 8 core categories (Music, Sports, Art, Tech, Food, Party, Wellness, Business).",
-        },
-        {
-          title: "Instant QR Pass Engine",
-          description:
-            "Designed a clean digital ticket format featuring live QR validation, calendar sync, and venue mapping.",
-        },
-        {
-          title: "Organizer Portal",
-          description:
-            "Architected an intuitive event creation and attendee management suite with clear seat tiers and check-in metrics.",
-        },
-        {
-          title: "High-Energy Aesthetics",
-          description:
-            "Created a bold black-and-white visual identity energized by vibrant coral rose accents (`#E85A6B`) and pine green.",
-        },
-      ],
-    },
-
-    identity: {
-      enabled: true,
-      headline: "The Eventify visual system: Electric nightlife meets clean utility.",
-      description:
-        "High-contrast black-and-white structure punctuated by energetic rose coral and forest pine green accents.",
-      typography: {
-        headlineFont: "Modern Display Grotesk",
-        bodyFont: "Inter & Monospace",
-        sample: "Get your pass. Be there.",
-      },
-      palette: [
-        { name: "Pure Black", hex: "#000000", usage: "Primary background, headers, and pass frames" },
-        { name: "Electric Rose", hex: "#E85A6B", usage: "Hero accents, live dots, and registration buttons" },
-        { name: "Deep Pine", hex: "#2F4F4F", usage: "Secondary buttons and category tags" },
-        { name: "Pure White", hex: "#FFFFFF", usage: "Card surfaces and high-contrast typography" },
-        { name: "Muted Neutral", hex: "#6B7280", usage: "Date badges and venue descriptors" },
-      ],
-    },
-
-    digital: {
-      enabled: true,
-      headline: "A fast, responsive event engine that works on any device.",
-      description: [
-        "Engineered for speed and instant accessibility, allowing attendees to secure event passes in seconds without clunky redirects.",
-      ],
-      features: [
-        "Category-based live event exploration filter",
-        "Dynamic hero carousel with automated slide transitions",
-        "Instant digital ticket generation with scannable QR verification",
-        "Organizer event builder with ticket tier configuration",
-      ],
-    },
-
-    screens: [
-      {
-        title: "01 — Event Discovery Feed",
-        description: "Category filters, live date badges, and high-impact event visual cards.",
-        image: {
-          src: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1600&auto=format&fit=crop&q=80",
-          alt: "Eventify event discovery dashboard",
-          type: "screen",
-          source: "Client website",
-          verified: true,
-        },
-      },
-    ],
-
-    details: {
-      headline: "Engineered for real-world event flow.",
-      description: "Interface components designed to work seamlessly from phone screen to venue door.",
-      items: [
-        {
-          title: "QR Pass Card",
-          description: "High-contrast scannable digital badge optimized for low-light venue entry.",
-        },
-        {
-          title: "Calendar Sync",
-          description: "One-tap export to Google Calendar and Apple iCal with venue reminders.",
-        },
-        {
-          title: "Newsletter Alert",
-          description: "Compact subscription banner delivering weekly curated event roundups.",
-        },
-      ],
-    },
-
-    outcome: {
-      headline: "A vibrant, frictionless event ticketing experience.",
-      description:
-        "Eventify transformed into a modern event destination where discovering and booking passes is as exciting as attending the event itself.",
-      metrics: [],
-    },
-
-    gallery: {
-      images: [
-        {
-          src: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1600&auto=format&fit=crop&q=80",
-          alt: "Eventify visual design showcase",
-          type: "gallery",
-          source: "Client website",
-          verified: true,
-        },
-      ],
-    },
-
-    closing: {
-      headline: "From discovery to door.",
-      description:
-        "BRNND designed a ticketing platform that puts community, excitement, and seamless access first.",
+        "BRNND delivered a comprehensive brand and product system that matches the world-class engineering humming in MintHost's server racks.",
     },
 
     next_project: {
       client: "Zambic",
       slug: "zambic",
-      industry: "Digital Brand & Commerce [NEEDS VERIFICATION]",
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&auto=format&fit=crop&q=80",
+      industry: "Digital Brand & Commerce",
+      image: "/brnnd-imgs/zambic_1.png",
     },
 
     theme: {
-      bg: "#FFFFFF",
-      surface: "#F9FAFB",
-      ink: "#000000",
-      muted: "#6B7280",
-      border: "rgba(0,0,0,0.1)",
-      accent: "#E85A6B",
-      accentInk: "#FFFFFF",
+      bg: "#08120E",
+      surface: "#0F1F18",
+      ink: "#F1F5F3",
+      muted: "#6EE7B7",
+      border: "rgba(16,185,129,0.18)",
+      accent: "#10B981",
+      accentInk: "#08120E",
     },
   },
 
   /* =====================================================================
-     08 — ZAMBIC
+     06 — ZAMBIC
      ===================================================================== */
   {
     slug: "zambic",
     client: "Zambic",
-    industry: "Digital Brand & Commerce [NEEDS VERIFICATION]",
+    industry: "Digital Brand & Commerce",
     project_type: "Brand Identity & Web",
-    year: "2024",
+    year: "2025",
+    heroImage: "/brnnd-imgs/zambic_1.png",
+    category: "Digital Flagships",
+    tagline: "Establishing an authoritative digital identity for scalable growth.",
+    cover: "/brnnd-imgs/zambic_1.png",
+    name: "Zambic",
+    heroTitle: "Establishing an authoritative digital identity for scalable growth.",
 
     hero: {
-      eyebrow: "Digital Brand & Commerce · Web Platform · 2024",
+      eyebrow: "Digital Brand & Commerce · Web Platform · 2025",
       headline: "Establishing an authoritative digital identity for scalable growth.",
       description:
         "A structured digital brand and interface system designed to elevate customer trust and unify product presentation across all digital touchpoints.",
       services: ["Brand Strategy", "Brand Identity", "UI/UX Architecture", "Web Engineering"],
       hero_image: {
-        src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&auto=format&fit=crop&q=80",
+        src: "/brnnd-imgs/zambic_1.png",
         alt: "Zambic digital brand and platform design",
         type: "cover",
-        source: "Approved generated supporting visual",
+        source: "BRNND project screenshot",
         verified: true,
       },
     },
 
     overview: {
       client: "Zambic",
-      industry: "Digital Brand & Commerce [NEEDS VERIFICATION]",
-      year: "2024",
+      industry: "Digital Brand & Commerce",
+      year: "2025",
       services: ["Brand Strategy", "Brand Identity", "UI/UX", "Web Development"],
       scope:
         "Developed a modern digital identity and web system designed to establish clear brand positioning and streamline customer engagement.",
@@ -1601,15 +1194,7 @@ export const caseStudies: CaseStudy[] = [
         "The project focused on clarifying the core brand offering, designing an intuitive information architecture, and establishing a consistent design system that supports long-term growth.",
         "BRNND developed the brand visual language, typographic hierarchy, responsive interface layouts, and web implementation.",
       ],
-      images: [
-        {
-          src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&auto=format&fit=crop&q=80",
-          alt: "Zambic interface architecture",
-          type: "screen",
-          source: "Approved generated supporting visual",
-          verified: true,
-        },
-      ],
+      images: [],
     },
 
     challenge: {
@@ -1686,10 +1271,21 @@ export const caseStudies: CaseStudy[] = [
         title: "01 — Platform Interface",
         description: "Clean desktop layout with balanced typographic hierarchy and prominent calls to action.",
         image: {
-          src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&auto=format&fit=crop&q=80",
+          src: "/brnnd-imgs/zambic_2.png",
           alt: "Zambic digital platform overview",
           type: "screen",
-          source: "Approved generated supporting visual",
+          source: "BRNND project screenshot",
+          verified: true,
+        },
+      },
+      {
+        title: "02 — Design Tokens & Component Ecosystem",
+        description: "Modular UI components, consistent spacing tokens, and purposeful typographic hierarchy.",
+        image: {
+          src: "/brnnd-imgs/zambic_3.png",
+          alt: "Zambic design details showcase",
+          type: "screen",
+          source: "BRNND project screenshot",
           verified: true,
         },
       },
@@ -1722,15 +1318,7 @@ export const caseStudies: CaseStudy[] = [
     },
 
     gallery: {
-      images: [
-        {
-          src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&auto=format&fit=crop&q=80",
-          alt: "Zambic design details showcase",
-          type: "gallery",
-          source: "Approved generated supporting visual",
-          verified: true,
-        },
-      ],
+      images: [],
     },
 
     closing: {
@@ -1743,7 +1331,7 @@ export const caseStudies: CaseStudy[] = [
       client: "Formline",
       slug: "formline",
       industry: "Agency SaaS & Intake",
-      image: "https://formline.brnnd.com/hero-dashboard.svg",
+      image: "/brnnd-imgs/formline_1.png",
     },
 
     theme: {
@@ -1758,7 +1346,7 @@ export const caseStudies: CaseStudy[] = [
   },
 
   /* =====================================================================
-     09 — FORMLINE
+     07 — FORMLINE
      ===================================================================== */
   {
     slug: "formline",
@@ -1766,6 +1354,12 @@ export const caseStudies: CaseStudy[] = [
     industry: "SaaS · Agency Intake & Operations",
     project_type: "Product Brand & Web Application",
     year: "2025",
+    heroImage: "/brnnd-imgs/formline_1.png",
+    category: "UI/UX & SaaS",
+    tagline: "Send forms. Get responses. Stay in control.",
+    cover: "/brnnd-imgs/formline_1.png",
+    name: "Formline",
+    heroTitle: "Send forms. Get responses. Stay in control.",
 
     hero: {
       eyebrow: "SaaS · Agency Intake & Operations · 2025",
@@ -1774,7 +1368,7 @@ export const caseStudies: CaseStudy[] = [
         "A modern SaaS workspace for design studios, agencies, and freelancers to build branded intake forms, share them with one link, and manage client briefs in a calm workspace.",
       services: ["Product Strategy", "Product Branding", "SaaS Dashboard UI/UX", "Web Platform"],
       hero_image: {
-        src: "https://formline.brnnd.com/hero-dashboard.svg",
+        src: "/brnnd-imgs/formline_1.png",
         alt: "Formline agency workspace dashboard",
         type: "cover",
         source: "Client website",
@@ -1798,15 +1392,7 @@ export const caseStudies: CaseStudy[] = [
         "Formline was created to solve this specific pain: a dedicated workspace where studios can build branded intake forms, share a single clean link with clients, and watch submissions automatically organize into structured client profiles.",
         "BRNND designed the product branding, marketing site, interactive form builder, and full client pipeline dashboard.",
       ],
-      images: [
-        {
-          src: "https://formline.brnnd.com/hero-dashboard.svg",
-          alt: "Formline workspace dashboard showing client intake pipeline",
-          type: "screen",
-          source: "Client website",
-          verified: true,
-        },
-      ],
+      images: [],
     },
 
     challenge: {
@@ -1883,8 +1469,19 @@ export const caseStudies: CaseStudy[] = [
         title: "01 — Workspace Pipeline Dashboard",
         description: "Real-time client submissions organized by status, industry, and intake date.",
         image: {
-          src: "https://formline.brnnd.com/hero-dashboard.svg",
+          src: "/brnnd-imgs/formline_2.jpg",
           alt: "Formline pipeline dashboard interface",
+          type: "screen",
+          source: "Client website",
+          verified: true,
+        },
+      },
+      {
+        title: "02 — Dynamic Intake & Living Client Profiles",
+        description: "Clean public intake experience converting directly into categorized agency briefs and extracted color tokens.",
+        image: {
+          src: "/brnnd-imgs/formline_3.jpg",
+          alt: "Formline dynamic form builder and client brief workspace",
           type: "screen",
           source: "Client website",
           verified: true,
@@ -1919,15 +1516,7 @@ export const caseStudies: CaseStudy[] = [
     },
 
     gallery: {
-      images: [
-        {
-          src: "https://formline.brnnd.com/hero-dashboard.svg",
-          alt: "Formline full dashboard view",
-          type: "gallery",
-          source: "Client website",
-          verified: true,
-        },
-      ],
+      images: [],
     },
 
     closing: {
@@ -1940,7 +1529,7 @@ export const caseStudies: CaseStudy[] = [
       client: "Muntajar",
       slug: "muntajar",
       industry: "Global Mobility & EdTech",
-      image: "https://www.muntajar.com/muntajar-hero.png",
+      image: "/brnnd-imgs/muntajar_1.png",
     },
 
     theme: {

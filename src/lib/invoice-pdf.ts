@@ -83,30 +83,38 @@ export function buildInvoicePdf(invoice: Invoice): jsPDF {
   doc.text("STUDIO & BRAND ARCHITECTURE", margin, 29);
   doc.text("hello@brnnd.com  |  www.brnnd.com  |  New York - Global", margin, 34);
 
+  const isPaid = invoice.status === "paid";
+
   // Invoice badge & number in header right
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(14);
+  doc.setFontSize(isPaid ? 13 : 14);
   doc.setTextColor(255, 255, 255);
-  doc.text("INVOICE", pageWidth - margin, 19, { align: "right" });
+  doc.text(isPaid ? "PAID INVOICE & RECEIPT" : "INVOICE", pageWidth - margin, 19, { align: "right" });
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9.5);
   doc.setTextColor(220, 220, 220);
   doc.text(invoice.invoice_number || "INV-0000", pageWidth - margin, 26, { align: "right" });
 
-  // Status tag
-  const statusStr = (invoice.status || "draft").toUpperCase();
+  // Status tag with pill background
+  doc.setFont("helvetica", "bold");
   doc.setFontSize(8);
-  if (invoice.status === "paid") {
-    doc.setTextColor(52, 211, 153); // emerald
-  } else if (invoice.status === "sent") {
-    doc.setTextColor(96, 165, 250); // blue
+  if (isPaid) {
+    doc.setFillColor(6, 78, 59); // emerald dark bg
+    doc.roundedRect(pageWidth - margin - 36, 29, 36, 6, 1, 1, "F");
+    doc.setTextColor(52, 211, 153); // emerald text
+    doc.text("PAID IN FULL", pageWidth - margin - 18, 33.5, { align: "center" });
   } else if (invoice.status === "overdue") {
-    doc.setTextColor(248, 113, 113); // red
+    doc.setFillColor(127, 29, 29);
+    doc.roundedRect(pageWidth - margin - 36, 29, 36, 6, 1, 1, "F");
+    doc.setTextColor(248, 113, 113);
+    doc.text("OVERDUE", pageWidth - margin - 18, 33.5, { align: "center" });
   } else {
-    doc.setTextColor(167, 139, 250); // violet
+    doc.setFillColor(40, 30, 10);
+    doc.roundedRect(pageWidth - margin - 36, 29, 36, 6, 1, 1, "F");
+    doc.setTextColor(251, 191, 36);
+    doc.text("PAYMENT DUE", pageWidth - margin - 18, 33.5, { align: "center" });
   }
-  doc.text(`STATUS: ${statusStr}`, pageWidth - margin, 33, { align: "right" });
 
   // Reset text color for body
   let currentY = 56;
@@ -146,20 +154,30 @@ export function buildInvoicePdf(invoice: Invoice): jsPDF {
   doc.setTextColor(115, 115, 115);
   doc.text("INVOICE DETAILS", rightColX, currentY);
 
-  const drawDetailRow = (label: string, val: string, yPos: number) => {
+  const drawDetailRow = (label: string, val: string, yPos: number, isHighlighted = false) => {
     doc.setFont("helvetica", "normal");
     doc.setFontSize(8.5);
     doc.setTextColor(115, 115, 115);
     doc.text(label, rightColX, yPos);
     doc.setFont("helvetica", "bold");
-    doc.setTextColor(20, 20, 20);
+    if (isHighlighted) {
+      doc.setTextColor(isPaid ? 16 : 220, isPaid ? 185 : 38, isPaid ? 129 : 38);
+    } else {
+      doc.setTextColor(20, 20, 20);
+    }
     doc.text(val, pageWidth - margin, yPos, { align: "right" });
   };
 
   drawDetailRow("Issue Date:", invoice.issue_date || new Date().toISOString().split("T")[0], currentY + 6);
-  drawDetailRow("Due Date:", invoice.due_date || new Date().toISOString().split("T")[0], currentY + 12);
-  drawDetailRow("Currency:", invoice.currency || "USD", currentY + 18);
-  drawDetailRow("Payment Terms:", "Net 15 Days", currentY + 24);
+  if (isPaid) {
+    drawDetailRow("Payment Status:", "PAID IN FULL", currentY + 12, true);
+    drawDetailRow("Settlement Date:", invoice.due_date || invoice.issue_date || new Date().toISOString().split("T")[0], currentY + 18);
+    drawDetailRow("Currency:", invoice.currency || "USD", currentY + 24);
+  } else {
+    drawDetailRow("Due Date:", invoice.due_date || new Date().toISOString().split("T")[0], currentY + 12, true);
+    drawDetailRow("Payment Status:", invoice.status === "overdue" ? "OVERDUE" : "PAYMENT DUE", currentY + 18, true);
+    drawDetailRow("Currency:", invoice.currency || "USD", currentY + 24);
+  }
 
   currentY = Math.max(billY + 8, currentY + 34);
 
@@ -243,41 +261,75 @@ export function buildInvoicePdf(invoice: Invoice): jsPDF {
 
   // Highlight Box for Total
   currentY += 2;
-  doc.setFillColor(15, 15, 15);
-  doc.rect(totalsX - 4, currentY - 4.5, 84 + 4, 11, "F");
-
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(11);
-  doc.setTextColor(255, 255, 255);
-  doc.text("TOTAL DUE", totalsX, currentY + 2.5);
-  doc.text(
-    `$${Number(invoice.total || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })} ${invoice.currency || "USD"}`,
-    pageWidth - margin - 4,
-    currentY + 2.5,
-    { align: "right" }
-  );
+  if (isPaid) {
+    doc.setFillColor(6, 78, 59); // deep emerald
+    doc.rect(totalsX - 4, currentY - 4.5, 84 + 4, 11, "F");
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10.5);
+    doc.setTextColor(110, 231, 183); // mint green text
+    doc.text("TOTAL PAID", totalsX, currentY + 2.5);
+    doc.text(
+      `$${Number(invoice.total || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })} (PAID)`,
+      pageWidth - margin - 4,
+      currentY + 2.5,
+      { align: "right" }
+    );
+  } else {
+    doc.setFillColor(15, 15, 15);
+    doc.rect(totalsX - 4, currentY - 4.5, 84 + 4, 11, "F");
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10.5);
+    doc.setTextColor(255, 255, 255);
+    doc.text(invoice.status === "overdue" ? "TOTAL OVERDUE" : "TOTAL DUE", totalsX, currentY + 2.5);
+    doc.text(
+      `$${Number(invoice.total || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })} ${invoice.currency || "USD"}`,
+      pageWidth - margin - 4,
+      currentY + 2.5,
+      { align: "right" }
+    );
+  }
 
   currentY += 20;
 
   // Payment Wire / Instructions Box & Notes
   if (currentY < pageHeight - 55) {
-    doc.setFillColor(250, 250, 250);
-    doc.setDrawColor(230, 230, 230);
-    doc.setLineWidth(0.3);
-    doc.rect(margin, currentY, contentWidth, 32, "FD");
+    if (isPaid) {
+      doc.setFillColor(240, 253, 244); // light green bg
+      doc.setDrawColor(187, 247, 208);
+      doc.setLineWidth(0.4);
+      doc.rect(margin, currentY, contentWidth, 30, "FD");
 
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(8);
-    doc.setTextColor(40, 40, 40);
-    doc.text("PAYMENT INSTRUCTIONS & WIRE TRANSFER", margin + 4, currentY + 6);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(8.5);
+      doc.setTextColor(22, 101, 52); // dark green
+      doc.text("OFFICIAL RECEIPT & PAYMENT CONFIRMATION", margin + 4, currentY + 6.5);
 
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(7.5);
-    doc.setTextColor(90, 90, 90);
-    doc.text("Bank Name: Silicon Valley Bank / Mercury Bank NA", margin + 4, currentY + 12);
-    doc.text("Account Name: BRNND Creative Studio Inc.", margin + 4, currentY + 17);
-    doc.text("Account Number: 9482-1082-9428   |   Routing / ABA: 121000358   |   SWIFT / BIC: SVBKUS6S", margin + 4, currentY + 22);
-    doc.text(`Reference: ${invoice.invoice_number || "Invoice"} - ${invoice.client_company || invoice.client_name || ""}`, margin + 4, currentY + 27);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7.5);
+      doc.setTextColor(21, 128, 61);
+      doc.text("Payment Status: Paid in Full - Zero Balance Remaining", margin + 4, currentY + 12);
+      doc.text(`Reference: ${invoice.invoice_number || "Invoice"} - ${invoice.client_company || invoice.client_name || ""}`, margin + 4, currentY + 17);
+      doc.text("This receipt serves as official confirmation that your invoice has been settled in full.", margin + 4, currentY + 22);
+      doc.text("Thank you for partnering with BRNND Studio. No further payment or action is required.", margin + 4, currentY + 26.5);
+    } else {
+      doc.setFillColor(250, 250, 250);
+      doc.setDrawColor(230, 230, 230);
+      doc.setLineWidth(0.3);
+      doc.rect(margin, currentY, contentWidth, 32, "FD");
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(8);
+      doc.setTextColor(40, 40, 40);
+      doc.text("PAYMENT INSTRUCTIONS & WIRE TRANSFER", margin + 4, currentY + 6);
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7.5);
+      doc.setTextColor(90, 90, 90);
+      doc.text("Bank Name: Silicon Valley Bank / Mercury Bank NA", margin + 4, currentY + 12);
+      doc.text("Account Name: BRNND Creative Studio Inc.", margin + 4, currentY + 17);
+      doc.text("Account Number: 9482-1082-9428   |   Routing / ABA: 121000358   |   SWIFT / BIC: SVBKUS6S", margin + 4, currentY + 22);
+      doc.text(`Reference: ${invoice.invoice_number || "Invoice"} - ${invoice.client_company || invoice.client_name || ""}`, margin + 4, currentY + 27);
+    }
   }
 
   // Bottom Footer
