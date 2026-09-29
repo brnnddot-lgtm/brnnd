@@ -32,20 +32,26 @@ export function InvoicePdfModal({ invoice, onClose, onSendEmail }: InvoicePdfMod
   if (!invoice) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 sm:p-6 animate-in fade-in duration-200">
-      <div className="relative flex flex-col w-full max-w-5xl h-[90vh] bg-neutral-900 border border-neutral-800 rounded-xl shadow-2xl overflow-hidden text-neutral-100">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-2 sm:p-4 md:p-6 overflow-hidden animate-in fade-in duration-200"
+      data-lenis-prevent="true"
+    >
+      <div
+        className="relative flex flex-col w-full max-w-5xl h-[94vh] sm:h-[90vh] bg-neutral-900 border border-neutral-800 rounded-2xl shadow-2xl overflow-hidden text-neutral-100 my-auto"
+        data-lenis-prevent="true"
+      >
         {/* Header Bar */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-800 bg-neutral-950">
-          <div className="flex items-center gap-3">
-            <span className="font-mono text-xs uppercase px-2 py-0.5 rounded bg-neutral-800 text-neutral-300">
-              PDF Preview
+        <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-neutral-800 bg-neutral-950 shrink-0 gap-2">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <span className="font-mono text-[10px] sm:text-xs uppercase px-2 py-0.5 rounded bg-neutral-800 text-neutral-300 shrink-0">
+              PDF
             </span>
-            <h2 className="text-base font-semibold tracking-tight text-white">
+            <h2 className="text-xs sm:text-base font-semibold tracking-tight text-white truncate">
               {invoice.invoice_number} &mdash; {invoice.client_company || invoice.client_name}
             </h2>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {onSendEmail && (
               <button
                 type="button"
@@ -53,7 +59,7 @@ export function InvoicePdfModal({ invoice, onClose, onSendEmail }: InvoicePdfMod
                   onClose();
                   onSendEmail(invoice);
                 }}
-                className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg transition-colors cursor-pointer ${
+                className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 text-xs font-bold rounded-lg transition-colors cursor-pointer ${
                   invoice.status === "paid"
                     ? "bg-emerald-500 hover:bg-emerald-400 text-stone-950"
                     : "bg-brand-lime hover:bg-[#bef264] text-stone-950"
@@ -62,12 +68,12 @@ export function InvoicePdfModal({ invoice, onClose, onSendEmail }: InvoicePdfMod
                 {invoice.status === "paid" ? (
                   <>
                     <Receipt className="w-3.5 h-3.5" />
-                    <span>Send Paid Receipt</span>
+                    <span>Receipt</span>
                   </>
                 ) : (
                   <>
                     <Send className="w-3.5 h-3.5" />
-                    <span>Send via Email</span>
+                    <span>Send</span>
                   </>
                 )}
               </button>
@@ -75,20 +81,22 @@ export function InvoicePdfModal({ invoice, onClose, onSendEmail }: InvoicePdfMod
             <button
               type="button"
               onClick={() => downloadInvoicePdf(invoice)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-medium rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 transition-colors cursor-pointer"
+              title="Download PDF"
             >
               <Download className="w-3.5 h-3.5" />
-              Download
+              <span className="hidden sm:inline">Download</span>
             </button>
             {blobUrl && (
               <a
                 href={blobUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 transition-colors"
+                className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-medium rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 transition-colors"
+                title="Open in new window"
               >
                 <ExternalLink className="w-3.5 h-3.5" />
-                Open
+                <span className="hidden sm:inline">Open</span>
               </a>
             )}
             <button

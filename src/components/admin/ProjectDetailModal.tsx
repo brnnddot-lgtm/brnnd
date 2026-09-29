@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Project, ProjectMediaFile, ProjectMilestone } from "@/data/admin-data";
+import { getCurrencySymbol } from "@/lib/invoice-pdf";
 import {
   X,
   Calendar,
@@ -171,32 +172,40 @@ export function ProjectDetailModal({
     ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(`Hi ${project.client_name}, this is BRNND Studio regarding our project: "${project.title}".`)}`
     : null;
 
+  const currSym = getCurrencySymbol(project.currency);
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-3 sm:p-6 animate-in fade-in duration-200">
-      <div className="relative flex flex-col w-full max-w-5xl max-h-[92vh] bg-[#081a13] border border-[#143326]/80 rounded-2xl shadow-2xl overflow-hidden text-neutral-100">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-2 sm:p-4 md:p-6 overflow-hidden animate-in fade-in duration-200"
+      data-lenis-prevent="true"
+    >
+      <div
+        className="relative flex flex-col w-full max-w-5xl max-h-[96vh] sm:max-h-[92vh] bg-[#081a13] border border-[#143326]/80 rounded-2xl shadow-2xl overflow-hidden text-neutral-100 my-auto"
+        data-lenis-prevent="true"
+      >
         {/* Header Bar */}
-        <div className="shrink-0 flex items-center justify-between px-6 py-4 border-b border-[#143326]/80 bg-[#040e0a]">
-          <div className="flex items-center gap-3 min-w-0">
-            <img src="/brnndlogo.png" alt="BRNND" className="h-5 w-auto object-contain shrink-0" />
+        <div className="shrink-0 flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 border-b border-[#143326]/80 bg-[#040e0a]">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <img src="/brnndlogo.png" alt="BRNND" className="h-4 sm:h-5 w-auto object-contain shrink-0" />
             <span className="text-neutral-600">/</span>
             <div className="min-w-0">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-brand-lime">
+              <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-brand-lime">
                 {project.client_company}
               </span>
-              <h2 className="text-base font-semibold text-white truncate">
+              <h2 className="text-sm sm:text-base font-semibold text-white truncate">
                 {project.title}
               </h2>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 ml-2">
             <button
               type="button"
               onClick={() => onEditProject(project)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-[#0c271e] hover:bg-[#143d2f] text-neutral-200 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-medium rounded-lg bg-[#0c271e] hover:bg-[#143d2f] text-neutral-200 transition-colors cursor-pointer"
             >
               <Edit2 className="w-3.5 h-3.5" />
-              <span>Edit</span>
+              <span className="hidden sm:inline">Edit</span>
             </button>
 
             <button
@@ -224,9 +233,15 @@ export function ProjectDetailModal({
         </div>
 
         {/* Scrollable Content Body */}
-        <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
+        <div
+          tabIndex={0}
+          role="region"
+          aria-label="Project details"
+          data-lenis-prevent="true"
+          className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 sm:py-6 pb-14 space-y-5 sm:space-y-6 custom-scrollbar outline-none focus-visible:ring-1 focus-visible:ring-brand-lime/30"
+        >
           {/* Top Status & Progress Bar Card */}
-          <div className="p-5 rounded-xl bg-[#040e0a] border border-[#143326]/80 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="p-4 sm:p-5 rounded-xl bg-[#040e0a] border border-[#143326]/80 flex flex-col md:flex-row md:items-center justify-between gap-5 sm:gap-6">
             <div className="space-y-2 flex-1">
               <div className="flex flex-wrap items-center gap-2">
                 {/* Status Dropdown */}
@@ -278,11 +293,11 @@ export function ProjectDetailModal({
             </div>
 
             {/* Quick Financials & Invoice Generator */}
-            <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center border-t sm:border-t-0 sm:border-l border-neutral-800 pt-4 sm:pt-0 sm:pl-6 shrink-0 gap-3">
+            <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center border-t sm:border-t-0 sm:border-l border-neutral-800/80 pt-4 sm:pt-0 sm:pl-6 shrink-0 gap-3">
               <div>
                 <div className="text-[11px] font-mono text-neutral-400 sm:text-right uppercase">Contract Value</div>
-                <div className="text-2xl font-bold font-mono text-white sm:text-right">
-                  ${project.budget.toLocaleString()} <span className="text-xs font-normal text-neutral-400">{project.currency}</span>
+                <div className="text-xl sm:text-2xl font-bold font-mono text-white sm:text-right">
+                  {currSym}{project.budget.toLocaleString()} <span className="text-xs font-normal text-neutral-400">{project.currency}</span>
                 </div>
               </div>
 

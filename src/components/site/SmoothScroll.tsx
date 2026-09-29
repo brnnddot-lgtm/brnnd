@@ -1,12 +1,16 @@
-import { useRouter } from "@tanstack/react-router";
+import { useRouter, useRouterState } from "@tanstack/react-router";
 import Lenis from "lenis";
 import { useEffect } from "react";
 import "lenis/dist/lenis.css";
 
 export function SmoothScroll() {
   const router = useRouter();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   useEffect(() => {
+    // Disable Lenis on admin portal so all admin modals, trackpads, and dialogs scroll natively
+    if (pathname.startsWith("/admin")) return;
+
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reducedMotion) return;
 

@@ -214,4 +214,38 @@
     transition: background 0.3s ease, border-color 0.3s ease;
   }
   .btn-ghost:hover { background: color-mix(in oklab, var(--color-foreground) 8%, transparent); border-color: color-mix(in oklab, var(--color-foreground) 50%, transparent); }
+
+  /* Accessible touch/trackpad modal scrollbars */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #404040 #141414;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    overscroll-behavior: contain;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #141414;
+    border-radius: 9999px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #383838;
+    border-radius: 9999px;
+    border: 2px solid #141414;
+    min-height: 40px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #525252;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:active {
+    background: oklch(0.91 0.21 118); /* brand-lime */
+  }
 }

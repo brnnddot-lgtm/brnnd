@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { Invoice } from "@/lib/invoice-pdf";
+import { Invoice, getCurrencySymbol, SUPPORTED_CURRENCIES } from "@/lib/invoice-pdf";
 import {
   Search,
   Plus,
@@ -13,6 +13,7 @@ import {
   Clock,
   MailCheck,
   Receipt,
+  DollarSign,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -39,10 +40,13 @@ export function InvoicesTab({
 }: InvoicesTabProps) {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [currencyFilter, setCurrencyFilter] = useState<string>("all");
 
   const filteredInvoices = useMemo(() => {
     return invoices.filter((inv) => {
       const matchesStatus = statusFilter === "all" || inv.status === statusFilter;
+      const matchesCurrency =
+        currencyFilter === "all" || (inv.currency || "USD").toUpperCase() === currencyFilter.toUpperCase();
       const q = search.toLowerCase().trim();
       const matchesSearch =
         !q ||
@@ -51,23 +55,59 @@ export function InvoicesTab({
         inv.client_name.toLowerCase().includes(q) ||
         inv.client_email.toLowerCase().includes(q);
 
-      return matchesStatus && matchesSearch;
+      return matchesStatus && matchesCurrency && matchesSearch;
     });
-  }, [invoices, statusFilter, search]);
+  }, [invoices, statusFilter, currencyFilter, search]);
 
-  const togglePaid = (inv: Invoice) => {
-    const nextStatus: Invoice["status"] = inv.status === "paid" ? "sent" : "paid";
-    const updated = { ...inv, status: nextStatus };
+  const cycleInvoiceStatus = (inv: Invoice) => {
+    let nextStatus: Invoice["status"] = "sent";
+    let advanceAmount = inv.advance_amount;
+    let advancePercent = inv.advance_percent;
+
+    if (inv.status === "sent" || inv.status === "draft") {
+      nextStatus = "advance_paid";
+      advanceAmount = inv.advance_amount || Math.round(inv.total * 0.5);
+      advancePercent = inv.advance_percent || 50;
+    } else if (inv.status === "advance_paid") {
+      nextStatus = "paid";
+    } else if (inv.status === "paid") {
+      nextStatus = "sent";
+    }
+
+    const updated: Invoice = {
+      ...inv,
+      status: nextStatus,
+      advance_amount: advanceAmount,
+      advance_percent: advancePercent,
+      balance_due:
+        nextStatus === "paid"
+          ? 0
+          : nextStatus === "advance_paid"
+          ? Math.max(0, inv.total - (advanceAmount || 0))
+          : inv.total,
+    };
+
     onUpdateInvoice(updated);
+
     if (nextStatus === "paid") {
-      toast.success(`Invoice ${inv.invoice_number} marked as Paid`, {
+      toast.success(`Invoice ${inv.invoice_number} marked as Paid in Full`, {
         action: {
           label: "Email Receipt",
           onClick: () => onSendInvoice(updated),
         },
       });
+    } else if (nextStatus === "advance_paid") {
+      toast.success(
+        `Invoice ${inv.invoice_number} marked as Advance Paid (${getCurrencySymbol(inv.currency)}${(advanceAmount || 0).toLocaleString()})`,
+        {
+          action: {
+            label: "Email Milestone",
+            onClick: () => onSendInvoice(updated),
+          },
+        }
+      );
     } else {
-      toast.success(`Invoice ${inv.invoice_number} marked as ${nextStatus}`);
+      toast.info(`Invoice ${inv.invoice_number} marked as Payment Due`);
     }
   };
 
@@ -93,25 +133,46 @@ export function InvoicesTab({
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 p-3 bg-[#081a13]/80 rounded-xl border border-[#143326]/80">
-        {/* Search */}
-        <div className="relative flex-1 max-w-md">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500" />
-          <input
-            type="text"
-            placeholder="Search by client, company, invoice # or email..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-1.5 bg-[#040e0a] border border-[#143326]/80 rounded-lg text-xs text-white placeholder-neutral-500 focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none"
-          />
+      <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 p-3 bg-[#081a13]/80 rounded-xl border border-[#143326]/80">
+        {/* Search & Currency Filter */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 flex-1 max-w-2xl">
+          <div className="relative flex-1">
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500" />
+            <input
+              type="text"
+              placeholder="Search by client, company, invoice # or email..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full pl-9 pr-4 py-1.5 bg-[#040e0a] border border-[#143326]/80 rounded-lg text-xs text-white placeholder-neutral-500 focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none"
+            />
+          </div>
+
+          {/* Currency Filter Dropdown */}
+          <div className="flex items-center gap-1.5 shrink-0 bg-[#040e0a] border border-[#143326]/80 rounded-lg px-2.5 py-1">
+            <DollarSign className="w-3.5 h-3.5 text-brand-lime" />
+            <span className="text-[10px] font-mono uppercase text-neutral-400">Currency:</span>
+            <select
+              value={currencyFilter}
+              onChange={(e) => setCurrencyFilter(e.target.value)}
+              className="bg-transparent text-xs text-white font-mono focus:outline-none cursor-pointer pr-1"
+            >
+              <option value="all" className="bg-neutral-900 text-white">All Currencies</option>
+              {SUPPORTED_CURRENCIES.map((c) => (
+                <option key={c.code} value={c.code} className="bg-neutral-900 text-white">
+                  {c.code} ({c.symbol})
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {/* Status Filters */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 lg:pb-0">
           {[
             { id: "all", label: "All" },
             { id: "draft", label: "Draft" },
-            { id: "sent", label: "Sent" },
+            { id: "sent", label: "Due" },
+            { id: "advance_paid", label: "Advance Paid" },
             { id: "paid", label: "Paid" },
             { id: "overdue", label: "Overdue" },
           ].map((tab) => (
@@ -182,19 +243,33 @@ export function InvoicesTab({
                     </td>
 
                     {/* Amount */}
-                    <td className="py-3.5 px-4 text-right font-mono font-bold text-white text-sm">
-                      ${inv.total.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                    <td className="py-3.5 px-4 text-right font-mono">
+                      <div className="font-bold text-white text-sm">
+                        {getCurrencySymbol(inv.currency)}{inv.total.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                      </div>
+                      {inv.status === "advance_paid" && (
+                        <>
+                          <div className="text-[11px] text-sky-400 font-semibold">
+                            Advance: {getCurrencySymbol(inv.currency)}{(inv.advance_amount || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                          </div>
+                          <div className="text-[10px] text-neutral-400">
+                            Due: {getCurrencySymbol(inv.currency)}{Math.max(0, inv.total - (inv.advance_amount || 0)).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                          </div>
+                        </>
+                      )}
                     </td>
 
                     {/* Status badge */}
                     <td className="py-3.5 px-4">
                       <button
                         type="button"
-                        onClick={() => togglePaid(inv)}
-                        title="Click to toggle Paid/Sent"
+                        onClick={() => cycleInvoiceStatus(inv)}
+                        title="Click to cycle status: Due -> Advance -> Paid"
                         className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono capitalize cursor-pointer transition-transform active:scale-95 ${
                           inv.status === "paid"
                             ? "bg-emerald-950 text-emerald-400 border border-emerald-500/30"
+                            : inv.status === "advance_paid"
+                            ? "bg-sky-950 text-sky-400 border border-sky-500/40"
                             : inv.status === "sent"
                             ? "bg-blue-950 text-blue-400 border border-blue-500/30"
                             : inv.status === "overdue"
@@ -203,10 +278,18 @@ export function InvoicesTab({
                         }`}
                       >
                         {inv.status === "paid" && <CheckCircle className="w-3 h-3" />}
+                        {inv.status === "advance_paid" && <Receipt className="w-3 h-3 text-sky-400" />}
                         {inv.status === "sent" && <Send className="w-3 h-3" />}
                         {inv.status === "overdue" && <Clock className="w-3 h-3" />}
-                        {inv.status}
+                        {inv.status === "advance_paid"
+                          ? `Advance (${inv.advance_percent || Math.round(((inv.advance_amount || 0) / (inv.total || 1)) * 100)}%)`
+                          : inv.status}
                       </button>
+                      {inv.payment_method && inv.payment_method !== "N/A" && (
+                        <div className="text-[10px] text-neutral-400 font-mono mt-1 truncate max-w-[130px]" title={`Payment Done With: ${inv.payment_method}`}>
+                          via {inv.payment_method}
+                        </div>
+                      )}
                     </td>
 
                     {/* Resend Status */}
@@ -242,11 +325,19 @@ export function InvoicesTab({
                         </button>
                         <button
                           type="button"
-                          title={inv.status === "paid" ? "Send Paid Invoice / Receipt via Resend" : "Send Invoice via Resend"}
+                          title={
+                            inv.status === "paid"
+                              ? "Send Paid Invoice / Receipt via Resend"
+                              : inv.status === "advance_paid"
+                              ? "Send Advance Confirmation / Receipt via Resend"
+                              : "Send Invoice via Resend"
+                          }
                           onClick={() => onSendInvoice(inv)}
                           className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg font-semibold text-[11px] transition-colors cursor-pointer shadow-sm ${
                             inv.status === "paid"
                               ? "bg-emerald-500 hover:bg-emerald-400 text-stone-950"
+                              : inv.status === "advance_paid"
+                              ? "bg-sky-400 hover:bg-sky-300 text-stone-950"
                               : "bg-brand-lime hover:bg-[#bef264] text-stone-950"
                           }`}
                         >
@@ -254,6 +345,11 @@ export function InvoicesTab({
                             <>
                               <Receipt className="w-3 h-3" />
                               <span>Receipt</span>
+                            </>
+                          ) : inv.status === "advance_paid" ? (
+                            <>
+                              <Receipt className="w-3 h-3" />
+                              <span>Advance</span>
                             </>
                           ) : (
                             <>

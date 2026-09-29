@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { sendTestEmailFn } from "@/lib/admin.functions";
+import { SUPPORTED_CURRENCIES } from "@/lib/invoice-pdf";
 import {
   ShieldCheck,
   Database,
@@ -10,6 +11,8 @@ import {
   Download,
   Loader2,
   Server,
+  DollarSign,
+  Coins,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -22,6 +25,20 @@ export function SettingsTab({ onResetData, onExportData }: SettingsTabProps) {
   const [testEmailTarget, setTestEmailTarget] = useState("hello@brnnd.com");
   const [sendingTest, setSendingTest] = useState(false);
   const [copiedSql, setCopiedSql] = useState(false);
+  const [studioCurrency, setStudioCurrency] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("brnnd_default_currency") || "BDT";
+    }
+    return "BDT";
+  });
+
+  const handleCurrencyChange = (newCurrency: string) => {
+    setStudioCurrency(newCurrency);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("brnnd_default_currency", newCurrency);
+    }
+    toast.success(`Studio default currency updated to ${newCurrency}`);
+  };
 
   const supabaseUrl = "https://dqzaibawseoleperxswk.supabase.co";
   const supabaseKey = "Connected via .env";
@@ -100,8 +117,53 @@ CREATE POLICY "Allow all on invoices" ON public.invoices FOR ALL TO anon, authen
       <div>
         <h2 className="text-xl font-bold tracking-tight text-white">System Integrations & Settings</h2>
         <p className="text-xs text-neutral-400 mt-0.5">
-          Credentials, Resend email status, Supabase cloud configuration, and maintenance tools
+          Studio billing currency, Resend email status, Supabase cloud configuration, and maintenance tools
         </p>
+      </div>
+
+      {/* Studio Currency Preferences Card */}
+      <div className="p-6 rounded-xl bg-neutral-900/80 border border-neutral-800 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-brand-lime/10 border border-brand-lime/25 text-brand-lime">
+              <Coins className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-white">Studio Default Currency &amp; Invoicing</h3>
+              <p className="text-xs text-neutral-400">
+                Default currency for new client projects, contracts, and advance invoices
+              </p>
+            </div>
+          </div>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono bg-brand-lime/10 text-brand-lime border border-brand-lime/30 font-bold self-start sm:self-auto">
+            Active: {studioCurrency}
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
+          {SUPPORTED_CURRENCIES.map((c) => (
+            <button
+              key={c.code}
+              type="button"
+              onClick={() => handleCurrencyChange(c.code)}
+              className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
+                studioCurrency === c.code
+                  ? "bg-brand-lime/10 border-brand-lime/60 ring-1 ring-brand-lime/30 text-white"
+                  : "bg-neutral-950 border-neutral-800 text-neutral-400 hover:border-neutral-700"
+              }`}
+            >
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-sm font-bold font-mono text-white">{c.symbol} {c.code}</span>
+                {studioCurrency === c.code && (
+                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-brand-lime text-stone-950 font-bold">
+                    DEFAULT
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-neutral-400 mt-1">{c.label}</p>
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Resend Card */}

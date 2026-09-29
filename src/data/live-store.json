@@ -1,6 +1,92 @@
 {
-  "invoices": [],
+  "invoices": [
+    {
+      "id": "inv-1790705348104",
+      "invoice_number": "INV-2026-714",
+      "client_name": "Toufique Hossain",
+      "client_company": "Brnnd",
+      "client_email": "linkonn447@gmail.com",
+      "client_address": "",
+      "issue_date": "2026-09-29",
+      "due_date": "2026-10-14",
+      "status": "paid",
+      "currency": "USD",
+      "items": [
+        {
+          "id": "1",
+          "description": "Website Landing Page",
+          "quantity": 1,
+          "rate": 25000,
+          "amount": 25000
+        }
+      ],
+      "subtotal": 25000,
+      "tax_percent": 0,
+      "tax_amount": 0,
+      "discount_amount": 0,
+      "total": 25000,
+      "notes": "Payment is due within 15 business days. Direct wire instructions included.",
+      "last_sent_at": "2026-09-29T18:09:19.875Z",
+      "sent_to_email": "tashinkan360@gmail.com",
+      "created_at": "2026-09-29T18:09:08.104Z"
+    }
+  ],
   "leads": [],
-  "projects": [],
-  "lastUpdated": "2026-09-28T00:05:45.388Z"
+  "projects": [
+    {
+      "id": "proj-1790705310917",
+      "title": "Tashin Personal Website",
+      "client_name": "Khan",
+      "client_company": "Tashin",
+      "client_email": "tashinkan360@gmail.com",
+      "client_phone": "01815177799",
+      "services": [
+        "Brand Strategy",
+        "Visual Identity",
+        "UI/UX Design"
+      ],
+      "status": "in_progress",
+      "priority": "high",
+      "start_date": "2026-09-29",
+      "target_launch_date": "2026-10-29",
+      "budget": 25000,
+      "currency": "BDT",
+      "description": "Comprehensive brand identity transformation, digital experience design, and design system handover.",
+      "requirements": [
+        "Complete brand book with typography & Pantone color palette",
+        "High-conversion web architecture & Figma design system",
+        "Exportable production-ready vector assets and component library"
+      ],
+      "milestones": [
+        {
+          "id": "1",
+          "title": "Discovery Workshop & Narrative Alignment",
+          "completed": true,
+          "due_date": "2026-09-29"
+        },
+        {
+          "id": "2",
+          "title": "Visual Identity & Vector Logomark Exploration",
+          "completed": false,
+          "due_date": "2026-10-29"
+        },
+        {
+          "id": "3",
+          "title": "High-Fidelity Figma Web Prototype",
+          "completed": false,
+          "due_date": "2026-10-29"
+        },
+        {
+          "id": "4",
+          "title": "Final Deliverable Handoff & Launch QA",
+          "completed": false,
+          "due_date": "2026-10-29"
+        }
+      ],
+      "media_files": [],
+      "created_at": "2026-09-29T18:08:30.917Z",
+      "updated_at": "2026-09-29T18:08:30.917Z"
+    }
+  ],
+  "lastUpdated": "2026-09-29T18:09:32.058Z"
 }

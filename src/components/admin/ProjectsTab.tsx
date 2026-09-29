@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { Project } from "@/data/admin-data";
+import { getCurrencySymbol } from "@/lib/invoice-pdf";
 import {
   FolderArchive,
   Plus,
@@ -361,7 +362,7 @@ export function ProjectsTab({
                   <div>
                     <span className="text-[10px] font-mono uppercase text-neutral-500 block">Value</span>
                     <span className="text-sm font-bold font-mono text-white">
-                      ${project.budget.toLocaleString()}
+                      {getCurrencySymbol(project.currency)}{project.budget.toLocaleString()}
                     </span>
                   </div>
 
@@ -454,7 +455,7 @@ export function ProjectsTab({
 
                       {/* Budget */}
                       <td className="py-3.5 px-4 text-right font-mono font-bold text-white">
-                        ${project.budget.toLocaleString()}
+                        {getCurrencySymbol(project.currency)}{project.budget.toLocaleString()}
                       </td>
 
                       {/* Status */}

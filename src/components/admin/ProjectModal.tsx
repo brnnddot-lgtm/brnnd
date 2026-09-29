@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Project, ProjectMediaFile, ProjectMilestone } from "@/data/admin-data";
+import { SUPPORTED_CURRENCIES, getCurrencySymbol } from "@/lib/invoice-pdf";
 import {
   X,
   Plus,
@@ -48,7 +49,13 @@ export function ProjectModal({ project, onClose, onSave }: ProjectModalProps) {
   const [status, setStatus] = useState<Project["status"]>(project?.status || "in_progress");
   const [priority, setPriority] = useState<Project["priority"]>(project?.priority || "high");
   const [budget, setBudget] = useState<number>(project?.budget || 18500);
-  const [currency, setCurrency] = useState<string>(project?.currency || "USD");
+  const [currency, setCurrency] = useState<string>(
+    project?.currency ||
+      (typeof window !== "undefined"
+        ? localStorage.getItem("brnnd_default_currency") || "BDT"
+        : "BDT")
+  );
+  const currSym = getCurrencySymbol(currency);
 
   const [startDate, setStartDate] = useState(
     project?.start_date || new Date().toISOString().split("T")[0]
@@ -217,21 +224,27 @@ export function ProjectModal({ project, onClose, onSave }: ProjectModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-3 sm:p-6 animate-in fade-in duration-200">
-      <div className="relative flex flex-col w-full max-w-4xl max-h-[92vh] bg-neutral-900 border border-neutral-800 rounded-2xl shadow-2xl overflow-hidden text-neutral-100">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-2 sm:p-4 md:p-6 overflow-hidden animate-in fade-in duration-200"
+      data-lenis-prevent="true"
+    >
+      <div
+        className="relative flex flex-col w-full max-w-4xl max-h-[96vh] sm:max-h-[92vh] bg-neutral-900 border border-neutral-800 rounded-2xl shadow-2xl overflow-hidden text-neutral-100 my-auto"
+        data-lenis-prevent="true"
+      >
         {/* Header Bar */}
-        <div className="shrink-0 flex items-center justify-between px-6 py-4 border-b border-neutral-800 bg-neutral-950">
-          <div className="flex items-center gap-3">
-            <img src="/brnndlogo.png" alt="BRNND" className="h-5 w-auto object-contain" />
+        <div className="shrink-0 flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 border-b border-neutral-800 bg-neutral-950">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <img src="/brnndlogo.png" alt="BRNND" className="h-4 sm:h-5 w-auto object-contain shrink-0" />
             <span className="text-neutral-600">/</span>
-            <h2 className="text-base font-semibold text-white">
+            <h2 className="text-sm sm:text-base font-semibold text-white truncate">
               {isEditing ? `Edit Project: ${project?.title}` : "Initialize New Client Project"}
             </h2>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors cursor-pointer shrink-0 ml-2"
           >
             <X className="w-5 h-5" />
           </button>
@@ -239,7 +252,13 @@ export function ProjectModal({ project, onClose, onSave }: ProjectModalProps) {
 
         {/* Scrollable Form Body */}
         <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0 overflow-hidden">
-          <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
+          <div
+            tabIndex={0}
+            role="region"
+            aria-label="Project configuration form"
+            data-lenis-prevent="true"
+            className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 sm:py-6 pb-14 space-y-5 sm:space-y-6 custom-scrollbar outline-none focus-visible:ring-1 focus-visible:ring-brand-lime/30"
+          >
             {/* Top Project Identity */}
             <div className="space-y-4 p-4 rounded-xl bg-neutral-950 border border-neutral-800">
               <h3 className="text-xs font-mono uppercase tracking-wider text-neutral-400 flex items-center gap-1.5">
@@ -314,28 +333,58 @@ export function ProjectModal({ project, onClose, onSave }: ProjectModalProps) {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
-                <div>
-                  <label className="block text-xs font-mono uppercase text-neutral-400 mb-1">Contract Value ($)</label>
-                  <input
-                    type="number"
-                    min="0"
-                    step="500"
-                    value={budget}
-                    onChange={(e) => setBudget(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-white font-mono focus:border-brand-lime focus:outline-none"
-                  />
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4 pt-1">
+                <div className="sm:col-span-2 space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-mono uppercase text-neutral-400">
+                      Contract Value ({currSym})
+                    </label>
+                    <span className="text-xs font-mono font-bold text-brand-lime">
+                      {currSym}{budget.toLocaleString()} {currency}
+                    </span>
+                  </div>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 font-mono text-xs text-neutral-400">
+                      {currSym}
+                    </span>
+                    <input
+                      type="number"
+                      min="0"
+                      step="500"
+                      inputMode="decimal"
+                      value={budget}
+                      onChange={(e) => setBudget(Math.max(0, Number(e.target.value) || 0))}
+                      className="w-full pl-8 pr-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-white font-mono focus:border-brand-lime focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                    />
+                  </div>
+                  {/* Budget Slider */}
+                  <div className="flex items-center gap-2 pt-0.5">
+                    <input
+                      type="range"
+                      min="0"
+                      max={Math.max(50000, Math.round(budget * 1.5))}
+                      step="500"
+                      value={budget}
+                      onChange={(e) => setBudget(Number(e.target.value))}
+                      className="w-full h-1.5 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-brand-lime"
+                    />
+                    <span className="text-[10px] font-mono text-neutral-500 shrink-0">
+                      {currSym}{Math.round(budget / 1000)}k
+                    </span>
+                  </div>
                 </div>
                 <div>
                   <label className="block text-xs font-mono uppercase text-neutral-400 mb-1">Currency</label>
                   <select
                     value={currency}
                     onChange={(e) => setCurrency(e.target.value)}
-                    className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-xs text-white focus:border-brand-lime focus:outline-none font-mono"
+                    className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-white focus:border-brand-lime focus:outline-none font-mono cursor-pointer"
                   >
-                    <option value="USD">USD ($)</option>
-                    <option value="EUR">EUR (€)</option>
-                    <option value="GBP">GBP (£)</option>
+                    {SUPPORTED_CURRENCIES.map((c) => (
+                      <option key={c.code} value={c.code}>
+                        {c.label}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -481,7 +530,7 @@ export function ProjectModal({ project, onClose, onSave }: ProjectModalProps) {
               </div>
 
               {/* Add requirement input */}
-              <div className="flex gap-2 pt-1">
+              <div className="flex flex-col sm:flex-row gap-2 pt-1">
                 <input
                   type="text"
                   placeholder="Add specific deliverable, e.g. 'Figma Design System with 40+ components'..."
@@ -496,7 +545,7 @@ export function ProjectModal({ project, onClose, onSave }: ProjectModalProps) {
                       }
                     }
                   }}
-                  className="flex-1 px-3 py-1.5 bg-neutral-900 border border-neutral-800 rounded-lg text-xs text-white placeholder-neutral-500 focus:border-brand-lime focus:outline-none"
+                  className="flex-1 px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm sm:text-xs text-white placeholder-neutral-500 focus:border-brand-lime focus:outline-none"
                 />
                 <button
                   type="button"
@@ -506,9 +555,9 @@ export function ProjectModal({ project, onClose, onSave }: ProjectModalProps) {
                       setNewReqInput("");
                     }
                   }}
-                  className="px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-white rounded-lg text-xs font-medium cursor-pointer"
+                  className="w-full sm:w-auto px-4 py-2 bg-neutral-800 hover:bg-neutral-700 text-white rounded-lg text-xs font-medium cursor-pointer shrink-0 transition-colors"
                 >
-                  Add Requirement
+                  Add Deliverable
                 </button>
               </div>
             </div>
@@ -603,18 +652,18 @@ export function ProjectModal({ project, onClose, onSave }: ProjectModalProps) {
                   </select>
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <input
                     type="url"
                     placeholder="https://..."
                     value={newFileUrl}
                     onChange={(e) => setNewFileUrl(e.target.value)}
-                    className="flex-1 px-3 py-1.5 bg-neutral-950 border border-neutral-800 rounded text-xs text-white placeholder-neutral-500 focus:border-brand-lime focus:outline-none font-mono"
+                    className="flex-1 px-3 py-2 sm:py-1.5 bg-neutral-950 border border-neutral-800 rounded text-sm sm:text-xs text-white placeholder-neutral-500 focus:border-brand-lime focus:outline-none font-mono"
                   />
                   <button
                     type="button"
                     onClick={handleAddMediaFile}
-                    className="px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-white rounded text-xs font-medium cursor-pointer"
+                    className="w-full sm:w-auto px-4 py-2 sm:py-1.5 bg-neutral-800 hover:bg-neutral-700 text-white rounded text-xs font-medium cursor-pointer shrink-0 transition-colors"
                   >
                     Attach Link
                   </button>
@@ -638,17 +687,17 @@ export function ProjectModal({ project, onClose, onSave }: ProjectModalProps) {
           </div>
 
           {/* Sticky Footer */}
-          <div className="shrink-0 flex items-center justify-end gap-3 px-6 py-4 border-t border-neutral-800 bg-neutral-950">
+          <div className="shrink-0 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3 px-4 sm:px-6 py-3.5 sm:py-4 border-t border-neutral-800 bg-neutral-950">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-medium text-neutral-400 hover:text-white transition-colors cursor-pointer"
+              className="px-4 py-2.5 text-xs font-medium text-neutral-400 hover:text-white transition-colors cursor-pointer text-center"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-brand-lime hover:bg-[#bef264] text-stone-950 text-xs font-bold tracking-wide transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-md shadow-brand-lime/10"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-brand-lime hover:bg-[#bef264] text-stone-950 text-xs font-bold tracking-wide transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-md shadow-brand-lime/10"
             >
               <Save className="w-3.5 h-3.5" />
               {isEditing ? "Save Changes" : "Create Project"}

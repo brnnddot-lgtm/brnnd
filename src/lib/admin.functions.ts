@@ -13,7 +13,7 @@ import {
   deleteRealProject,
   updateRealProjectStatus,
 } from "./server-store";
-import type { Invoice } from "./invoice-pdf";
+import { type Invoice, getCurrencySymbol } from "./invoice-pdf";
 import type { Project } from "@/data/admin-data";
 
 const invoiceEmailSchema = z.object({
@@ -29,6 +29,10 @@ const invoiceEmailSchema = z.object({
   message: z.string().optional(),
   pdfBase64: z.string(), // base64 string of the PDF
   isPaid: z.boolean().optional().default(false),
+  isAdvance: z.boolean().optional().default(false),
+  advanceAmount: z.number().optional(),
+  balanceDue: z.number().optional(),
+  paymentMethod: z.string().optional(),
 });
 
 export const sendInvoiceEmailFn = createServerFn({ method: "POST" })
@@ -41,13 +45,23 @@ export const sendInvoiceEmailFn = createServerFn({ method: "POST" })
       throw new Error("Resend API key is missing. Please check RESEND_API_KEY in .env");
     }
 
+    const sym = getCurrencySymbol(data.currency);
+    const isPaid = Boolean(data.isPaid);
+    const isAdvance = Boolean(data.isAdvance);
+    const advanceAmt = Number(data.advanceAmount || 0);
+    const balDue = Number(
+      data.balanceDue !== undefined ? data.balanceDue : Math.max(0, data.amount - advanceAmt)
+    );
+
     const emailSubject =
       data.subject?.trim() ||
-      (data.isPaid
-        ? `Receipt & Paid Invoice ${data.invoiceNumber} from BRNND Studio (Paid: $${data.amount.toLocaleString()} ${data.currency})`
-        : `Invoice ${data.invoiceNumber} from BRNND Studio ($${data.amount.toLocaleString()} ${data.currency})`);
+      (isPaid
+        ? `Receipt & Paid Invoice ${data.invoiceNumber} from BRNND Studio (Paid: ${sym}${data.amount.toLocaleString()} ${data.currency})`
+        : isAdvance
+        ? `Advance Payment Confirmation: Invoice ${data.invoiceNumber} from BRNND Studio (${sym}${advanceAmt.toLocaleString()} Paid • Balance: ${sym}${balDue.toLocaleString()})`
+        : `Invoice ${data.invoiceNumber} from BRNND Studio (${sym}${data.amount.toLocaleString()} ${data.currency})`);
 
-    const accentColor = data.isPaid ? "#34d399" : "#bef264";
+    const accentColor = isPaid ? "#34d399" : isAdvance ? "#38bdf8" : "#bef264";
 
     const customMessage = data.message?.trim()
       ? `<div style="margin: 20px 0; padding: 16px; background-color: #171717; border-left: 3px solid ${accentColor}; font-size: 14px; color: #f0f0f0; line-height: 1.6;">${escapeHtml(data.message).replace(/\n/g, "<br/>")}</div>`
@@ -79,9 +93,13 @@ export const sendInvoiceEmailFn = createServerFn({ method: "POST" })
             </td>
             <td align="right" style="vertical-align: top;">
               ${
-                data.isPaid
+                isPaid
                   ? `<span style="display: inline-block; padding: 6px 12px; background-color: #064e3b; border: 1px solid #059669; border-radius: 4px; font-size: 12px; font-weight: 700; color: #34d399; letter-spacing: 0.5px;">
                       &#10003; PAID &bull; ${escapeHtml(data.invoiceNumber)}
+                    </span>`
+                  : isAdvance
+                  ? `<span style="display: inline-block; padding: 6px 12px; background-color: #083344; border: 1px solid #0284c7; border-radius: 4px; font-size: 12px; font-weight: 700; color: #38bdf8; letter-spacing: 0.5px;">
+                      &#10003; ADVANCE PAID &bull; ${escapeHtml(data.invoiceNumber)}
                     </span>`
                   : `<span style="display: inline-block; padding: 6px 12px; background-color: #262626; border: 1px solid #333333; border-radius: 4px; font-size: 12px; font-weight: 600; color: #ffffff; letter-spacing: 0.5px;">
                       ${escapeHtml(data.invoiceNumber)}
@@ -101,8 +119,10 @@ export const sendInvoiceEmailFn = createServerFn({ method: "POST" })
         </p>
         <p style="margin: 0 0 20px 0; font-size: 14px; color: #a3a3a3; line-height: 1.6;">
           ${
-            data.isPaid
+            isPaid
               ? `Thank you for your payment! Please find attached your official paid invoice and receipt <strong>${escapeHtml(data.invoiceNumber)}</strong> confirming payment in full for creative and strategic design services provided by BRNND Studio.`
+              : isAdvance
+              ? `Thank you for your upfront deposit! Please find attached your milestone invoice and advance receipt <strong>${escapeHtml(data.invoiceNumber)}</strong> confirming receipt of your advance payment. The remaining balance will be due upon completion.`
               : `Please find attached your official invoice <strong>${escapeHtml(data.invoiceNumber)}</strong> for creative and strategic design services provided by BRNND Studio.`
           }
         </p>
@@ -116,18 +136,18 @@ export const sendInvoiceEmailFn = createServerFn({ method: "POST" })
               <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td style="font-size: 12px; color: #888888; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 6px;">
-                    ${data.isPaid ? "Total Paid" : "Total Due"}
+                    ${isPaid ? "Total Paid" : isAdvance ? "Remaining Balance Due" : "Total Due"}
                   </td>
                   <td align="right" style="font-size: 12px; color: #888888; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 6px;">
-                    ${data.isPaid ? "Payment Status" : "Payment Due"}
+                    ${isPaid ? "Payment Status" : isAdvance ? "Advance Received" : "Payment Due"}
                   </td>
                 </tr>
                 <tr>
-                  <td style="font-size: 26px; font-weight: 700; color: ${data.isPaid ? "#34d399" : "#ffffff"};">
-                    $${data.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span style="font-size: 14px; font-weight: 400; color: #999999;">${escapeHtml(data.currency)}</span>
+                  <td style="font-size: 26px; font-weight: 700; color: ${isPaid ? "#34d399" : isAdvance ? "#38bdf8" : "#ffffff"};">
+                    ${sym}${isPaid ? data.amount.toLocaleString(undefined, { minimumFractionDigits: 2 }) : isAdvance ? balDue.toLocaleString(undefined, { minimumFractionDigits: 2 }) : data.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span style="font-size: 14px; font-weight: 400; color: #999999;">${escapeHtml(data.currency)}</span>
                   </td>
-                  <td align="right" style="font-size: 15px; font-weight: 600; color: ${data.isPaid ? "#34d399" : "#eb4b2d"};">
-                    ${data.isPaid ? "&#10003; PAID IN FULL" : escapeHtml(data.dueDate)}
+                  <td align="right" style="font-size: 15px; font-weight: 600; color: ${isPaid ? "#34d399" : isAdvance ? "#38bdf8" : "#eb4b2d"};">
+                    ${isPaid ? "&#10003; PAID IN FULL" : isAdvance ? `${sym}${advanceAmt.toLocaleString(undefined, { minimumFractionDigits: 2 })} PAID` : escapeHtml(data.dueDate)}
                   </td>
                 </tr>
               </table>
@@ -136,7 +156,7 @@ export const sendInvoiceEmailFn = createServerFn({ method: "POST" })
         </table>
 
         ${
-          data.isPaid
+          isPaid
             ? `<!-- Payment Verified Notice -->
         <div style="background-color: #052e16; border: 1px solid #166534; border-radius: 6px; padding: 18px 20px; margin-bottom: 24px;">
           <p style="margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700; color: #34d399;">
@@ -145,6 +165,26 @@ export const sendInvoiceEmailFn = createServerFn({ method: "POST" })
           <p style="margin: 0; font-size: 13px; color: #86efac; line-height: 1.6;">
             This email serves as official confirmation that invoice <strong>${escapeHtml(data.invoiceNumber)}</strong> has been settled in full. No further action or payment is required.
           </p>
+          ${
+            data.paymentMethod && data.paymentMethod !== "N/A"
+              ? `<p style="margin: 8px 0 0 0; font-size: 12px; color: #a7f3d0;"><strong>Payment Done With:</strong> ${escapeHtml(data.paymentMethod)}</p>`
+              : ""
+          }
+        </div>`
+            : isAdvance
+            ? `<!-- Advance Payment Confirmation Notice -->
+        <div style="background-color: #082f49; border: 1px solid #0369a1; border-radius: 6px; padding: 18px 20px; margin-bottom: 24px;">
+          <p style="margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700; color: #38bdf8;">
+            &#10003; Advance Deposit Credited (${sym}${advanceAmt.toLocaleString()})
+          </p>
+          <p style="margin: 0; font-size: 13px; color: #bae6fd; line-height: 1.6;">
+            This email confirms receipt of your upfront advance payment. The remaining balance of <strong>${sym}${balDue.toLocaleString()} ${escapeHtml(data.currency)}</strong> will be due on final milestone handoff (${escapeHtml(data.dueDate)}).
+          </p>
+          ${
+            data.paymentMethod && data.paymentMethod !== "N/A"
+              ? `<p style="margin: 8px 0 0 0; font-size: 12px; color: #7dd3fc;"><strong>Payment Done With:</strong> ${escapeHtml(data.paymentMethod)}</p>`
+              : ""
+          }
         </div>`
             : `<!-- Wire / ACH details -->
         <div style="background-color: #141414; border: 1px solid #282828; border-radius: 6px; padding: 18px 20px; margin-bottom: 24px;">

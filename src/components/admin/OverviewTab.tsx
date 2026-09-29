@@ -1,5 +1,5 @@
 import React from "react";
-import { Invoice } from "@/lib/invoice-pdf";
+import { Invoice, getCurrencySymbol } from "@/lib/invoice-pdf";
 import { Lead, Project } from "@/data/admin-data";
 import {
   DollarSign,
@@ -51,12 +51,17 @@ export function OverviewTab({
 }: OverviewTabProps) {
   // Aggregate stats
   const totalBilled = invoices.reduce((acc, inv) => acc + (inv.total || 0), 0);
-  const totalPaid = invoices
-    .filter((inv) => inv.status === "paid")
-    .reduce((acc, inv) => acc + (inv.total || 0), 0);
-  const totalPending = invoices
-    .filter((inv) => inv.status === "sent" || inv.status === "draft")
-    .reduce((acc, inv) => acc + (inv.total || 0), 0);
+  const totalPaid = invoices.reduce((acc, inv) => {
+    if (inv.status === "paid") return acc + (inv.total || 0);
+    if (inv.status === "advance_paid") return acc + (inv.advance_amount || 0);
+    return acc;
+  }, 0);
+  const totalPending = invoices.reduce((acc, inv) => {
+    if (inv.status === "sent" || inv.status === "draft") return acc + (inv.total || 0);
+    if (inv.status === "advance_paid")
+      return acc + Math.max(0, (inv.total || 0) - (inv.advance_amount || 0));
+    return acc;
+  }, 0);
   const totalOverdue = invoices
     .filter((inv) => inv.status === "overdue")
     .reduce((acc, inv) => acc + (inv.total || 0), 0);
@@ -279,6 +284,8 @@ export function OverviewTab({
                       className={`text-[10px] font-mono px-2 py-0.5 rounded-full capitalize ${
                         inv.status === "paid"
                           ? "bg-emerald-950 text-emerald-400 border border-emerald-500/30"
+                          : inv.status === "advance_paid"
+                          ? "bg-sky-950 text-sky-400 border border-sky-500/40"
                           : inv.status === "sent"
                           ? "bg-blue-950 text-blue-400 border border-blue-500/30"
                           : inv.status === "overdue"
@@ -286,7 +293,7 @@ export function OverviewTab({
                           : "bg-neutral-800 text-neutral-300"
                       }`}
                     >
-                      {inv.status}
+                      {inv.status === "advance_paid" ? "Advance" : inv.status}
                     </span>
                   </div>
                   <p className="text-xs text-neutral-400 truncate mt-0.5">
@@ -296,7 +303,7 @@ export function OverviewTab({
 
                 <div className="flex items-center gap-3 shrink-0">
                   <span className="font-mono text-sm font-semibold text-white">
-                    ${inv.total.toLocaleString()}
+                    {getCurrencySymbol(inv.currency)}{inv.total.toLocaleString()}
                   </span>
                   <div className="flex items-center gap-1">
                     <button
@@ -317,15 +324,23 @@ export function OverviewTab({
                     </button>
                     <button
                       type="button"
-                      title={inv.status === "paid" ? "Send Paid Receipt via Resend" : "Send Invoice via Resend"}
+                      title={
+                        inv.status === "paid"
+                          ? "Send Paid Receipt via Resend"
+                          : inv.status === "advance_paid"
+                          ? "Send Advance Confirmation via Resend"
+                          : "Send Invoice via Resend"
+                      }
                       onClick={() => onSendInvoice(inv)}
                       className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
                         inv.status === "paid"
                           ? "text-emerald-400 hover:text-stone-950 hover:bg-emerald-400"
+                          : inv.status === "advance_paid"
+                          ? "text-sky-400 hover:text-stone-950 hover:bg-sky-400"
                           : "text-brand-lime hover:text-stone-950 hover:bg-brand-lime"
                       }`}
                     >
-                      {inv.status === "paid" ? (
+                      {inv.status === "paid" || inv.status === "advance_paid" ? (
                         <Receipt className="w-3.5 h-3.5" />
                       ) : (
                         <Send className="w-3.5 h-3.5" />
