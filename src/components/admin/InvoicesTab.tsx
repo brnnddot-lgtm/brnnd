@@ -22,7 +22,7 @@ interface InvoicesTabProps {
   onCreateInvoice: () => void;
   onEditInvoice: (invoice: Invoice) => void;
   onPreviewInvoice: (invoice: Invoice) => void;
-  onSendInvoice: (invoice: Invoice) => void;
+  onSendInvoice: (invoice: Invoice, mode?: "due" | "advance" | "paid") => void;
   onDownloadInvoice: (invoice: Invoice) => void;
   onUpdateInvoice: (invoice: Invoice) => void;
   onDeleteInvoice: (invoiceId: string) => void;
@@ -323,41 +323,42 @@ export function InvoicesTab({
                         >
                           <Download className="w-3.5 h-3.5" />
                         </button>
+                        {/* Send Invoice Button */}
                         <button
                           type="button"
-                          title={
-                            inv.status === "paid"
-                              ? "Send Paid Invoice / Receipt via Resend"
-                              : inv.status === "advance_paid"
-                              ? "Send Advance Confirmation / Receipt via Resend"
-                              : "Send Invoice via Resend"
-                          }
-                          onClick={() => onSendInvoice(inv)}
-                          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg font-semibold text-[11px] transition-colors cursor-pointer shadow-sm ${
-                            inv.status === "paid"
-                              ? "bg-emerald-500 hover:bg-emerald-400 text-stone-950"
-                              : inv.status === "advance_paid"
-                              ? "bg-sky-400 hover:bg-sky-300 text-stone-950"
-                              : "bg-brand-lime hover:bg-[#bef264] text-stone-950"
-                          }`}
+                          title="Send Invoice via Resend"
+                          onClick={() => onSendInvoice(inv, "due")}
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg font-semibold text-[11px] bg-brand-lime hover:bg-[#bef264] text-stone-950 transition-colors cursor-pointer shadow-sm active:scale-95"
                         >
-                          {inv.status === "paid" ? (
-                            <>
-                              <Receipt className="w-3 h-3" />
-                              <span>Receipt</span>
-                            </>
-                          ) : inv.status === "advance_paid" ? (
-                            <>
-                              <Receipt className="w-3 h-3" />
-                              <span>Advance</span>
-                            </>
-                          ) : (
-                            <>
-                              <Send className="w-3 h-3" />
-                              <span>Send</span>
-                            </>
-                          )}
+                          <Send className="w-3 h-3" />
+                          <span>Send</span>
                         </button>
+
+                        {/* Advance Receipt Button (shown for advance_paid) */}
+                        {inv.status === "advance_paid" && (
+                          <button
+                            type="button"
+                            title="Send Advance Receipt via Resend"
+                            onClick={() => onSendInvoice(inv, "advance")}
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg font-semibold text-[11px] bg-sky-400 hover:bg-sky-300 text-stone-950 transition-colors cursor-pointer shadow-sm active:scale-95"
+                          >
+                            <Receipt className="w-3 h-3" />
+                            <span>Advance</span>
+                          </button>
+                        )}
+
+                        {/* Paid Receipt Button (shown for paid) */}
+                        {inv.status === "paid" && (
+                          <button
+                            type="button"
+                            title="Send Paid Receipt via Resend"
+                            onClick={() => onSendInvoice(inv, "paid")}
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg font-semibold text-[11px] bg-emerald-500 hover:bg-emerald-400 text-stone-950 transition-colors cursor-pointer shadow-sm active:scale-95"
+                          >
+                            <Receipt className="w-3 h-3" />
+                            <span>Receipt</span>
+                          </button>
+                        )}
                         <button
                           type="button"
                           title="Edit Invoice"

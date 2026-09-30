@@ -192,7 +192,13 @@ export async function saveRealInvoice(invoice: Invoice): Promise<Invoice> {
       .upsert(payload, { onConflict: "id" });
 
     if (error) {
-      console.warn("[Database] Warning syncing invoice to Supabase:", error.message);
+      if (error.code === "PGRST205" || error.message?.includes("schema cache")) {
+        console.warn(
+          "[Database] Supabase 'invoices' table not yet created in cloud schema cache. Invoice saved safely to local storage. (Run SQL migration in Supabase SQL editor to enable cloud syncing)."
+        );
+      } else {
+        console.warn("[Database] Warning syncing invoice to Supabase:", error.message);
+      }
     }
   } catch (err) {
     console.warn("[Database] Supabase invoice upsert error:", err);
@@ -305,7 +311,13 @@ export async function saveRealProject(project: Project): Promise<Project> {
       .upsert(payload, { onConflict: "id" });
 
     if (error) {
-      console.warn("[Database] Warning syncing project to Supabase:", error.message);
+      if (error.code === "PGRST205" || error.message?.includes("schema cache")) {
+        console.warn(
+          "[Database] Supabase 'projects' table not yet created in cloud schema cache. Project saved safely to local storage. (Run SQL migration in Supabase SQL editor to enable cloud syncing)."
+        );
+      } else {
+        console.warn("[Database] Warning syncing project to Supabase:", error.message);
+      }
     }
   } catch (err) {
     console.warn("[Database] Supabase project upsert error:", err);

@@ -84,6 +84,9 @@ function AdminPage() {
   const [editingInvoice, setEditingInvoice] = useState<Invoice | null>(null);
   const [previewInvoice, setPreviewInvoice] = useState<Invoice | null>(null);
   const [sendInvoice, setSendInvoice] = useState<Invoice | null>(null);
+  const [sendInvoiceMode, setSendInvoiceMode] = useState<"due" | "advance" | "paid" | undefined>(
+    undefined
+  );
 
   // Cloud Database Health state
   const [dbHealth, setDbHealth] = useState<{
@@ -528,7 +531,10 @@ function AdminPage() {
                 setIsCreatingProject(true);
               }}
               onPreviewInvoice={(inv) => setPreviewInvoice(inv)}
-              onSendInvoice={(inv) => setSendInvoice(inv)}
+              onSendInvoice={(inv, mode) => {
+                setSendInvoice(inv);
+                setSendInvoiceMode(mode);
+              }}
               onDownloadInvoice={(inv) => downloadInvoicePdf(inv)}
               onNavigateTab={(tab) => setActiveTab(tab as TabType)}
             />
@@ -563,7 +569,10 @@ function AdminPage() {
                 setIsCreatingInvoice(true);
               }}
               onPreviewInvoice={(inv) => setPreviewInvoice(inv)}
-              onSendInvoice={(inv) => setSendInvoice(inv)}
+              onSendInvoice={(inv, mode) => {
+                setSendInvoice(inv);
+                setSendInvoiceMode(mode);
+              }}
               onDownloadInvoice={(inv) => downloadInvoicePdf(inv)}
               onUpdateInvoice={handleUpdateInvoice}
               onDeleteInvoice={handleDeleteInvoice}
@@ -598,7 +607,12 @@ function AdminPage() {
           }}
           onSave={handleSaveInvoice}
           onPreview={(inv) => setPreviewInvoice(inv)}
-          onSendEmail={(inv) => setSendInvoice(inv)}
+          onSendEmail={(inv) => {
+            setSendInvoice(inv);
+            setSendInvoiceMode(
+              inv.status === "paid" ? "paid" : inv.status === "advance_paid" ? "advance" : "due"
+            );
+          }}
         />
       )}
 
@@ -606,16 +620,27 @@ function AdminPage() {
         <InvoicePdfModal
           invoice={previewInvoice}
           onClose={() => setPreviewInvoice(null)}
-          onSendEmail={(inv) => setSendInvoice(inv)}
+          onSendEmail={(inv) => {
+            setSendInvoice(inv);
+            setSendInvoiceMode(
+              inv.status === "paid" ? "paid" : inv.status === "advance_paid" ? "advance" : "due"
+            );
+          }}
         />
       )}
 
       {sendInvoice && (
         <SendInvoiceDialog
           invoice={sendInvoice}
-          onClose={() => setSendInvoice(null)}
+          initialMode={sendInvoiceMode}
+          onClose={() => {
+            setSendInvoice(null);
+            setSendInvoiceMode(undefined);
+          }}
           onSuccess={(updated) => {
             handleUpdateInvoice(updated);
+            setSendInvoice(null);
+            setSendInvoiceMode(undefined);
           }}
         />
       )}

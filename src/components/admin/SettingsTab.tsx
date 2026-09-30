@@ -13,6 +13,7 @@ import {
   Server,
   DollarSign,
   Coins,
+  ExternalLink,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -44,20 +45,37 @@ export function SettingsTab({ onResetData, onExportData }: SettingsTabProps) {
   const supabaseKey = "Connected via .env";
   const resendSender = "hello@brnnd.com";
 
-  const sqlSchema = `-- BRNND Supabase Schema for Invoices & Leads
-CREATE TABLE IF NOT EXISTS public.demo_leads (
-  id uuid NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
-  email text NOT NULL,
-  full_name text NOT NULL,
-  company text NOT NULL,
-  company_size text NOT NULL,
-  source text,
-  status text NOT NULL DEFAULT 'new',
-  created_at timestamptz NOT NULL DEFAULT now()
+  const sqlSchema = `-- Complete Cloud Database Schema for BRNND Studio Admin
+-- Run this in your Supabase SQL Editor: https://supabase.com/dashboard/project/dqzaibawseoleperxswk/sql/new
+
+-- 1. Create projects table
+CREATE TABLE IF NOT EXISTS public.projects (
+  id text NOT NULL PRIMARY KEY,
+  title text NOT NULL,
+  client_name text NOT NULL,
+  client_company text NOT NULL,
+  client_email text NOT NULL,
+  client_phone text,
+  client_whatsapp text,
+  services jsonb NOT NULL DEFAULT '[]'::jsonb,
+  status text NOT NULL DEFAULT 'discovery',
+  priority text NOT NULL DEFAULT 'medium',
+  start_date date NOT NULL DEFAULT CURRENT_DATE,
+  target_launch_date date,
+  budget numeric NOT NULL DEFAULT 0,
+  currency text NOT NULL DEFAULT 'USD',
+  description text DEFAULT '',
+  requirements jsonb NOT NULL DEFAULT '[]'::jsonb,
+  milestones jsonb NOT NULL DEFAULT '[]'::jsonb,
+  media_files jsonb NOT NULL DEFAULT '[]'::jsonb,
+  notes text,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  updated_at timestamptz NOT NULL DEFAULT now()
 );
 
+-- 2. Create invoices table
 CREATE TABLE IF NOT EXISTS public.invoices (
-  id uuid NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
+  id text NOT NULL PRIMARY KEY,
   invoice_number text NOT NULL UNIQUE,
   client_name text NOT NULL,
   client_company text NOT NULL,
@@ -73,6 +91,10 @@ CREATE TABLE IF NOT EXISTS public.invoices (
   tax_amount numeric NOT NULL DEFAULT 0,
   discount_amount numeric NOT NULL DEFAULT 0,
   total numeric NOT NULL DEFAULT 0,
+  advance_amount numeric NOT NULL DEFAULT 0,
+  advance_percent numeric NOT NULL DEFAULT 0,
+  balance_due numeric NOT NULL DEFAULT 0,
+  payment_method text DEFAULT 'N/A',
   notes text,
   payment_instructions text,
   last_sent_at timestamptz,
@@ -81,11 +103,32 @@ CREATE TABLE IF NOT EXISTS public.invoices (
   updated_at timestamptz NOT NULL DEFAULT now()
 );
 
-ALTER TABLE public.demo_leads ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.invoices ENABLE ROW LEVEL SECURITY;
+-- 3. Create demo_leads table
+CREATE TABLE IF NOT EXISTS public.demo_leads (
+  id text NOT NULL PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  email text NOT NULL,
+  full_name text NOT NULL,
+  company text NOT NULL,
+  company_size text NOT NULL,
+  source text DEFAULT 'Website Inbound',
+  status text NOT NULL DEFAULT 'new',
+  created_at timestamptz NOT NULL DEFAULT now()
+);
 
-CREATE POLICY "Allow all on demo_leads" ON public.demo_leads FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
-CREATE POLICY "Allow all on invoices" ON public.invoices FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);`;
+-- 4. Enable Row Level Security (RLS)
+ALTER TABLE public.projects ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.invoices ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.demo_leads ENABLE ROW LEVEL SECURITY;
+
+-- 5. Access policies
+DROP POLICY IF EXISTS "Allow all for projects" ON public.projects;
+CREATE POLICY "Allow all for projects" ON public.projects FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow all for invoices" ON public.invoices;
+CREATE POLICY "Allow all for invoices" ON public.invoices FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow all for demo_leads" ON public.demo_leads;
+CREATE POLICY "Allow all for demo_leads" ON public.demo_leads FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);`;
 
   const handleCopySql = () => {
     navigator.clipboard.writeText(sqlSchema);
@@ -271,14 +314,25 @@ CREATE POLICY "Allow all on invoices" ON public.invoices FOR ALL TO anon, authen
             <span className="text-xs font-mono uppercase text-neutral-400">
               Supabase SQL Migration Script
             </span>
-            <button
-              type="button"
-              onClick={handleCopySql}
-              className="inline-flex items-center gap-1 text-xs font-mono text-brand-lime hover:underline transition-colors cursor-pointer"
-            >
-              {copiedSql ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-              {copiedSql ? "Copied!" : "Copy SQL"}
-            </button>
+            <div className="flex items-center gap-3">
+              <a
+                href="https://supabase.com/dashboard/project/dqzaibawseoleperxswk/sql/new"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1 text-xs font-mono text-neutral-400 hover:text-white transition-colors cursor-pointer"
+              >
+                <span>Open SQL Editor</span>
+                <ExternalLink className="w-3 h-3 text-brand-lime" />
+              </a>
+              <button
+                type="button"
+                onClick={handleCopySql}
+                className="inline-flex items-center gap-1 text-xs font-mono text-brand-lime hover:underline transition-colors cursor-pointer"
+              >
+                {copiedSql ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                {copiedSql ? "Copied!" : "Copy SQL"}
+              </button>
+            </div>
           </div>
           <pre className="p-3 rounded-lg bg-neutral-950 border border-neutral-800 text-[11px] font-mono text-neutral-400 overflow-x-auto max-h-40 leading-relaxed">
             {sqlSchema}

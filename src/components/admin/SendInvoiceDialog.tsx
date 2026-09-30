@@ -6,16 +6,23 @@ import { toast } from "sonner";
 
 interface SendInvoiceDialogProps {
   invoice: Invoice | null;
+  initialMode?: "due" | "advance" | "paid";
   onClose: () => void;
   onSuccess: (updatedInvoice: Invoice) => void;
 }
 
-export function SendInvoiceDialog({ invoice, onClose, onSuccess }: SendInvoiceDialogProps) {
+export function SendInvoiceDialog({
+  invoice,
+  initialMode: propInitialMode,
+  onClose,
+  onSuccess,
+}: SendInvoiceDialogProps) {
   if (!invoice) return null;
 
   const currSym = getCurrencySymbol(invoice.currency);
   const initialMode =
-    invoice.status === "paid" ? "paid" : invoice.status === "advance_paid" ? "advance" : "due";
+    propInitialMode ||
+    (invoice.status === "paid" ? "paid" : invoice.status === "advance_paid" ? "advance" : "due");
   const [sendMode, setSendMode] = useState<"due" | "advance" | "paid">(initialMode);
 
   const advanceAmt =
@@ -28,8 +35,8 @@ export function SendInvoiceDialog({ invoice, onClose, onSuccess }: SendInvoiceDi
   const defaultAdvanceSubject = `Advance Payment Receipt: Invoice ${invoice.invoice_number} from BRNND Studio (${currSym}${advanceAmt.toLocaleString()} Paid • Balance: ${currSym}${balanceDue.toLocaleString()})`;
   const defaultPaidSubject = `Receipt & Paid Invoice ${invoice.invoice_number} from BRNND Studio (Paid: ${currSym}${invoice.total.toLocaleString()} ${invoice.currency})`;
 
-  const defaultUnpaidMessage = `Hi ${invoice.client_name || invoice.client_company},\n\nPlease find attached invoice ${invoice.invoice_number} for brand design and engineering deliverables. Payment of ${currSym}${invoice.total.toLocaleString()} ${invoice.currency} is due by ${invoice.due_date}.\n\nDirect wire transfer details are included on the attached PDF.\n\nBest regards,\nThe BRNND Studio Team`;
-  const defaultAdvanceMessage = `Hi ${invoice.client_name || invoice.client_company},\n\nThank you for your upfront advance payment of ${currSym}${advanceAmt.toLocaleString()} ${invoice.currency}! Please find attached your milestone invoice and official payment receipt for ${invoice.invoice_number}.\n\nTotal Project Fee: ${currSym}${invoice.total.toLocaleString()} ${invoice.currency}\nAdvance Paid: ${currSym}${advanceAmt.toLocaleString()} ${invoice.currency}\nRemaining Balance Due: ${currSym}${balanceDue.toLocaleString()} ${invoice.currency}\n\nDirect wire transfer details are included on the attached PDF.\n\nBest regards,\nThe BRNND Studio Team`;
+  const defaultUnpaidMessage = `Hi ${invoice.client_name || invoice.client_company},\n\nPlease find attached invoice ${invoice.invoice_number} for brand design and engineering deliverables. Payment of ${currSym}${invoice.total.toLocaleString()} ${invoice.currency} is due by ${invoice.due_date}.\n\nPayment details and terms are included on the attached PDF.\n\nBest regards,\nThe BRNND Studio Team`;
+  const defaultAdvanceMessage = `Hi ${invoice.client_name || invoice.client_company},\n\nThank you for your upfront advance payment of ${currSym}${advanceAmt.toLocaleString()} ${invoice.currency}! Please find attached your milestone invoice and official payment receipt for ${invoice.invoice_number}.\n\nTotal Project Fee: ${currSym}${invoice.total.toLocaleString()} ${invoice.currency}\nAdvance Paid: ${currSym}${advanceAmt.toLocaleString()} ${invoice.currency}\nRemaining Balance Due: ${currSym}${balanceDue.toLocaleString()} ${invoice.currency}\n\nPayment receipt details are included on the attached PDF.\n\nBest regards,\nThe BRNND Studio Team`;
   const defaultPaidMessage = `Hi ${invoice.client_name || invoice.client_company},\n\nThank you for your payment! Please find attached your official payment receipt and settled invoice ${invoice.invoice_number} confirming your account balance has been paid in full.\n\nBest regards,\nThe BRNND Studio Team`;
 
   const [recipientEmail, setRecipientEmail] = useState(invoice.client_email || "hello@brnnd.com");

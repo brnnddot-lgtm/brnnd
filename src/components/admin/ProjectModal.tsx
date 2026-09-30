@@ -251,7 +251,7 @@ export function ProjectModal({ project, onClose, onSave }: ProjectModalProps) {
         </div>
 
         {/* Scrollable Form Body */}
-        <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0 overflow-hidden">
+        <form onSubmit={handleSubmit} noValidate className="flex flex-col flex-1 min-h-0 overflow-hidden">
           <div
             tabIndex={0}
             role="region"
@@ -350,10 +350,13 @@ export function ProjectModal({ project, onClose, onSave }: ProjectModalProps) {
                     <input
                       type="number"
                       min="0"
-                      step="500"
+                      step="any"
                       inputMode="decimal"
-                      value={budget}
-                      onChange={(e) => setBudget(Math.max(0, Number(e.target.value) || 0))}
+                      value={budget === 0 ? "" : budget}
+                      placeholder="0"
+                      onChange={(e) =>
+                        setBudget(e.target.value === "" ? 0 : Math.max(0, Number(e.target.value) || 0))
+                      }
                       className="w-full pl-8 pr-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-white font-mono focus:border-brand-lime focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     />
                   </div>

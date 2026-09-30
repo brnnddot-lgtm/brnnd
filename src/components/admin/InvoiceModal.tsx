@@ -67,7 +67,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
   const [taxPercent, setTaxPercent] = useState<number>(invoice?.tax_percent || 0);
   const [discountAmount, setDiscountAmount] = useState<number>(invoice?.discount_amount || 0);
   const [notes, setNotes] = useState(
-    invoice?.notes || "Payment is due within 15 business days. Direct wire instructions included."
+    invoice?.notes || "Payment is due within 15 business days."
   );
 
   // Auto calculate totals from items
@@ -76,10 +76,24 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
   const total = Math.max(0, subtotal + taxAmount - (Number(discountAmount) || 0));
   const currSym = getCurrencySymbol(currency);
 
+  // String state for inputs so users can backspace, clear, and type numbers smoothly
+  const [totalInputStr, setTotalInputStr] = useState<string>(() =>
+    total > 0 ? String(total) : ""
+  );
+
   // Advance / ahead-of-time payment state
   const [advanceAmount, setAdvanceAmount] = useState<number>(() => {
     if (invoice?.advance_amount !== undefined) return invoice.advance_amount;
     return invoice?.status === "advance_paid" ? Math.round(total * 0.5) : 0;
+  });
+  const [advanceInputStr, setAdvanceInputStr] = useState<string>(() => {
+    if (invoice?.advance_amount !== undefined && invoice.advance_amount > 0) {
+      return String(invoice.advance_amount);
+    }
+    if (invoice?.status === "advance_paid" && total > 0) {
+      return String(Math.round(total * 0.5));
+    }
+    return "";
   });
   const [advancePercent, setAdvancePercent] = useState<number>(() => {
     if (invoice?.advance_percent !== undefined) return invoice.advance_percent;
@@ -101,65 +115,143 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
       ? Math.max(0, total - advanceAmount)
       : total;
 
-  // Direct Total Project Value Setter: updates line items and advance amount cleanly
-  const handleDirectTotalChange = (newTotalVal: number) => {
-    const val = Math.max(0, newTotalVal);
+  // Accurately distribute target total into items without rounding drift
+  const updateItemsForTotal = (val: number) => {
     const factor = 1 + (Number(taxPercent) || 0) / 100;
-    const targetSubtotal = Math.max(0, Math.round((val + (Number(discountAmount) || 0)) / factor));
+    const targetSubtotal = Math.max(
+      0,
+      Math.round(((val + (Number(discountAmount) || 0)) / factor) * 100) / 100
+    );
 
-    if (items.length <= 1) {
-      setItems([
-        {
-          id: items[0]?.id || "1",
-          description: items[0]?.description || "Brand Strategy & Creative Deliverables",
-          quantity: 1,
-          rate: targetSubtotal,
-          amount: targetSubtotal,
-        },
-      ]);
-    } else {
-      const currentSubtotal = items.reduce((acc, it) => acc + (Number(it.amount) || 0), 0);
+    setItems((prevItems) => {
+      if (prevItems.length <= 1) {
+        return [
+          {
+            id: prevItems[0]?.id || "1",
+            description: prevItems[0]?.description || "Brand Strategy & Creative Deliverables",
+            quantity: 1,
+            rate: targetSubtotal,
+            amount: targetSubtotal,
+          },
+        ];
+      }
+
+      const currentSubtotal = prevItems.reduce((acc, it) => acc + (Number(it.amount) || 0), 0);
       if (currentSubtotal > 0) {
         const ratio = targetSubtotal / currentSubtotal;
-        setItems(
-          items.map((it) => {
-            const newAmount = Math.round(Number(it.amount || 0) * ratio);
-            const qty = Number(it.quantity) || 1;
-            return {
-              ...it,
-              rate: Math.round(newAmount / qty),
-              amount: newAmount,
-            };
-          })
-        );
-      } else {
-        const splitRate = Math.round(targetSubtotal / items.length);
-        setItems(
-          items.map((it) => ({
+        let running = 0;
+        return prevItems.map((it, idx) => {
+          const isLast = idx === prevItems.length - 1;
+          const newAmount = isLast
+            ? Math.max(0, Math.round((targetSubtotal - running) * 100) / 100)
+            : Math.round(Number(it.amount || 0) * ratio * 100) / 100;
+          running += newAmount;
+          const qty = Number(it.quantity) || 1;
+          return {
             ...it,
-            rate: splitRate,
-            amount: splitRate * (Number(it.quantity) || 1),
-          }))
-        );
+            rate: Math.round((newAmount / qty) * 100) / 100,
+            amount: newAmount,
+          };
+        });
+      } else {
+        const splitRate = Math.round((targetSubtotal / prevItems.length) * 100) / 100;
+        let running = 0;
+        return prevItems.map((it, idx) => {
+          const isLast = idx === prevItems.length - 1;
+          const newAmount = isLast
+            ? Math.max(0, Math.round((targetSubtotal - running) * 100) / 100)
+            : splitRate;
+          running += newAmount;
+          return {
+            ...it,
+            rate: newAmount,
+            amount: newAmount,
+            quantity: 1,
+          };
+        });
       }
+    });
+  };
+
+  const handleTotalInputChange = (valStr: string) => {
+    const cleaned = valStr.replace(/[^0-9.]/g, "");
+    const parts = cleaned.split(".");
+    const sanitized = parts.length > 2 ? `${parts[0]}.${parts.slice(1).join("")}` : cleaned;
+
+    setTotalInputStr(sanitized);
+
+    if (sanitized === "" || sanitized === ".") {
+      updateItemsForTotal(0);
+      if (status === "advance_paid") {
+        setAdvanceAmount(0);
+        setAdvanceInputStr("");
+      }
+      return;
     }
 
-    if (status === "advance_paid" && advancePercent > 0) {
-      setAdvanceAmount(Math.round((val * advancePercent) / 100));
+    const numVal = parseFloat(sanitized);
+    if (!isNaN(numVal) && numVal >= 0) {
+      updateItemsForTotal(numVal);
+      if (status === "advance_paid" && advancePercent > 0) {
+        const newAdv = Math.round((numVal * advancePercent) / 100);
+        setAdvanceAmount(newAdv);
+        setAdvanceInputStr(newAdv > 0 ? String(newAdv) : "");
+      }
     }
   };
 
-  const handleAdvanceAmountChange = (newAdvanceVal: number) => {
-    const val = Math.max(0, Math.min(total, newAdvanceVal));
-    setAdvanceAmount(val);
-    if (total > 0) {
-      setAdvancePercent(Math.round((val / total) * 100));
+  const handleAdvanceInputChange = (valStr: string) => {
+    const cleaned = valStr.replace(/[^0-9.]/g, "");
+    const parts = cleaned.split(".");
+    const sanitized = parts.length > 2 ? `${parts[0]}.${parts.slice(1).join("")}` : cleaned;
+
+    setAdvanceInputStr(sanitized);
+
+    if (sanitized === "" || sanitized === ".") {
+      setAdvanceAmount(0);
+      return;
+    }
+
+    const numVal = parseFloat(sanitized);
+    if (!isNaN(numVal) && numVal >= 0) {
+      setAdvanceAmount(numVal);
+      const currentTotal = parseFloat(totalInputStr) || total || 0;
+      if (currentTotal > 0) {
+        const pct = Math.min(100, Math.max(0, Math.round((numVal / currentTotal) * 100)));
+        setAdvancePercent(pct);
+      }
     }
   };
 
   const handlePresetPercent = (pct: number) => {
     setAdvancePercent(pct);
-    setAdvanceAmount(Math.round((total * pct) / 100));
+    const currentTotal = parseFloat(totalInputStr) || total || 0;
+    const newAdv = Math.round((currentTotal * pct) / 100);
+    setAdvanceAmount(newAdv);
+    setAdvanceInputStr(newAdv > 0 ? String(newAdv) : "");
+  };
+
+  const handleTaxChange = (val: number) => {
+    setTaxPercent(val);
+    const newTax = (subtotal * val) / 100;
+    const newTot = Math.max(0, subtotal + newTax - (Number(discountAmount) || 0));
+    setTotalInputStr(newTot > 0 ? String(newTot) : "");
+    if (status === "advance_paid" && advancePercent > 0) {
+      const newAdv = Math.round((newTot * advancePercent) / 100);
+      setAdvanceAmount(newAdv);
+      setAdvanceInputStr(newAdv > 0 ? String(newAdv) : "");
+    }
+  };
+
+  const handleDiscountChange = (val: number) => {
+    setDiscountAmount(val);
+    const newTot = Math.max(0, subtotal + taxAmount - val);
+    setTotalInputStr(newTot > 0 ? String(newTot) : "");
+    if (status === "advance_paid" && advancePercent > 0) {
+      const newAdv = Math.round((newTot * advancePercent) / 100);
+      setAdvanceAmount(newAdv);
+      setAdvanceInputStr(newAdv > 0 ? String(newAdv) : "");
+    }
   };
 
   const handleItemChange = (index: number, field: keyof InvoiceItem, value: unknown) => {
@@ -170,21 +262,43 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
         item.amount = (Number(item.quantity) || 0) * (Number(item.rate) || 0);
       }
       next[index] = item;
+
+      const newSub = next.reduce((acc, it) => acc + (Number(it.amount) || 0), 0);
+      const newTax = (newSub * (Number(taxPercent) || 0)) / 100;
+      const newTot = Math.max(0, newSub + newTax - (Number(discountAmount) || 0));
+      setTotalInputStr(newTot > 0 ? String(newTot) : "");
+      if (status === "advance_paid" && advancePercent > 0) {
+        const newAdv = Math.round((newTot * advancePercent) / 100);
+        setAdvanceAmount(newAdv);
+        setAdvanceInputStr(newAdv > 0 ? String(newAdv) : "");
+      }
       return next;
     });
   };
 
   const handleAddItem = (preset?: { label: string; defaultRate: number }) => {
-    setItems((prev) => [
-      ...prev,
-      {
-        id: String(Date.now() + Math.random()),
-        description: preset?.label || "",
-        quantity: 1,
-        rate: preset?.defaultRate || 0,
-        amount: preset?.defaultRate || 0,
-      },
-    ]);
+    setItems((prev) => {
+      const next = [
+        ...prev,
+        {
+          id: String(Date.now() + Math.random()),
+          description: preset?.label || "",
+          quantity: 1,
+          rate: preset?.defaultRate || 0,
+          amount: preset?.defaultRate || 0,
+        },
+      ];
+      const newSub = next.reduce((acc, it) => acc + (Number(it.amount) || 0), 0);
+      const newTax = (newSub * (Number(taxPercent) || 0)) / 100;
+      const newTot = Math.max(0, newSub + newTax - (Number(discountAmount) || 0));
+      setTotalInputStr(newTot > 0 ? String(newTot) : "");
+      if (status === "advance_paid" && advancePercent > 0) {
+        const newAdv = Math.round((newTot * advancePercent) / 100);
+        setAdvanceAmount(newAdv);
+        setAdvanceInputStr(newAdv > 0 ? String(newAdv) : "");
+      }
+      return next;
+    });
   };
 
   const handleRemoveItem = (index: number) => {
@@ -192,35 +306,65 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
       toast.warning("Invoice must contain at least one line item.");
       return;
     }
-    setItems((prev) => prev.filter((_, i) => i !== index));
+    setItems((prev) => {
+      const next = prev.filter((_, i) => i !== index);
+      const newSub = next.reduce((acc, it) => acc + (Number(it.amount) || 0), 0);
+      const newTax = (newSub * (Number(taxPercent) || 0)) / 100;
+      const newTot = Math.max(0, newSub + newTax - (Number(discountAmount) || 0));
+      setTotalInputStr(newTot > 0 ? String(newTot) : "");
+      if (status === "advance_paid" && advancePercent > 0) {
+        const newAdv = Math.round((newTot * advancePercent) / 100);
+        setAdvanceAmount(newAdv);
+        setAdvanceInputStr(newAdv > 0 ? String(newAdv) : "");
+      }
+      return next;
+    });
   };
 
-  const compileInvoiceData = (): Invoice => ({
-    id: invoice?.id || `inv-${Date.now()}`,
-    invoice_number: invoiceNumber,
-    client_name: clientName,
-    client_company: clientCompany,
-    client_email: clientEmail,
-    client_address: clientAddress,
-    issue_date: issueDate,
-    due_date: dueDate,
-    status,
-    currency,
-    items,
-    subtotal,
-    tax_percent: taxPercent,
-    tax_amount: taxAmount,
-    discount_amount: discountAmount,
-    total,
-    advance_amount: status === "advance_paid" ? advanceAmount : (status === "paid" ? total : 0),
-    advance_percent: status === "advance_paid" ? advancePercent : (status === "paid" ? 100 : 0),
-    balance_due: balanceDue,
-    payment_method: paymentMethod.trim() || "N/A",
-    notes,
-    last_sent_at: invoice?.last_sent_at,
-    sent_to_email: invoice?.sent_to_email,
-    created_at: invoice?.created_at || new Date().toISOString(),
-  });
+  const compileInvoiceData = (): Invoice => {
+    const finalTotal = parseFloat(totalInputStr) || total;
+    const finalAdvance = parseFloat(advanceInputStr) || advanceAmount;
+    const finalBalance =
+      status === "paid"
+        ? 0
+        : status === "advance_paid"
+        ? Math.max(0, finalTotal - finalAdvance)
+        : finalTotal;
+
+    return {
+      id: invoice?.id || `inv-${Date.now()}`,
+      invoice_number: invoiceNumber,
+      client_name: clientName,
+      client_company: clientCompany,
+      client_email: clientEmail,
+      client_address: clientAddress,
+      issue_date: issueDate,
+      due_date: dueDate,
+      status,
+      currency,
+      items,
+      subtotal,
+      tax_percent: taxPercent,
+      tax_amount: taxAmount,
+      discount_amount: discountAmount,
+      total: finalTotal,
+      advance_amount: status === "advance_paid" ? finalAdvance : status === "paid" ? finalTotal : 0,
+      advance_percent:
+        status === "advance_paid"
+          ? finalTotal > 0
+            ? Math.min(100, Math.round((finalAdvance / finalTotal) * 100))
+            : advancePercent
+          : status === "paid"
+          ? 100
+          : 0,
+      balance_due: finalBalance,
+      payment_method: paymentMethod.trim() || "N/A",
+      notes,
+      last_sent_at: invoice?.last_sent_at,
+      sent_to_email: invoice?.sent_to_email,
+      created_at: invoice?.created_at || new Date().toISOString(),
+    };
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -271,7 +415,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
         </div>
 
         {/* Form Container */}
-        <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0 overflow-hidden">
+        <form onSubmit={handleSubmit} noValidate className="flex flex-col flex-1 min-h-0 overflow-hidden">
           {/* Scrollable Form Body */}
           <div
             tabIndex={0}
@@ -372,8 +516,11 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                     if (newStatus === "paid" || newStatus === "advance_paid") {
                       setSendReceiptOnSave(true);
                     }
-                    if (newStatus === "advance_paid" && advanceAmount === 0 && total > 0) {
-                      setAdvanceAmount(Math.round((total * (advancePercent || 50)) / 100));
+                    const curTot = parseFloat(totalInputStr) || total || 0;
+                    if (newStatus === "advance_paid" && advanceAmount === 0 && curTot > 0) {
+                      const newAdv = Math.round((curTot * (advancePercent || 50)) / 100);
+                      setAdvanceAmount(newAdv);
+                      setAdvanceInputStr(newAdv > 0 ? String(newAdv) : "");
                     }
                   }}
                   className="w-full px-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-white focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none capitalize cursor-pointer"
@@ -434,8 +581,11 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                   onClick={() => {
                     setStatus("advance_paid");
                     setSendReceiptOnSave(true);
-                    if (advanceAmount === 0 && total > 0) {
-                      setAdvanceAmount(Math.round((total * (advancePercent || 50)) / 100));
+                    const curTot = parseFloat(totalInputStr) || total || 0;
+                    if (advanceAmount === 0 && curTot > 0) {
+                      const newAdv = Math.round((curTot * (advancePercent || 50)) / 100);
+                      setAdvanceAmount(newAdv);
+                      setAdvanceInputStr(newAdv > 0 ? String(newAdv) : "");
                     }
                   }}
                   className={`p-3 rounded-lg border text-left flex flex-col justify-between transition-all cursor-pointer ${
@@ -543,14 +693,12 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                           {currSym}
                         </span>
                         <input
-                          type="number"
-                          min="0"
-                          step="100"
+                          type="text"
                           inputMode="decimal"
-                          value={total || 0}
-                          onChange={(e) => handleDirectTotalChange(Number(e.target.value) || 0)}
+                          value={totalInputStr}
+                          onChange={(e) => handleTotalInputChange(e.target.value)}
                           placeholder="e.g. 50000"
-                          className="w-full pl-9 pr-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-base text-white font-mono font-bold focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                          className="w-full pl-9 pr-3 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-base text-white font-mono font-bold focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none placeholder-neutral-600"
                         />
                       </div>
                       <p className="text-[10px] text-neutral-500 mt-1.5">
@@ -572,15 +720,12 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                           {currSym}
                         </span>
                         <input
-                          type="number"
-                          min="0"
-                          max={total}
-                          step="100"
+                          type="text"
                           inputMode="decimal"
-                          value={advanceAmount}
-                          onChange={(e) => handleAdvanceAmountChange(Number(e.target.value) || 0)}
+                          value={advanceInputStr}
+                          onChange={(e) => handleAdvanceInputChange(e.target.value)}
                           placeholder="e.g. 20000"
-                          className="w-full pl-9 pr-3 py-2 bg-neutral-900 border border-sky-500/50 rounded-lg text-base text-white font-mono font-bold focus:border-sky-400 focus:ring-1 focus:ring-sky-400/30 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                          className="w-full pl-9 pr-3 py-2 bg-neutral-900 border border-sky-500/50 rounded-lg text-base text-white font-mono font-bold focus:border-sky-400 focus:ring-1 focus:ring-sky-400/30 focus:outline-none placeholder-neutral-600"
                         />
                       </div>
                       {/* Advance slider */}
@@ -853,8 +998,15 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                           min="1"
                           step="1"
                           inputMode="numeric"
-                          value={item.quantity}
-                          onChange={(e) => handleItemChange(idx, "quantity", Number(e.target.value))}
+                          value={item.quantity === 0 ? "" : item.quantity}
+                          placeholder="1"
+                          onChange={(e) =>
+                            handleItemChange(
+                              idx,
+                              "quantity",
+                              e.target.value === "" ? 0 : Number(e.target.value)
+                            )
+                          }
                           className="w-full px-2 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-center text-white font-mono focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         />
                       </div>
@@ -867,10 +1019,17 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                         <input
                           type="number"
                           min="0"
-                          step="50"
+                          step="any"
                           inputMode="decimal"
-                          value={item.rate}
-                          onChange={(e) => handleItemChange(idx, "rate", Number(e.target.value))}
+                          value={item.rate === 0 ? "" : item.rate}
+                          placeholder="0"
+                          onChange={(e) =>
+                            handleItemChange(
+                              idx,
+                              "rate",
+                              e.target.value === "" ? 0 : Number(e.target.value)
+                            )
+                          }
                           className="w-full px-2.5 py-2 bg-neutral-900 border border-neutral-800 rounded-lg text-sm text-right text-white font-mono focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         />
                       </div>
@@ -914,7 +1073,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                   rows={4}
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Direct wire instructions, ACH, or late fee policies."
+                  placeholder="Enter any payment terms, bank account / bKash number, or notes to include on the invoice."
                   className="w-full px-3.5 py-2.5 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 placeholder-neutral-500 focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none resize-none leading-relaxed"
                 />
               </div>
@@ -936,10 +1095,17 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                         type="number"
                         min="0"
                         max="100"
-                        step="0.5"
+                        step="any"
                         inputMode="decimal"
-                        value={taxPercent}
-                        onChange={(e) => setTaxPercent(Math.max(0, Math.min(100, Number(e.target.value) || 0)))}
+                        value={taxPercent === 0 ? "" : taxPercent}
+                        placeholder="0"
+                        onChange={(e) =>
+                          handleTaxChange(
+                            e.target.value === ""
+                              ? 0
+                              : Math.max(0, Math.min(100, Number(e.target.value) || 0))
+                          )
+                        }
                         className="w-16 px-2 py-1 bg-neutral-900 border border-neutral-800 rounded text-right text-white font-mono text-xs focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                       />
                       <span className="font-mono text-xs text-neutral-400">%</span>
@@ -955,7 +1121,7 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                       max="30"
                       step="0.5"
                       value={Math.min(30, taxPercent)}
-                      onChange={(e) => setTaxPercent(Number(e.target.value))}
+                      onChange={(e) => handleTaxChange(Number(e.target.value))}
                       className="w-full h-1.5 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-brand-lime"
                     />
                     <span className="text-[10px] font-mono text-neutral-500 shrink-0">0-30%</span>
@@ -971,10 +1137,15 @@ export function InvoiceModal({ invoice, onClose, onSave, onPreview, onSendEmail 
                       <input
                         type="number"
                         min="0"
-                        step="50"
+                        step="any"
                         inputMode="decimal"
-                        value={discountAmount}
-                        onChange={(e) => setDiscountAmount(Math.max(0, Number(e.target.value) || 0))}
+                        value={discountAmount === 0 ? "" : discountAmount}
+                        placeholder="0"
+                        onChange={(e) =>
+                          handleDiscountChange(
+                            e.target.value === "" ? 0 : Math.max(0, Number(e.target.value) || 0)
+                          )
+                        }
                         className="w-24 px-2 py-1 bg-neutral-900 border border-neutral-800 rounded text-right text-white font-mono text-xs focus:border-brand-lime focus:ring-1 focus:ring-brand-lime/30 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                       />
                     </div>

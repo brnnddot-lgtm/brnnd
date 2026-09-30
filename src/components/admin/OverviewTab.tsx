@@ -33,7 +33,7 @@ interface OverviewTabProps {
   onCreateInvoice: () => void;
   onCreateProject?: () => void;
   onPreviewInvoice: (invoice: Invoice) => void;
-  onSendInvoice: (invoice: Invoice) => void;
+  onSendInvoice: (invoice: Invoice, mode?: "due" | "advance" | "paid") => void;
   onDownloadInvoice: (invoice: Invoice) => void;
   onNavigateTab: (tab: "projects" | "invoices" | "leads" | "settings") => void;
 }
@@ -322,30 +322,35 @@ export function OverviewTab({
                     >
                       <Download className="w-3.5 h-3.5" />
                     </button>
+                    {/* Send Invoice */}
                     <button
                       type="button"
-                      title={
-                        inv.status === "paid"
-                          ? "Send Paid Receipt via Resend"
-                          : inv.status === "advance_paid"
-                          ? "Send Advance Confirmation via Resend"
-                          : "Send Invoice via Resend"
-                      }
-                      onClick={() => onSendInvoice(inv)}
-                      className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                        inv.status === "paid"
-                          ? "text-emerald-400 hover:text-stone-950 hover:bg-emerald-400"
-                          : inv.status === "advance_paid"
-                          ? "text-sky-400 hover:text-stone-950 hover:bg-sky-400"
-                          : "text-brand-lime hover:text-stone-950 hover:bg-brand-lime"
-                      }`}
+                      title="Send Invoice via Resend"
+                      onClick={() => onSendInvoice(inv, "due")}
+                      className="p-1.5 rounded-lg text-brand-lime hover:text-stone-950 hover:bg-brand-lime transition-colors cursor-pointer"
                     >
-                      {inv.status === "paid" || inv.status === "advance_paid" ? (
-                        <Receipt className="w-3.5 h-3.5" />
-                      ) : (
-                        <Send className="w-3.5 h-3.5" />
-                      )}
+                      <Send className="w-3.5 h-3.5" />
                     </button>
+                    {inv.status === "advance_paid" && (
+                      <button
+                        type="button"
+                        title="Send Advance Confirmation via Resend"
+                        onClick={() => onSendInvoice(inv, "advance")}
+                        className="p-1.5 rounded-lg text-sky-400 hover:text-stone-950 hover:bg-sky-400 transition-colors cursor-pointer"
+                      >
+                        <Receipt className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                    {inv.status === "paid" && (
+                      <button
+                        type="button"
+                        title="Send Paid Receipt via Resend"
+                        onClick={() => onSendInvoice(inv, "paid")}
+                        className="p-1.5 rounded-lg text-emerald-400 hover:text-stone-950 hover:bg-emerald-400 transition-colors cursor-pointer"
+                      >
+                        <Receipt className="w-3.5 h-3.5" />
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

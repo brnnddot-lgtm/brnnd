@@ -187,16 +187,19 @@ export const sendInvoiceEmailFn = createServerFn({ method: "POST" })
               : ""
           }
         </div>`
-            : `<!-- Wire / ACH details -->
+            : `<!-- Payment instructions -->
         <div style="background-color: #141414; border: 1px solid #282828; border-radius: 6px; padding: 18px 20px; margin-bottom: 24px;">
           <p style="margin: 0 0 8px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700; color: #bbbbbb;">
-            Payment & Wire Transfer Details
+            Payment Details & Terms
           </p>
           <p style="margin: 0; font-size: 12px; color: #888888; line-height: 1.7; font-family: monospace;">
-            Bank: Silicon Valley Bank / Mercury Bank NA<br/>
-            Account Name: BRNND Creative Studio Inc.<br/>
-            Account: 9482-1082-9428 &nbsp;|&nbsp; Routing (ABA): 121000358<br/>
-            SWIFT / BIC: SVBKUS6S &nbsp;|&nbsp; Reference: ${escapeHtml(data.invoiceNumber)}
+            ${
+              data.paymentMethod && data.paymentMethod !== "N/A"
+                ? `<strong>Payment Method:</strong> ${escapeHtml(data.paymentMethod)}<br/>`
+                : ""
+            }
+            <strong>Reference:</strong> ${escapeHtml(data.invoiceNumber)}<br/>
+            <strong>Due Date:</strong> ${escapeHtml(data.dueDate)}
           </p>
         </div>`
         }

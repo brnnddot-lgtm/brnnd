@@ -105,6 +105,7 @@ export function buildInvoicePdf(invoice: Invoice): jsPDF {
   const pageHeight = 297;
   const margin = 18;
   const contentWidth = pageWidth - margin * 2;
+  const currSym = getPdfCurrencySymbol(invoice.currency);
 
   // Background subtle tint at top
   doc.setFillColor(12, 12, 12);
@@ -208,7 +209,7 @@ export function buildInvoicePdf(invoice: Invoice): jsPDF {
   }
 
   // Right: Dates
-  const rightColX = pageWidth - margin - 55;
+  const rightColX = pageWidth - margin - 80;
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8);
   doc.setTextColor(115, 115, 115);
@@ -216,12 +217,19 @@ export function buildInvoicePdf(invoice: Invoice): jsPDF {
 
   const drawDetailRow = (label: string, val: string, yPos: number, isHighlighted = false) => {
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(8.5);
+    doc.setFontSize(8);
     doc.setTextColor(115, 115, 115);
     doc.text(label, rightColX, yPos);
     doc.setFont("helvetica", "bold");
+    doc.setFontSize(8);
     if (isHighlighted) {
-      doc.setTextColor(isPaid ? 16 : 220, isPaid ? 185 : 38, isPaid ? 129 : 38);
+      if (isPaid) {
+        doc.setTextColor(16, 185, 129); // emerald
+      } else if (isAdvancePaid) {
+        doc.setTextColor(2, 132, 199); // sky blue
+      } else {
+        doc.setTextColor(217, 119, 6); // amber
+      }
     } else {
       doc.setTextColor(20, 20, 20);
     }
@@ -235,7 +243,7 @@ export function buildInvoicePdf(invoice: Invoice): jsPDF {
     drawDetailRow("Currency:", invoice.currency || "USD", currentY + 24);
     drawDetailRow("Payment Done With:", invoice.payment_method || "N/A", currentY + 30);
   } else if (isAdvancePaid) {
-    drawDetailRow("Payment Status:", "ADVANCE PAID (PARTIAL)", currentY + 12, true);
+    drawDetailRow("Payment Status:", "ADVANCE PAID", currentY + 12, true);
     drawDetailRow("Advance Received:", `${currSym}${advanceAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`, currentY + 18, true);
     drawDetailRow("Balance Due Date:", invoice.due_date || new Date().toISOString().split("T")[0], currentY + 24);
     drawDetailRow("Currency:", invoice.currency || "USD", currentY + 30);
@@ -292,7 +300,6 @@ export function buildInvoicePdf(invoice: Invoice): jsPDF {
     const descLines = doc.splitTextToSize(item.description, contentWidth - 75);
     doc.text(descLines, colItem, currentY + 4);
 
-    const currSym = getPdfCurrencySymbol(invoice.currency);
     doc.text(String(item.quantity || 1), colQty, currentY + 4, { align: "right" });
     doc.text(`${currSym}${Number(item.rate || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, colRate, currentY + 4, { align: "right" });
     doc.text(`${currSym}${Number(item.amount || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, colAmount, currentY + 4, { align: "right" });
@@ -310,7 +317,6 @@ export function buildInvoicePdf(invoice: Invoice): jsPDF {
   currentY += 6;
 
   // Totals Area
-  const currSym = getPdfCurrencySymbol(invoice.currency);
   const totalsX = pageWidth - margin - 80;
   const drawTotalLine = (label: string, amountStr: string, isBold = false, isAccent = false) => {
     doc.setFont("helvetica", isBold ? "bold" : "normal");
@@ -433,23 +439,62 @@ export function buildInvoicePdf(invoice: Invoice): jsPDF {
       doc.text("This receipt confirms that the upfront advance deposit has been successfully credited.", margin + 4, currentY + 22);
       doc.text(`The remaining balance of ${currSym}${balanceDue.toLocaleString(undefined, { minimumFractionDigits: 2 })} is payable upon milestone completion.`, margin + 4, currentY + 26.5);
     } else {
+      // Build payment instructions box dynamically using ONLY data entered by the user
+      const lines: string[] = [];
+
+      if (
+        invoice.payment_method &&
+        invoice.payment_method.trim() !== "" &&
+        invoice.payment_method.trim() !== "N/A"
+      ) {
+        lines.push(`Payment Method / Details: ${invoice.payment_method.trim()}`);
+      }
+
+      if (invoice.notes && invoice.notes.trim() !== "") {
+        const cleanNotes = invoice.notes
+          .replace("Direct wire instructions included.", "")
+          .trim();
+        if (cleanNotes) {
+          const splitNotes = doc.splitTextToSize(`Terms & Notes: ${cleanNotes}`, contentWidth - 8);
+          if (Array.isArray(splitNotes)) {
+            lines.push(...splitNotes);
+          } else {
+            lines.push(splitNotes);
+          }
+        }
+      }
+
+      lines.push(
+        `Reference: ${invoice.invoice_number || "Invoice"} - ${
+          invoice.client_company || invoice.client_name || ""
+        }`
+      );
+
+      if (invoice.due_date) {
+        lines.push(`Payment Due Date: ${invoice.due_date}`);
+      }
+
+      const boxHeight = Math.max(26, 11 + lines.length * 4.5);
+
       doc.setFillColor(250, 250, 250);
       doc.setDrawColor(230, 230, 230);
       doc.setLineWidth(0.3);
-      doc.rect(margin, currentY, contentWidth, 32, "FD");
+      doc.rect(margin, currentY, contentWidth, boxHeight, "FD");
 
       doc.setFont("helvetica", "bold");
       doc.setFontSize(8);
       doc.setTextColor(40, 40, 40);
-      doc.text("PAYMENT INSTRUCTIONS & WIRE TRANSFER", margin + 4, currentY + 6);
+      doc.text("PAYMENT INSTRUCTIONS & TERMS", margin + 4, currentY + 6);
 
       doc.setFont("helvetica", "normal");
       doc.setFontSize(7.5);
       doc.setTextColor(90, 90, 90);
-      doc.text("Bank Name: Silicon Valley Bank / Mercury Bank NA", margin + 4, currentY + 12);
-      doc.text("Account Name: BRNND Creative Studio Inc.", margin + 4, currentY + 17);
-      doc.text("Account Number: 9482-1082-9428   |   Routing / ABA: 121000358   |   SWIFT / BIC: SVBKUS6S", margin + 4, currentY + 22);
-      doc.text(`Reference: ${invoice.invoice_number || "Invoice"} - ${invoice.client_company || invoice.client_name || ""}`, margin + 4, currentY + 27);
+
+      let lineY = currentY + 11.5;
+      for (const line of lines) {
+        doc.text(String(line), margin + 4, lineY);
+        lineY += 4.5;
+      }
     }
   }
 

@@ -1,6 +1,107 @@
 {
   "invoices": [
     {
+      "id": "inv-1790780014528",
+      "invoice_number": "INV-2026-947",
+      "client_name": "Muntajar",
+      "client_company": "Muntajar",
+      "client_email": "hello@muntajar.com",
+      "client_address": "",
+      "issue_date": "2026-09-30",
+      "due_date": "2026-10-30",
+      "status": "advance_paid",
+      "currency": "BDT",
+      "items": [
+        {
+          "id": "2",
+          "description": "Visual Identity for Muntajar",
+          "quantity": 1,
+          "rate": 83333,
+          "amount": 83333
+        },
+        {
+          "id": "3",
+          "description": "UI/UX Design for Muntajar",
+          "quantity": 1,
+          "rate": 83333,
+          "amount": 83333
+        },
+        {
+          "id": "1790780026242.7563",
+          "description": "",
+          "quantity": 1,
+          "rate": 2500,
+          "amount": 2500
+        }
+      ],
+      "subtotal": 169166,
+      "tax_percent": 30,
+      "tax_amount": 50749.8,
+      "discount_amount": 0,
+      "total": 219915.8,
+      "advance_amount": 109958,
+      "advance_percent": 50,
+      "balance_due": 109957.79999999999,
+      "payment_method": "N/A",
+      "notes": "Invoice issued for client engagement: Hello World. Direct wire/ACH terms apply.",
+      "created_at": "2026-09-30T14:53:34.528Z"
+    },
+    {
+      "id": "inv-1790778783624",
+      "invoice_number": "INV-2026-878",
+      "client_name": "Muntajar",
+      "client_company": "Muntajar",
+      "client_email": "hello@muntajar.com",
+      "client_address": "",
+      "issue_date": "2026-09-30",
+      "due_date": "2026-10-30",
+      "status": "advance_paid",
+      "currency": "BDT",
+      "items": [
+        {
+          "id": "1",
+          "description": "Brand Strategy for Muntajar",
+          "quantity": 1,
+          "rate": 83350,
+          "amount": 83350
+        },
+        {
+          "id": "2",
+          "description": "Visual Identity for Muntajar",
+          "quantity": 1,
+          "rate": 83300,
+          "amount": 83300
+        },
+        {
+          "id": "3",
+          "description": "UI/UX Design for Muntajar",
+          "quantity": 1,
+          "rate": 83350,
+          "amount": 83350
+        },
+        {
+          "id": "1790778789058.2217",
+          "description": "3D Motion & Visual Direction",
+          "quantity": 1,
+          "rate": 0,
+          "amount": 0
+        }
+      ],
+      "subtotal": 250000,
+      "tax_percent": 25,
+      "tax_amount": 62500,
+      "discount_amount": 0,
+      "total": 312500,
+      "advance_amount": 93800,
+      "advance_percent": 30,
+      "balance_due": 218700,
+      "payment_method": "N/A",
+      "notes": "Invoice issued for client engagement: Hello World. Direct wire/ACH terms apply.",
+      "last_sent_at": "2026-09-30T14:33:57.944Z",
+      "sent_to_email": "linkonn447@gmail.com",
+      "created_at": "2026-09-30T14:33:03.624Z"
+    },
+    {
       "id": "inv-1790705348104",
       "invoice_number": "INV-2026-714",
       "client_name": "Toufique Hossain",
@@ -33,6 +134,59 @@
   ],
   "leads": [],
   "projects": [
+    {
+      "id": "proj-1790778633794",
+      "title": "Hello World",
+      "client_name": "Muntajar",
+      "client_company": "Muntajar",
+      "client_email": "hello@muntajar.com",
+      "services": [
+        "Brand Strategy",
+        "Visual Identity",
+        "UI/UX Design"
+      ],
+      "status": "in_progress",
+      "priority": "high",
+      "start_date": "2026-09-30",
+      "target_launch_date": "2026-10-30",
+      "budget": 250000,
+      "currency": "BDT",
+      "description": "Comprehensive brand identity transformation, digital experience design, and design system handover.",
+      "requirements": [
+        "Complete brand book with typography & Pantone color palette",
+        "High-conversion web architecture & Figma design system",
+        "Exportable production-ready vector assets and component library"
+      ],
+      "milestones": [
+        {
+          "id": "1",
+          "title": "Discovery Workshop & Narrative Alignment",
+          "completed": true,
+          "due_date": "2026-09-30"
+        },
+        {
+          "id": "2",
+          "title": "Visual Identity & Vector Logomark Exploration",
+          "completed": false,
+          "due_date": "2026-10-30"
+        },
+        {
+          "id": "3",
+          "title": "High-Fidelity Figma Web Prototype",
+          "completed": false,
+          "due_date": "2026-10-30"
+        },
+        {
+          "id": "4",
+          "title": "Final Deliverable Handoff & Launch QA",
+          "completed": false,
+          "due_date": "2026-10-30"
+        }
+      ],
+      "media_files": [],
+      "created_at": "2026-09-30T14:30:33.794Z",
+      "updated_at": "2026-09-30T14:30:33.848Z"
+    },
     {
       "id": "proj-1790705310917",
       "title": "Tashin Personal Website",
@@ -88,5 +242,5 @@
       "updated_at": "2026-09-29T18:08:30.917Z"
     }
   ],
-  "lastUpdated": "2026-09-29T18:09:32.058Z"
+  "lastUpdated": "2026-09-30T14:54:08.658Z"
 }
