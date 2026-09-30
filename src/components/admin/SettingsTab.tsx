@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { sendTestEmailFn } from "@/lib/admin.functions";
+import { sendTestEmailFn, syncAllDataToSupabaseFn } from "@/lib/admin.functions";
 import { SUPPORTED_CURRENCIES } from "@/lib/invoice-pdf";
 import {
   ShieldCheck,
@@ -152,6 +152,24 @@ CREATE POLICY "Allow all for demo_leads" ON public.demo_leads FOR ALL TO anon, a
       toast.error(err instanceof Error ? err.message : "Failed to deliver test email.");
     } finally {
       setSendingTest(false);
+    }
+  };
+
+  const [syncingData, setSyncingData] = useState(false);
+
+  const handleSyncToCloud = async () => {
+    setSyncingData(true);
+    try {
+      const res = await syncAllDataToSupabaseFn();
+      if (res.success) {
+        toast.success(`Successfully synced ${res.projectsCount} project(s) & ${res.invoicesCount} invoice(s) to Supabase Cloud!`);
+      } else {
+        toast.error(res.error || "Could not sync data. Check if SQL migration was run in Supabase.");
+      }
+    } catch {
+      toast.error("Failed to sync data to Supabase");
+    } finally {
+      setSyncingData(false);
     }
   };
 
@@ -348,6 +366,16 @@ CREATE POLICY "Allow all for demo_leads" ON public.demo_leads FOR ALL TO anon, a
         </div>
 
         <div className="flex flex-wrap gap-3 pt-2">
+          <button
+            type="button"
+            onClick={handleSyncToCloud}
+            disabled={syncingData}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-950 border border-emerald-500/40 hover:bg-emerald-900 text-emerald-300 text-xs font-medium transition-colors cursor-pointer disabled:opacity-50"
+          >
+            <Database className={`w-3.5 h-3.5 ${syncingData ? "animate-spin text-brand-lime" : "text-emerald-400"}`} />
+            {syncingData ? "Syncing..." : "Sync All Data to Supabase"}
+          </button>
+
           <button
             type="button"
             onClick={onExportData}

@@ -123,9 +123,12 @@ CREATE POLICY "Allow all for demo_leads"
   TO anon, authenticated
   USING (true) WITH CHECK (true);`;
 
+import { syncAllDataToSupabaseFn } from "@/lib/admin.functions";
+
 export function DatabaseSetupModal({ isOpen, onClose, dbHealth, onRecheck }: DatabaseSetupModalProps) {
   const [copied, setCopied] = useState(false);
   const [rechecking, setRechecking] = useState(false);
+  const [syncing, setSyncing] = useState(false);
 
   if (!isOpen) return null;
 
@@ -145,6 +148,23 @@ export function DatabaseSetupModal({ isOpen, onClose, dbHealth, onRecheck }: Dat
       toast.error("Failed to check database status");
     } finally {
       setRechecking(false);
+    }
+  };
+
+  const handleSyncClick = async () => {
+    setSyncing(true);
+    try {
+      const res = await syncAllDataToSupabaseFn();
+      if (res.success) {
+        toast.success(`Synced ${res.projectsCount} project(s) & ${res.invoicesCount} invoice(s) to Supabase!`);
+        await onRecheck();
+      } else {
+        toast.error(res.error || "Could not sync data. Check if SQL migration was run.");
+      }
+    } catch {
+      toast.error("Failed to sync data to Supabase");
+    } finally {
+      setSyncing(false);
     }
   };
 
@@ -303,6 +323,15 @@ export function DatabaseSetupModal({ isOpen, onClose, dbHealth, onRecheck }: Dat
           </a>
 
           <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleSyncClick}
+              disabled={syncing}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 hover:text-white text-xs font-medium transition-all cursor-pointer disabled:opacity-50"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${syncing ? "animate-spin text-brand-lime" : ""}`} />
+              <span>{syncing ? "Syncing..." : "Sync Data to Cloud"}</span>
+            </button>
             <button
               type="button"
               onClick={handleRecheckClick}

@@ -13,6 +13,7 @@ import {
   deleteRealProject,
   updateRealProjectStatus,
   checkDatabaseHealth,
+  syncAllDataToSupabase,
 } from "./server-store";
 import { type Invoice, getCurrencySymbol } from "./invoice-pdf";
 import type { Project } from "@/data/admin-data";
@@ -445,6 +446,10 @@ export const updateRealLeadStatusFn = createServerFn({ method: "POST" })
 
 export const checkDatabaseHealthFn = createServerFn({ method: "GET" }).handler(async () => {
   return await checkDatabaseHealth();
+});
+
+export const syncAllDataToSupabaseFn = createServerFn({ method: "POST" }).handler(async () => {
+  return await syncAllDataToSupabase();
 });
 
 export const fetchLeadsFromSupabaseFn = createServerFn({ method: "GET" }).handler(
