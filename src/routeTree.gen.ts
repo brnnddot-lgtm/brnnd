@@ -9,131 +9,51 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WorkRouteImport } from './routes/work'
-import { Route as TestimonialsRouteImport } from './routes/testimonials'
-import { Route as TermsRouteImport } from './routes/terms'
-import { Route as TalentNetworkRouteImport } from './routes/talent-network'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as ProcessRouteImport } from './routes/process'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as LogoDesignRouteImport } from './routes/logo-design'
-import { Route as InsightsRouteImport } from './routes/insights'
-import { Route as HowWeWorkRouteImport } from './routes/how-we-work'
-import { Route as CookiesRouteImport } from './routes/cookies'
-import { Route as ConversionLiftRouteImport } from './routes/conversion-lift'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as CaseStudiesRouteImport } from './routes/case-studies'
-import { Route as CareersRouteImport } from './routes/careers'
-import { Route as BookRouteImport } from './routes/book'
-import { Route as AdminRouteImport } from './routes/admin'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as BookRouteImport } from './routes/book'
+import { Route as CareersRouteImport } from './routes/careers'
+import { Route as CaseStudiesRouteImport } from './routes/case-studies'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ConversionLiftRouteImport } from './routes/conversion-lift'
+import { Route as CookiesRouteImport } from './routes/cookies'
+import { Route as HowWeWorkRouteImport } from './routes/how-we-work'
+import { Route as InsightsRouteImport } from './routes/insights'
+import { Route as LogoDesignRouteImport } from './routes/logo-design'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ProcessRouteImport } from './routes/process'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as TalentNetworkRouteImport } from './routes/talent-network'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as TestimonialsRouteImport } from './routes/testimonials'
+import { Route as WorkRouteImport } from './routes/work'
+import { Route as ServicesAiConsultingRouteImport } from './routes/services.ai-consulting'
+import { Route as ServicesAiMarketingRouteImport } from './routes/services.ai-marketing'
+import { Route as ServicesAiPoweredCreativeRouteImport } from './routes/services.ai-powered-creative'
+import { Route as ServicesAutomationRouteImport } from './routes/services.automation'
+import { Route as ServicesBrandGuidelinesRouteImport } from './routes/services.brand-guidelines'
+import { Route as ServicesBrandingServicesRouteImport } from './routes/services.branding-services'
+import { Route as ServicesCreativeDesignRouteImport } from './routes/services.creative-design'
+import { Route as ServicesECommerceRouteImport } from './routes/services.e-commerce'
+import { Route as ServicesEcommerceRouteImport } from './routes/services.ecommerce'
+import { Route as ServicesEmailCreationRouteImport } from './routes/services.email-creation'
+import { Route as ServicesLandingPagesRouteImport } from './routes/services.landing-pages'
+import { Route as ServicesProductDesignRouteImport } from './routes/services.product-design'
+import { Route as ServicesRebrandingRouteImport } from './routes/services.rebranding'
+import { Route as ServicesRebrandingServicesRouteImport } from './routes/services.rebranding-services'
+import { Route as ServicesSocialMediaCreativeRouteImport } from './routes/services.social-media-creative'
+import { Route as ServicesUiUxRouteImport } from './routes/services.ui-ux'
+import { Route as ServicesWebDesignRouteImport } from './routes/services.web-design'
+import { Route as ToolsBrandColorKitRouteImport } from './routes/tools.brand-color-kit'
+import { Route as ToolsNamingGeneratorRouteImport } from './routes/tools.naming-generator'
+import { Route as ToolsPitchDeckTemplatesRouteImport } from './routes/tools.pitch-deck-templates'
 import { Route as WorkIndexRouteImport } from './routes/work.index'
 import { Route as WorkSlugRouteImport } from './routes/work.$slug'
-import { Route as ToolsPitchDeckTemplatesRouteImport } from './routes/tools.pitch-deck-templates'
-import { Route as ToolsNamingGeneratorRouteImport } from './routes/tools.naming-generator'
-import { Route as ToolsBrandColorKitRouteImport } from './routes/tools.brand-color-kit'
-import { Route as ServicesWebDesignRouteImport } from './routes/services.web-design'
-import { Route as ServicesUiUxRouteImport } from './routes/services.ui-ux'
-import { Route as ServicesSocialMediaCreativeRouteImport } from './routes/services.social-media-creative'
-import { Route as ServicesRebrandingServicesRouteImport } from './routes/services.rebranding-services'
-import { Route as ServicesRebrandingRouteImport } from './routes/services.rebranding'
-import { Route as ServicesProductDesignRouteImport } from './routes/services.product-design'
-import { Route as ServicesLandingPagesRouteImport } from './routes/services.landing-pages'
-import { Route as ServicesEmailCreationRouteImport } from './routes/services.email-creation'
-import { Route as ServicesEcommerceRouteImport } from './routes/services.ecommerce'
-import { Route as ServicesECommerceRouteImport } from './routes/services.e-commerce'
-import { Route as ServicesCreativeDesignRouteImport } from './routes/services.creative-design'
-import { Route as ServicesBrandingServicesRouteImport } from './routes/services.branding-services'
-import { Route as ServicesBrandGuidelinesRouteImport } from './routes/services.brand-guidelines'
-import { Route as ServicesAutomationRouteImport } from './routes/services.automation'
-import { Route as ServicesAiPoweredCreativeRouteImport } from './routes/services.ai-powered-creative'
-import { Route as ServicesAiMarketingRouteImport } from './routes/services.ai-marketing'
-import { Route as ServicesAiConsultingRouteImport } from './routes/services.ai-consulting'
 
-const WorkRoute = WorkRouteImport.update({
-  id: '/work',
-  path: '/work',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TestimonialsRoute = TestimonialsRouteImport.update({
-  id: '/testimonials',
-  path: '/testimonials',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TalentNetworkRoute = TalentNetworkRouteImport.update({
-  id: '/talent-network',
-  path: '/talent-network',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProcessRoute = ProcessRouteImport.update({
-  id: '/process',
-  path: '/process',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LogoDesignRoute = LogoDesignRouteImport.update({
-  id: '/logo-design',
-  path: '/logo-design',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InsightsRoute = InsightsRouteImport.update({
-  id: '/insights',
-  path: '/insights',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HowWeWorkRoute = HowWeWorkRouteImport.update({
-  id: '/how-we-work',
-  path: '/how-we-work',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CookiesRoute = CookiesRouteImport.update({
-  id: '/cookies',
-  path: '/cookies',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ConversionLiftRoute = ConversionLiftRouteImport.update({
-  id: '/conversion-lift',
-  path: '/conversion-lift',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CaseStudiesRoute = CaseStudiesRouteImport.update({
-  id: '/case-studies',
-  path: '/case-studies',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CareersRoute = CareersRouteImport.update({
-  id: '/careers',
-  path: '/careers',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BookRoute = BookRouteImport.update({
-  id: '/book',
-  path: '/book',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -141,9 +61,193 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookRoute = BookRouteImport.update({
+  id: '/book',
+  path: '/book',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CareersRoute = CareersRouteImport.update({
+  id: '/careers',
+  path: '/careers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CaseStudiesRoute = CaseStudiesRouteImport.update({
+  id: '/case-studies',
+  path: '/case-studies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConversionLiftRoute = ConversionLiftRouteImport.update({
+  id: '/conversion-lift',
+  path: '/conversion-lift',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CookiesRoute = CookiesRouteImport.update({
+  id: '/cookies',
+  path: '/cookies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HowWeWorkRoute = HowWeWorkRouteImport.update({
+  id: '/how-we-work',
+  path: '/how-we-work',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsightsRoute = InsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LogoDesignRoute = LogoDesignRouteImport.update({
+  id: '/logo-design',
+  path: '/logo-design',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProcessRoute = ProcessRouteImport.update({
+  id: '/process',
+  path: '/process',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TalentNetworkRoute = TalentNetworkRouteImport.update({
+  id: '/talent-network',
+  path: '/talent-network',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestimonialsRoute = TestimonialsRouteImport.update({
+  id: '/testimonials',
+  path: '/testimonials',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkRoute = WorkRouteImport.update({
+  id: '/work',
+  path: '/work',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesAiConsultingRoute = ServicesAiConsultingRouteImport.update({
+  id: '/services/ai-consulting',
+  path: '/services/ai-consulting',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesAiMarketingRoute = ServicesAiMarketingRouteImport.update({
+  id: '/services/ai-marketing',
+  path: '/services/ai-marketing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesAiPoweredCreativeRoute =
+  ServicesAiPoweredCreativeRouteImport.update({
+    id: '/services/ai-powered-creative',
+    path: '/services/ai-powered-creative',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ServicesAutomationRoute = ServicesAutomationRouteImport.update({
+  id: '/services/automation',
+  path: '/services/automation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesBrandGuidelinesRoute = ServicesBrandGuidelinesRouteImport.update({
+  id: '/services/brand-guidelines',
+  path: '/services/brand-guidelines',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesBrandingServicesRoute =
+  ServicesBrandingServicesRouteImport.update({
+    id: '/services/branding-services',
+    path: '/services/branding-services',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ServicesCreativeDesignRoute = ServicesCreativeDesignRouteImport.update({
+  id: '/services/creative-design',
+  path: '/services/creative-design',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesECommerceRoute = ServicesECommerceRouteImport.update({
+  id: '/services/e-commerce',
+  path: '/services/e-commerce',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesEcommerceRoute = ServicesEcommerceRouteImport.update({
+  id: '/services/ecommerce',
+  path: '/services/ecommerce',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesEmailCreationRoute = ServicesEmailCreationRouteImport.update({
+  id: '/services/email-creation',
+  path: '/services/email-creation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesLandingPagesRoute = ServicesLandingPagesRouteImport.update({
+  id: '/services/landing-pages',
+  path: '/services/landing-pages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesProductDesignRoute = ServicesProductDesignRouteImport.update({
+  id: '/services/product-design',
+  path: '/services/product-design',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesRebrandingRoute = ServicesRebrandingRouteImport.update({
+  id: '/services/rebranding',
+  path: '/services/rebranding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesRebrandingServicesRoute =
+  ServicesRebrandingServicesRouteImport.update({
+    id: '/services/rebranding-services',
+    path: '/services/rebranding-services',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ServicesSocialMediaCreativeRoute =
+  ServicesSocialMediaCreativeRouteImport.update({
+    id: '/services/social-media-creative',
+    path: '/services/social-media-creative',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ServicesUiUxRoute = ServicesUiUxRouteImport.update({
+  id: '/services/ui-ux',
+  path: '/services/ui-ux',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesWebDesignRoute = ServicesWebDesignRouteImport.update({
+  id: '/services/web-design',
+  path: '/services/web-design',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsBrandColorKitRoute = ToolsBrandColorKitRouteImport.update({
+  id: '/tools/brand-color-kit',
+  path: '/tools/brand-color-kit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsNamingGeneratorRoute = ToolsNamingGeneratorRouteImport.update({
+  id: '/tools/naming-generator',
+  path: '/tools/naming-generator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsPitchDeckTemplatesRoute = ToolsPitchDeckTemplatesRouteImport.update({
+  id: '/tools/pitch-deck-templates',
+  path: '/tools/pitch-deck-templates',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WorkIndexRoute = WorkIndexRouteImport.update({
@@ -155,110 +259,6 @@ const WorkSlugRoute = WorkSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => WorkRoute,
-} as any)
-const ToolsPitchDeckTemplatesRoute = ToolsPitchDeckTemplatesRouteImport.update({
-  id: '/tools/pitch-deck-templates',
-  path: '/tools/pitch-deck-templates',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ToolsNamingGeneratorRoute = ToolsNamingGeneratorRouteImport.update({
-  id: '/tools/naming-generator',
-  path: '/tools/naming-generator',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ToolsBrandColorKitRoute = ToolsBrandColorKitRouteImport.update({
-  id: '/tools/brand-color-kit',
-  path: '/tools/brand-color-kit',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesWebDesignRoute = ServicesWebDesignRouteImport.update({
-  id: '/services/web-design',
-  path: '/services/web-design',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesUiUxRoute = ServicesUiUxRouteImport.update({
-  id: '/services/ui-ux',
-  path: '/services/ui-ux',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesSocialMediaCreativeRoute =
-  ServicesSocialMediaCreativeRouteImport.update({
-    id: '/services/social-media-creative',
-    path: '/services/social-media-creative',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ServicesRebrandingServicesRoute =
-  ServicesRebrandingServicesRouteImport.update({
-    id: '/services/rebranding-services',
-    path: '/services/rebranding-services',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ServicesRebrandingRoute = ServicesRebrandingRouteImport.update({
-  id: '/services/rebranding',
-  path: '/services/rebranding',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesProductDesignRoute = ServicesProductDesignRouteImport.update({
-  id: '/services/product-design',
-  path: '/services/product-design',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesLandingPagesRoute = ServicesLandingPagesRouteImport.update({
-  id: '/services/landing-pages',
-  path: '/services/landing-pages',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesEmailCreationRoute = ServicesEmailCreationRouteImport.update({
-  id: '/services/email-creation',
-  path: '/services/email-creation',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesEcommerceRoute = ServicesEcommerceRouteImport.update({
-  id: '/services/ecommerce',
-  path: '/services/ecommerce',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesECommerceRoute = ServicesECommerceRouteImport.update({
-  id: '/services/e-commerce',
-  path: '/services/e-commerce',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesCreativeDesignRoute = ServicesCreativeDesignRouteImport.update({
-  id: '/services/creative-design',
-  path: '/services/creative-design',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesBrandingServicesRoute =
-  ServicesBrandingServicesRouteImport.update({
-    id: '/services/branding-services',
-    path: '/services/branding-services',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ServicesBrandGuidelinesRoute = ServicesBrandGuidelinesRouteImport.update({
-  id: '/services/brand-guidelines',
-  path: '/services/brand-guidelines',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesAutomationRoute = ServicesAutomationRouteImport.update({
-  id: '/services/automation',
-  path: '/services/automation',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesAiPoweredCreativeRoute =
-  ServicesAiPoweredCreativeRouteImport.update({
-    id: '/services/ai-powered-creative',
-    path: '/services/ai-powered-creative',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ServicesAiMarketingRoute = ServicesAiMarketingRouteImport.update({
-  id: '/services/ai-marketing',
-  path: '/services/ai-marketing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesAiConsultingRoute = ServicesAiConsultingRouteImport.update({
-  id: '/services/ai-consulting',
-  path: '/services/ai-consulting',
-  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -565,123 +565,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/work': {
-      id: '/work'
-      path: '/work'
-      fullPath: '/work'
-      preLoaderRoute: typeof WorkRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/testimonials': {
-      id: '/testimonials'
-      path: '/testimonials'
-      fullPath: '/testimonials'
-      preLoaderRoute: typeof TestimonialsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/talent-network': {
-      id: '/talent-network'
-      path: '/talent-network'
-      fullPath: '/talent-network'
-      preLoaderRoute: typeof TalentNetworkRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/process': {
-      id: '/process'
-      path: '/process'
-      fullPath: '/process'
-      preLoaderRoute: typeof ProcessRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/logo-design': {
-      id: '/logo-design'
-      path: '/logo-design'
-      fullPath: '/logo-design'
-      preLoaderRoute: typeof LogoDesignRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/insights': {
-      id: '/insights'
-      path: '/insights'
-      fullPath: '/insights'
-      preLoaderRoute: typeof InsightsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/how-we-work': {
-      id: '/how-we-work'
-      path: '/how-we-work'
-      fullPath: '/how-we-work'
-      preLoaderRoute: typeof HowWeWorkRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cookies': {
-      id: '/cookies'
-      path: '/cookies'
-      fullPath: '/cookies'
-      preLoaderRoute: typeof CookiesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/conversion-lift': {
-      id: '/conversion-lift'
-      path: '/conversion-lift'
-      fullPath: '/conversion-lift'
-      preLoaderRoute: typeof ConversionLiftRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/case-studies': {
-      id: '/case-studies'
-      path: '/case-studies'
-      fullPath: '/case-studies'
-      preLoaderRoute: typeof CaseStudiesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/careers': {
-      id: '/careers'
-      path: '/careers'
-      fullPath: '/careers'
-      preLoaderRoute: typeof CareersRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/book': {
-      id: '/book'
-      path: '/book'
-      fullPath: '/book'
-      preLoaderRoute: typeof BookRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -691,11 +579,263 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/book': {
+      id: '/book'
+      path: '/book'
+      fullPath: '/book'
+      preLoaderRoute: typeof BookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/careers': {
+      id: '/careers'
+      path: '/careers'
+      fullPath: '/careers'
+      preLoaderRoute: typeof CareersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/case-studies': {
+      id: '/case-studies'
+      path: '/case-studies'
+      fullPath: '/case-studies'
+      preLoaderRoute: typeof CaseStudiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/conversion-lift': {
+      id: '/conversion-lift'
+      path: '/conversion-lift'
+      fullPath: '/conversion-lift'
+      preLoaderRoute: typeof ConversionLiftRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cookies': {
+      id: '/cookies'
+      path: '/cookies'
+      fullPath: '/cookies'
+      preLoaderRoute: typeof CookiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/how-we-work': {
+      id: '/how-we-work'
+      path: '/how-we-work'
+      fullPath: '/how-we-work'
+      preLoaderRoute: typeof HowWeWorkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insights': {
+      id: '/insights'
+      path: '/insights'
+      fullPath: '/insights'
+      preLoaderRoute: typeof InsightsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/logo-design': {
+      id: '/logo-design'
+      path: '/logo-design'
+      fullPath: '/logo-design'
+      preLoaderRoute: typeof LogoDesignRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/process': {
+      id: '/process'
+      path: '/process'
+      fullPath: '/process'
+      preLoaderRoute: typeof ProcessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/talent-network': {
+      id: '/talent-network'
+      path: '/talent-network'
+      fullPath: '/talent-network'
+      preLoaderRoute: typeof TalentNetworkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/testimonials': {
+      id: '/testimonials'
+      path: '/testimonials'
+      fullPath: '/testimonials'
+      preLoaderRoute: typeof TestimonialsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/work': {
+      id: '/work'
+      path: '/work'
+      fullPath: '/work'
+      preLoaderRoute: typeof WorkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/ai-consulting': {
+      id: '/services/ai-consulting'
+      path: '/services/ai-consulting'
+      fullPath: '/services/ai-consulting'
+      preLoaderRoute: typeof ServicesAiConsultingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/ai-marketing': {
+      id: '/services/ai-marketing'
+      path: '/services/ai-marketing'
+      fullPath: '/services/ai-marketing'
+      preLoaderRoute: typeof ServicesAiMarketingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/ai-powered-creative': {
+      id: '/services/ai-powered-creative'
+      path: '/services/ai-powered-creative'
+      fullPath: '/services/ai-powered-creative'
+      preLoaderRoute: typeof ServicesAiPoweredCreativeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/automation': {
+      id: '/services/automation'
+      path: '/services/automation'
+      fullPath: '/services/automation'
+      preLoaderRoute: typeof ServicesAutomationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/brand-guidelines': {
+      id: '/services/brand-guidelines'
+      path: '/services/brand-guidelines'
+      fullPath: '/services/brand-guidelines'
+      preLoaderRoute: typeof ServicesBrandGuidelinesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/branding-services': {
+      id: '/services/branding-services'
+      path: '/services/branding-services'
+      fullPath: '/services/branding-services'
+      preLoaderRoute: typeof ServicesBrandingServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/creative-design': {
+      id: '/services/creative-design'
+      path: '/services/creative-design'
+      fullPath: '/services/creative-design'
+      preLoaderRoute: typeof ServicesCreativeDesignRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/e-commerce': {
+      id: '/services/e-commerce'
+      path: '/services/e-commerce'
+      fullPath: '/services/e-commerce'
+      preLoaderRoute: typeof ServicesECommerceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/ecommerce': {
+      id: '/services/ecommerce'
+      path: '/services/ecommerce'
+      fullPath: '/services/ecommerce'
+      preLoaderRoute: typeof ServicesEcommerceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/email-creation': {
+      id: '/services/email-creation'
+      path: '/services/email-creation'
+      fullPath: '/services/email-creation'
+      preLoaderRoute: typeof ServicesEmailCreationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/landing-pages': {
+      id: '/services/landing-pages'
+      path: '/services/landing-pages'
+      fullPath: '/services/landing-pages'
+      preLoaderRoute: typeof ServicesLandingPagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/product-design': {
+      id: '/services/product-design'
+      path: '/services/product-design'
+      fullPath: '/services/product-design'
+      preLoaderRoute: typeof ServicesProductDesignRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/rebranding': {
+      id: '/services/rebranding'
+      path: '/services/rebranding'
+      fullPath: '/services/rebranding'
+      preLoaderRoute: typeof ServicesRebrandingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/rebranding-services': {
+      id: '/services/rebranding-services'
+      path: '/services/rebranding-services'
+      fullPath: '/services/rebranding-services'
+      preLoaderRoute: typeof ServicesRebrandingServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/social-media-creative': {
+      id: '/services/social-media-creative'
+      path: '/services/social-media-creative'
+      fullPath: '/services/social-media-creative'
+      preLoaderRoute: typeof ServicesSocialMediaCreativeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/ui-ux': {
+      id: '/services/ui-ux'
+      path: '/services/ui-ux'
+      fullPath: '/services/ui-ux'
+      preLoaderRoute: typeof ServicesUiUxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/web-design': {
+      id: '/services/web-design'
+      path: '/services/web-design'
+      fullPath: '/services/web-design'
+      preLoaderRoute: typeof ServicesWebDesignRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/brand-color-kit': {
+      id: '/tools/brand-color-kit'
+      path: '/tools/brand-color-kit'
+      fullPath: '/tools/brand-color-kit'
+      preLoaderRoute: typeof ToolsBrandColorKitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/naming-generator': {
+      id: '/tools/naming-generator'
+      path: '/tools/naming-generator'
+      fullPath: '/tools/naming-generator'
+      preLoaderRoute: typeof ToolsNamingGeneratorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/pitch-deck-templates': {
+      id: '/tools/pitch-deck-templates'
+      path: '/tools/pitch-deck-templates'
+      fullPath: '/tools/pitch-deck-templates'
+      preLoaderRoute: typeof ToolsPitchDeckTemplatesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/work/': {
@@ -711,146 +851,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/work/$slug'
       preLoaderRoute: typeof WorkSlugRouteImport
       parentRoute: typeof WorkRoute
-    }
-    '/tools/pitch-deck-templates': {
-      id: '/tools/pitch-deck-templates'
-      path: '/tools/pitch-deck-templates'
-      fullPath: '/tools/pitch-deck-templates'
-      preLoaderRoute: typeof ToolsPitchDeckTemplatesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/tools/naming-generator': {
-      id: '/tools/naming-generator'
-      path: '/tools/naming-generator'
-      fullPath: '/tools/naming-generator'
-      preLoaderRoute: typeof ToolsNamingGeneratorRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/tools/brand-color-kit': {
-      id: '/tools/brand-color-kit'
-      path: '/tools/brand-color-kit'
-      fullPath: '/tools/brand-color-kit'
-      preLoaderRoute: typeof ToolsBrandColorKitRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/web-design': {
-      id: '/services/web-design'
-      path: '/services/web-design'
-      fullPath: '/services/web-design'
-      preLoaderRoute: typeof ServicesWebDesignRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/ui-ux': {
-      id: '/services/ui-ux'
-      path: '/services/ui-ux'
-      fullPath: '/services/ui-ux'
-      preLoaderRoute: typeof ServicesUiUxRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/social-media-creative': {
-      id: '/services/social-media-creative'
-      path: '/services/social-media-creative'
-      fullPath: '/services/social-media-creative'
-      preLoaderRoute: typeof ServicesSocialMediaCreativeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/rebranding-services': {
-      id: '/services/rebranding-services'
-      path: '/services/rebranding-services'
-      fullPath: '/services/rebranding-services'
-      preLoaderRoute: typeof ServicesRebrandingServicesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/rebranding': {
-      id: '/services/rebranding'
-      path: '/services/rebranding'
-      fullPath: '/services/rebranding'
-      preLoaderRoute: typeof ServicesRebrandingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/product-design': {
-      id: '/services/product-design'
-      path: '/services/product-design'
-      fullPath: '/services/product-design'
-      preLoaderRoute: typeof ServicesProductDesignRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/landing-pages': {
-      id: '/services/landing-pages'
-      path: '/services/landing-pages'
-      fullPath: '/services/landing-pages'
-      preLoaderRoute: typeof ServicesLandingPagesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/email-creation': {
-      id: '/services/email-creation'
-      path: '/services/email-creation'
-      fullPath: '/services/email-creation'
-      preLoaderRoute: typeof ServicesEmailCreationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/ecommerce': {
-      id: '/services/ecommerce'
-      path: '/services/ecommerce'
-      fullPath: '/services/ecommerce'
-      preLoaderRoute: typeof ServicesEcommerceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/e-commerce': {
-      id: '/services/e-commerce'
-      path: '/services/e-commerce'
-      fullPath: '/services/e-commerce'
-      preLoaderRoute: typeof ServicesECommerceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/creative-design': {
-      id: '/services/creative-design'
-      path: '/services/creative-design'
-      fullPath: '/services/creative-design'
-      preLoaderRoute: typeof ServicesCreativeDesignRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/branding-services': {
-      id: '/services/branding-services'
-      path: '/services/branding-services'
-      fullPath: '/services/branding-services'
-      preLoaderRoute: typeof ServicesBrandingServicesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/brand-guidelines': {
-      id: '/services/brand-guidelines'
-      path: '/services/brand-guidelines'
-      fullPath: '/services/brand-guidelines'
-      preLoaderRoute: typeof ServicesBrandGuidelinesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/automation': {
-      id: '/services/automation'
-      path: '/services/automation'
-      fullPath: '/services/automation'
-      preLoaderRoute: typeof ServicesAutomationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/ai-powered-creative': {
-      id: '/services/ai-powered-creative'
-      path: '/services/ai-powered-creative'
-      fullPath: '/services/ai-powered-creative'
-      preLoaderRoute: typeof ServicesAiPoweredCreativeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/ai-marketing': {
-      id: '/services/ai-marketing'
-      path: '/services/ai-marketing'
-      fullPath: '/services/ai-marketing'
-      preLoaderRoute: typeof ServicesAiMarketingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/ai-consulting': {
-      id: '/services/ai-consulting'
-      path: '/services/ai-consulting'
-      fullPath: '/services/ai-consulting'
-      preLoaderRoute: typeof ServicesAiConsultingRouteImport
-      parentRoute: typeof rootRouteImport
     }
   }
 }
