@@ -392,10 +392,34 @@ export const fetchRealDashboardDataFn = createServerFn({ method: "GET" }).handle
   };
 });
 
+const projectSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  client_name: z.string(),
+  client_company: z.string(),
+  client_email: z.string(),
+  client_phone: z.string().optional(),
+  client_whatsapp: z.string().optional(),
+  services: z.array(z.string()).default([]),
+  status: z.enum(["discovery", "in_progress", "in_review", "completed", "on_hold"]),
+  priority: z.enum(["low", "medium", "high", "urgent"]),
+  start_date: z.string(),
+  target_launch_date: z.string().optional().default(""),
+  budget: z.number(),
+  currency: z.string().default("USD"),
+  description: z.string().default(""),
+  requirements: z.array(z.string()).default([]),
+  milestones: z.array(z.any()).default([]),
+  media_files: z.array(z.any()).default([]),
+  notes: z.string().optional(),
+  created_at: z.string().optional(),
+  updated_at: z.string().optional(),
+});
+
 export const saveRealProjectFn = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) => input as Project)
+  .inputValidator((input: unknown) => projectSchema.parse(input))
   .handler(async ({ data }) => {
-    const saved = await saveRealProject(data);
+    const saved = await saveRealProject(data as Project);
     return { success: true, project: saved };
   });
 
@@ -418,10 +442,46 @@ export const updateRealProjectStatusFn = createServerFn({ method: "POST" })
     return { success: true };
   });
 
+const invoiceItemSchema = z.object({
+  id: z.string(),
+  description: z.string(),
+  quantity: z.number(),
+  rate: z.number(),
+  amount: z.number(),
+});
+
+const invoiceSchema = z.object({
+  id: z.string(),
+  invoice_number: z.string(),
+  client_name: z.string(),
+  client_company: z.string(),
+  client_email: z.string(),
+  client_address: z.string().optional(),
+  issue_date: z.string(),
+  due_date: z.string(),
+  status: z.string().default("draft"),
+  currency: z.string().default("USD"),
+  items: z.array(invoiceItemSchema).default([]),
+  subtotal: z.number().default(0),
+  tax_percent: z.number().default(0),
+  tax_amount: z.number().default(0),
+  discount_amount: z.number().default(0),
+  total: z.number().default(0),
+  advance_amount: z.number().default(0),
+  advance_percent: z.number().default(0),
+  balance_due: z.number().optional(),
+  payment_method: z.string().optional(),
+  notes: z.string().optional(),
+  payment_instructions: z.string().optional(),
+  last_sent_at: z.string().nullable().optional(),
+  sent_to_email: z.string().nullable().optional(),
+  created_at: z.string().optional(),
+});
+
 export const saveRealInvoiceFn = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) => input as Invoice)
+  .inputValidator((input: unknown) => invoiceSchema.parse(input))
   .handler(async ({ data }) => {
-    const saved = await saveRealInvoice(data);
+    const saved = await saveRealInvoice(data as Invoice);
     return { success: true, invoice: saved };
   });
 

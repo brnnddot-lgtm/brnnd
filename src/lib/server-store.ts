@@ -28,12 +28,44 @@ const PRIMARY_STORE_PATH = isServerless ? TMP_STORE_PATH : LOCAL_STORE_PATH;
 // Global in-memory cache to guarantee zero-error, resilient fallback across warm serverless calls
 let inMemoryStore: StoreData | null = null;
 
+// Ensure a value is an array — handles strings (from Supabase TEXT columns), nulls, etc.
+function toArray<T>(val: unknown): T[] {
+  if (Array.isArray(val)) return val as T[];
+  if (typeof val === "string" && val.trim()) {
+    // If it looks like a JSON array, try to parse it
+    const trimmed = val.trim();
+    if (trimmed.startsWith("[")) {
+      try { return JSON.parse(trimmed) as T[]; } catch { /* fall through */ }
+    }
+  }
+  return [];
+}
+
+// Sanitize a project record to ensure all array fields are actual arrays
+function sanitizeProject(p: any): any {
+  return {
+    ...p,
+    services: toArray<string>(p.services),
+    requirements: toArray<string>(p.requirements),
+    milestones: toArray(p.milestones),
+    media_files: toArray(p.media_files),
+  };
+}
+
+// Sanitize an invoice record to ensure all array fields are actual arrays
+function sanitizeInvoice(i: any): any {
+  return {
+    ...i,
+    items: toArray(i.items),
+  };
+}
+
 function getInitialSeedData(): StoreData {
   const seed = (liveStoreSeed || {}) as Partial<StoreData>;
   return {
-    invoices: Array.isArray(seed.invoices) ? [...seed.invoices] : [],
+    invoices: Array.isArray(seed.invoices) ? seed.invoices.map(sanitizeInvoice) : [],
     leads: Array.isArray(seed.leads) ? [...seed.leads] : [],
-    projects: Array.isArray(seed.projects) ? [...seed.projects] : [],
+    projects: Array.isArray(seed.projects) ? seed.projects.map(sanitizeProject) : [],
     lastUpdated: seed.lastUpdated || new Date().toISOString(),
   };
 }
@@ -49,9 +81,9 @@ function ensureStoreFile(): StoreData {
       const content = fs.readFileSync(PRIMARY_STORE_PATH, "utf-8");
       const parsed = JSON.parse(content) as StoreData;
       inMemoryStore = {
-        invoices: Array.isArray(parsed.invoices) ? parsed.invoices : [],
+        invoices: Array.isArray(parsed.invoices) ? parsed.invoices.map(sanitizeInvoice) : [],
         leads: Array.isArray(parsed.leads) ? parsed.leads : [],
-        projects: Array.isArray(parsed.projects) ? parsed.projects : [],
+        projects: Array.isArray(parsed.projects) ? parsed.projects.map(sanitizeProject) : [],
         lastUpdated: parsed.lastUpdated || new Date().toISOString(),
       };
       return inMemoryStore;
@@ -67,9 +99,9 @@ function ensureStoreFile(): StoreData {
         const content = fs.readFileSync(LOCAL_STORE_PATH, "utf-8");
         const parsed = JSON.parse(content) as StoreData;
         inMemoryStore = {
-          invoices: Array.isArray(parsed.invoices) ? parsed.invoices : [],
+          invoices: Array.isArray(parsed.invoices) ? parsed.invoices.map(sanitizeInvoice) : [],
           leads: Array.isArray(parsed.leads) ? parsed.leads : [],
-          projects: Array.isArray(parsed.projects) ? parsed.projects : [],
+          projects: Array.isArray(parsed.projects) ? parsed.projects.map(sanitizeProject) : [],
           lastUpdated: parsed.lastUpdated || new Date().toISOString(),
         };
         try {
@@ -278,119 +310,130 @@ export async function syncAllDataToSupabase(): Promise<{
 // Invoices
 // ----------------------------------------------------
 export async function getRealInvoices(): Promise<Invoice[]> {
+  // Always load from local store first — it's the source of truth for local dev
+  const localStore = ensureStoreFile();
+  const localInvoices = localStore.invoices || [];
+
   try {
     const { data, error } = await (supabaseAdmin as any)
       .from("invoices")
       .select("*")
       .order("created_at", { ascending: false });
 
-    if (!error && Array.isArray(data)) {
-      if (data.length > 0) {
-        const invoices = data.map((inv: any) => ({
-          id: String(inv.id),
-          invoice_number: String(inv.invoice_number),
-          client_name: String(inv.client_name || ""),
-          client_company: String(inv.client_company || ""),
-          client_email: String(inv.client_email || ""),
-          client_address: inv.client_address ? String(inv.client_address) : undefined,
-          issue_date: String(inv.issue_date || new Date().toISOString().split("T")[0]),
-          due_date: String(inv.due_date || new Date().toISOString().split("T")[0]),
-          status: inv.status || "draft",
-          currency: inv.currency || "USD",
-          items: Array.isArray(inv.items) ? inv.items : [],
-          subtotal: Number(inv.subtotal) || 0,
-          tax_percent: Number(inv.tax_percent) || 0,
-          tax_amount: Number(inv.tax_amount) || 0,
-          discount_amount: Number(inv.discount_amount) || 0,
-          total: Number(inv.total) || 0,
-          advance_amount: Number(inv.advance_amount) || 0,
-          advance_percent: Number(inv.advance_percent) || 0,
-          balance_due:
-            inv.balance_due !== undefined && inv.balance_due !== null
-              ? Number(inv.balance_due)
-              : Math.max(0, (Number(inv.total) || 0) - (Number(inv.advance_amount) || 0)),
-          payment_method: inv.payment_method || "N/A",
-          notes: inv.notes ? String(inv.notes) : undefined,
-          payment_instructions: inv.payment_instructions ? String(inv.payment_instructions) : undefined,
-          last_sent_at: inv.last_sent_at ? String(inv.last_sent_at) : null,
-          sent_to_email: inv.sent_to_email ? String(inv.sent_to_email) : null,
-          created_at: inv.created_at ? String(inv.created_at) : new Date().toISOString(),
-        }));
+    if (!error && Array.isArray(data) && data.length > 0) {
+      const invoices = data.map((inv: any) => sanitizeInvoice({
+        id: String(inv.id),
+        invoice_number: String(inv.invoice_number),
+        client_name: String(inv.client_name || ""),
+        client_company: String(inv.client_company || ""),
+        client_email: String(inv.client_email || ""),
+        client_address: inv.client_address ? String(inv.client_address) : undefined,
+        issue_date: String(inv.issue_date || new Date().toISOString().split("T")[0]),
+        due_date: String(inv.due_date || new Date().toISOString().split("T")[0]),
+        status: inv.status || "draft",
+        currency: inv.currency || "USD",
+        items: Array.isArray(inv.items) ? inv.items : toArray(inv.items),
+        subtotal: Number(inv.subtotal) || 0,
+        tax_percent: Number(inv.tax_percent) || 0,
+        tax_amount: Number(inv.tax_amount) || 0,
+        discount_amount: Number(inv.discount_amount) || 0,
+        total: Number(inv.total) || 0,
+        advance_amount: Number(inv.advance_amount) || 0,
+        advance_percent: Number(inv.advance_percent) || 0,
+        balance_due:
+          inv.balance_due !== undefined && inv.balance_due !== null
+            ? Number(inv.balance_due)
+            : Math.max(0, (Number(inv.total) || 0) - (Number(inv.advance_amount) || 0)),
+        payment_method: inv.payment_method || "N/A",
+        notes: inv.notes ? String(inv.notes) : undefined,
+        payment_instructions: inv.payment_instructions ? String(inv.payment_instructions) : undefined,
+        last_sent_at: inv.last_sent_at ? String(inv.last_sent_at) : null,
+        sent_to_email: inv.sent_to_email ? String(inv.sent_to_email) : null,
+        created_at: inv.created_at ? String(inv.created_at) : new Date().toISOString(),
+      })) as Invoice[];
 
-        // Cache in memory / local store
-        const store = ensureStoreFile();
-        store.invoices = invoices;
-        writeStoreFile(store);
+      // Merge Supabase data with local store (local store wins for items not in Supabase)
+      const supabaseIds = new Set(invoices.map((i) => i.id));
+      const mergedInvoices = [
+        ...invoices,
+        ...localInvoices.filter((i) => !supabaseIds.has(i.id)),
+      ];
 
-        return invoices;
-      } else {
-        // Table exists in Supabase but is empty: auto-populate from local store
-        const store = ensureStoreFile();
-        if (store.invoices && store.invoices.length > 0) {
-          syncInvoicesToSupabase(store.invoices).catch(() => {});
-          return store.invoices;
-        }
-      }
+      // Update local store with merged data
+      const store = ensureStoreFile();
+      store.invoices = mergedInvoices;
+      writeStoreFile(store);
+
+      return mergedInvoices;
+    } else if (!error && Array.isArray(data) && data.length === 0 && localInvoices.length > 0) {
+      // Supabase table is empty — push local data to Supabase
+      syncInvoicesToSupabase(localInvoices).catch(() => {});
     }
   } catch (err) {
-    // Non-fatal
+    // Supabase unavailable — use local store (non-fatal)
+    console.warn("[server-store] Supabase unavailable, using local store for invoices:", err);
   }
 
-  const store = ensureStoreFile();
-  return store.invoices || [];
+  return localInvoices;
 }
 
 export async function saveRealInvoice(invoice: Invoice): Promise<Invoice> {
+  // Sanitize to ensure arrays are always arrays before storing
+  const sanitized = sanitizeInvoice(invoice) as Invoice;
   const store = ensureStoreFile();
   const index = store.invoices.findIndex(
-    (i) => i.id === invoice.id || i.invoice_number === invoice.invoice_number
+    (i) => i.id === sanitized.id || i.invoice_number === sanitized.invoice_number
   );
 
   if (index >= 0) {
-    store.invoices[index] = invoice;
+    store.invoices[index] = sanitized;
   } else {
-    store.invoices.unshift(invoice);
+    store.invoices.unshift(sanitized);
   }
   writeStoreFile(store);
+  console.log(`[server-store] Invoice ${sanitized.invoice_number} saved to local store (total: ${store.invoices.length})`);
 
-  // Sync to Supabase cloud database
+  // Sync to Supabase cloud database (non-blocking, best-effort)
   try {
     const payload = {
-      id: invoice.id,
-      invoice_number: invoice.invoice_number,
-      client_name: invoice.client_name,
-      client_company: invoice.client_company,
-      client_email: invoice.client_email,
-      client_address: invoice.client_address || null,
-      issue_date: invoice.issue_date,
-      due_date: invoice.due_date,
-      status: invoice.status,
-      currency: invoice.currency,
-      items: invoice.items || [],
-      subtotal: Number(invoice.subtotal) || 0,
-      tax_percent: Number(invoice.tax_percent) || 0,
-      tax_amount: Number(invoice.tax_amount) || 0,
-      discount_amount: Number(invoice.discount_amount) || 0,
-      total: Number(invoice.total) || 0,
-      advance_amount: Number(invoice.advance_amount) || 0,
-      advance_percent: Number(invoice.advance_percent) || 0,
-      balance_due: Number(invoice.balance_due) || 0,
-      payment_method: invoice.payment_method || "N/A",
-      notes: invoice.notes || null,
-      payment_instructions: invoice.payment_instructions || null,
-      last_sent_at: invoice.last_sent_at || null,
-      sent_to_email: invoice.sent_to_email || null,
+      id: sanitized.id,
+      invoice_number: sanitized.invoice_number,
+      client_name: sanitized.client_name,
+      client_company: sanitized.client_company,
+      client_email: sanitized.client_email,
+      client_address: sanitized.client_address || null,
+      issue_date: sanitized.issue_date,
+      due_date: sanitized.due_date,
+      status: sanitized.status,
+      currency: sanitized.currency,
+      items: Array.isArray(sanitized.items) ? sanitized.items : [],
+      subtotal: Number(sanitized.subtotal) || 0,
+      tax_percent: Number(sanitized.tax_percent) || 0,
+      tax_amount: Number(sanitized.tax_amount) || 0,
+      discount_amount: Number(sanitized.discount_amount) || 0,
+      total: Number(sanitized.total) || 0,
+      advance_amount: Number(sanitized.advance_amount) || 0,
+      advance_percent: Number(sanitized.advance_percent) || 0,
+      balance_due: Number(sanitized.balance_due) || 0,
+      payment_method: sanitized.payment_method || "N/A",
+      notes: sanitized.notes || null,
+      payment_instructions: sanitized.payment_instructions || null,
+      last_sent_at: sanitized.last_sent_at || null,
+      sent_to_email: sanitized.sent_to_email || null,
       updated_at: new Date().toISOString(),
     };
 
-    await (supabaseAdmin as any)
+    const { error: upsertError } = await (supabaseAdmin as any)
       .from("invoices")
       .upsert(payload, { onConflict: "id" });
+    if (upsertError) {
+      console.warn("[server-store] Supabase invoice upsert failed (local store is primary):", upsertError.message);
+    }
   } catch (err) {
-    // Non-fatal
+    console.warn("[server-store] Supabase invoice sync error:", err);
   }
 
-  return invoice;
+  return sanitized;
 }
 
 export async function deleteRealInvoice(invoiceId: string): Promise<boolean> {
@@ -411,69 +454,76 @@ export async function deleteRealInvoice(invoiceId: string): Promise<boolean> {
 // Projects (Full Cloud Database Integration)
 // ----------------------------------------------------
 export async function getRealProjects(): Promise<Project[]> {
+  // Always load from local store first — it's the source of truth for local dev
+  const localStore = ensureStoreFile();
+  const localProjects = localStore.projects || [];
+
   try {
     const { data, error } = await (supabaseAdmin as any)
       .from("projects")
       .select("*")
       .order("created_at", { ascending: false });
 
-    if (!error && Array.isArray(data)) {
-      if (data.length > 0) {
-        const projects = data.map((d: any) => ({
-          id: String(d.id),
-          title: String(d.title || ""),
-          client_name: String(d.client_name || ""),
-          client_company: String(d.client_company || ""),
-          client_email: String(d.client_email || ""),
-          client_phone: d.client_phone ? String(d.client_phone) : undefined,
-          client_whatsapp: d.client_whatsapp ? String(d.client_whatsapp) : undefined,
-          services: Array.isArray(d.services) ? d.services : [],
-          status: d.status || "discovery",
-          priority: d.priority || "medium",
-          start_date: String(d.start_date || new Date().toISOString().split("T")[0]),
-          target_launch_date: String(d.target_launch_date || ""),
-          budget: Number(d.budget) || 0,
-          currency: d.currency || "USD",
-          description: String(d.description || ""),
-          requirements: Array.isArray(d.requirements) ? d.requirements : [],
-          milestones: Array.isArray(d.milestones) ? d.milestones : [],
-          media_files: Array.isArray(d.media_files) ? d.media_files : [],
-          notes: d.notes ? String(d.notes) : undefined,
-          created_at: String(d.created_at || new Date().toISOString()),
-          updated_at: d.updated_at ? String(d.updated_at) : undefined,
-        }));
+    if (!error && Array.isArray(data) && data.length > 0) {
+      const projects = data.map((d: any) => sanitizeProject({
+        id: String(d.id),
+        title: String(d.title || ""),
+        client_name: String(d.client_name || ""),
+        client_company: String(d.client_company || ""),
+        client_email: String(d.client_email || ""),
+        client_phone: d.client_phone ? String(d.client_phone) : undefined,
+        client_whatsapp: d.client_whatsapp ? String(d.client_whatsapp) : undefined,
+        services: toArray<string>(d.services),
+        status: d.status || "discovery",
+        priority: d.priority || "medium",
+        start_date: String(d.start_date || new Date().toISOString().split("T")[0]),
+        target_launch_date: String(d.target_launch_date || ""),
+        budget: Number(d.budget) || 0,
+        currency: d.currency || "USD",
+        description: String(d.description || ""),
+        requirements: toArray<string>(d.requirements),
+        milestones: toArray(d.milestones),
+        media_files: toArray(d.media_files),
+        notes: d.notes ? String(d.notes) : undefined,
+        created_at: String(d.created_at || new Date().toISOString()),
+        updated_at: d.updated_at ? String(d.updated_at) : undefined,
+      })) as Project[];
 
-        // Cache in memory / local store
-        const store = ensureStoreFile();
-        store.projects = projects;
-        writeStoreFile(store);
+      // Merge Supabase data with local store (local store wins for items not in Supabase)
+      const supabaseIds = new Set(projects.map((p) => p.id));
+      const mergedProjects = [
+        ...projects,
+        ...localProjects.filter((p) => !supabaseIds.has(p.id)),
+      ];
 
-        return projects;
-      } else {
-        // Table exists in Supabase but is empty: auto-populate from local store
-        const store = ensureStoreFile();
-        if (store.projects && store.projects.length > 0) {
-          syncProjectsToSupabase(store.projects).catch(() => {});
-          return store.projects;
-        }
-      }
+      // Update local store with merged data
+      const store = ensureStoreFile();
+      store.projects = mergedProjects;
+      writeStoreFile(store);
+
+      return mergedProjects;
+    } else if (!error && Array.isArray(data) && data.length === 0 && localProjects.length > 0) {
+      // Supabase table is empty — push local data to Supabase
+      syncProjectsToSupabase(localProjects).catch(() => {});
     }
   } catch (err) {
-    // Non-fatal
+    // Supabase unavailable — use local store (non-fatal)
+    console.warn("[server-store] Supabase unavailable, using local store for projects:", err);
   }
 
-  const store = ensureStoreFile();
-  return store.projects || [];
+  return localProjects;
 }
 
 export async function saveRealProject(project: Project): Promise<Project> {
+  // Sanitize to ensure arrays are always arrays before storing
+  const sanitized = sanitizeProject(project) as Project;
   const store = ensureStoreFile();
   if (!store.projects) store.projects = [];
-  const index = store.projects.findIndex((p) => p.id === project.id);
-  const updatedProject = {
-    ...project,
+  const index = store.projects.findIndex((p) => p.id === sanitized.id);
+  const updatedProject: Project = {
+    ...sanitized,
     updated_at: new Date().toISOString(),
-    created_at: project.created_at || new Date().toISOString(),
+    created_at: sanitized.created_at || new Date().toISOString(),
   };
 
   if (index >= 0) {
@@ -482,8 +532,9 @@ export async function saveRealProject(project: Project): Promise<Project> {
     store.projects.unshift(updatedProject);
   }
   writeStoreFile(store);
+  console.log(`[server-store] Project "${updatedProject.title}" saved to local store (total: ${store.projects.length})`);
 
-  // Sync to Supabase cloud database
+  // Sync to Supabase cloud database (non-blocking, best-effort)
   try {
     const payload = {
       id: updatedProject.id,
@@ -493,7 +544,7 @@ export async function saveRealProject(project: Project): Promise<Project> {
       client_email: updatedProject.client_email,
       client_phone: updatedProject.client_phone || null,
       client_whatsapp: updatedProject.client_whatsapp || null,
-      services: updatedProject.services || [],
+      services: Array.isArray(updatedProject.services) ? updatedProject.services : [],
       status: updatedProject.status,
       priority: updatedProject.priority,
       start_date: updatedProject.start_date || new Date().toISOString().split("T")[0],
@@ -501,18 +552,21 @@ export async function saveRealProject(project: Project): Promise<Project> {
       budget: Number(updatedProject.budget) || 0,
       currency: updatedProject.currency || "USD",
       description: updatedProject.description || "",
-      requirements: updatedProject.requirements || [],
-      milestones: updatedProject.milestones || [],
-      media_files: updatedProject.media_files || [],
+      requirements: Array.isArray(updatedProject.requirements) ? updatedProject.requirements : [],
+      milestones: Array.isArray(updatedProject.milestones) ? updatedProject.milestones : [],
+      media_files: Array.isArray(updatedProject.media_files) ? updatedProject.media_files : [],
       notes: updatedProject.notes || null,
       updated_at: updatedProject.updated_at,
     };
 
-    await (supabaseAdmin as any)
+    const { error: upsertError } = await (supabaseAdmin as any)
       .from("projects")
       .upsert(payload, { onConflict: "id" });
+    if (upsertError) {
+      console.warn("[server-store] Supabase project upsert failed (local store is primary):", upsertError.message);
+    }
   } catch (err) {
-    // Non-fatal
+    console.warn("[server-store] Supabase project sync error:", err);
   }
 
   return updatedProject;
